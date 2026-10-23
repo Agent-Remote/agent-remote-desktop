@@ -663,3 +663,11 @@ WireGuard 确认参数在异步能力检查前冻结，专项覆盖原表单指�
 相关文档：[开发规范](development-standards.md)、[平台验证矩阵](platform-validation.md)、[CLI 覆盖清单](cli-coverage.md)、[产品方案](../../agent-remote/docs/agent-remote-desktop-design.zh-CN.md)。
 
 本轮新增 `scripts/remote-interop-acceptance.sh` 与[远程闭环联调验收](remote-interop-acceptance.md)。`--contracts` 已在当前工作区通过 Server session attach/verify、attachment transfer、Node attach、port-forward（82 passed、2 skipped）、Node attach 包、Rust desktop-control/Mutagen/exact attachment fixture 合同实际执行及 Desktop remote/cliadapter 测试；这些是 fixture/protocol 证据，不代表真实远程连接。`--host-only` 已在 macOS arm64 通过实际 `agent-remote`/`fclaude` 可执行文件、Go→Rust `capabilities` 请求和远程方法门禁，证据明确写入 `remote_execution.status=not_run`。真实 Server/Node/SSH exact attachment 仍需使用 disposable session 运行 `--live`；Mutagen live probe 仅在显式提供固定原生 Mutagen 二进制时执行，任何缺失身份、目标主机或 broker 都 fail closed。
+
+## 2026-10-23 交付候选复验
+
+本地交付提交为 `db15008697effd7f2db6b0704d2d44c8d58883d4`（工作树干净）。在该提交上重新执行 `DESKTOP_TERMINAL_TESTS=1 bash scripts/check.sh`、`go vet ./...`、darwin/arm64、windows/amd64、linux/amd64 的 `CGO_ENABLED=0 go build ./...`，全部通过。账户导入受管 Skills 场景的独立 race 用例通过（39.36 秒）；完整 `go test -race ./tests/app` 曾在 headless mygo intrinsic layout 阶段超过 600 秒，因此不计作全量 race 通过，也没有放宽生产超时或删除该场景。
+
+从干净提交构建的社区自签候选位于 `/tmp/agent-remote-desktop-release-delivery`：版本仍为 `0.1.0-dev`，目标为 `darwin/arm64`、`windows/amd64`、`linux/amd64`，manifest 的 `git_dirty=false`，共 18 项制品。macOS 使用 `Agent Remote Community Code Signing`（SHA-1 `53EE33F5BE5A109F8575A75D9E126826B5BB75CE`），Windows/Linux 不使用发行者代码签名，未启用公证。`scripts/verify-release.sh --require-targets` 和 macOS 安装后 `scripts/release-native-smoke.sh` 均通过。
+
+仍未关闭的发布门禁：Windows 真实主机窗口/ConPTY/托盘/安装器、Linux amd64 X11/Wayland/GTK/AppIndicator/PTY/托盘/安装器、三平台真实 WireGuard broker、真实 Server/Node/SSH/fclaude 会话与附件联调、Mutagen restart recovery，以及 GPU/PTY/input P95 性能测量。当前候选是可审阅、可安装的代码交付版本；在这些主机和服务证据补齐前不标记为正式发布。

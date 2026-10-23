@@ -246,3 +246,7 @@ forced-command gateway 与接收器合同、CLI exact-transfer 编译合同，�
 Server 授权、Node forced-command SSH gateway 上传一个临时文件并确认 scoped cleanup receipt；缺少任一变量
 或 `ssh` 时脚本以失败退出，不会把测试标记为 skipped。当前只复验了 `--contracts`；没有配置测试账户，不能
 宣称真实三仓库附件传输已完成。
+
+## 2026-10-23 交付候选
+
+干净提交 `db15008697effd7f2db6b0704d2d44c8d58883d4` 的普通桌面门禁、三目标交叉构建和发布离线校验均通过。候选目录为 `/tmp/agent-remote-desktop-release-delivery`，包含 `darwin/arm64`、`windows/amd64`、`linux/amd64` 三目标及 18 项制品；macOS 项目社区自签安装后 smoke 通过。该证据仍只代表当前 macOS 主机和可重复构建，不替代 Windows/Linux 原生主机、WireGuard broker 或真实 Server/Node/SSH 验收。
