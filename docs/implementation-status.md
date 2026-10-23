@@ -7,6 +7,18 @@
 - 景深跟随拖拽（§6.2）：拖动抽屉或控制中心 Sheet 时，工作区的缩放、位移、变暗、模糊按拖拽进度线性插值，不再等 Sheet 合上后才回位。由于工作区先于 Sheet 构建，景深比 Sheet 晚一帧。从呼吸条上拉时仍不移动工作区，保持指针下的呼吸条 1:1。测试：`TestWorkspaceDepthFollowsTheDrag` 读取左侧面板边缘的像素位置（Zen 14、打开 54、拖到中途时在两者之间）。
 - 人工验收工具 `tests/manual-acceptance`：生成一次性 home（两个项目：Go、Python），以及名为 codex/claude/fclaude 的替身 Agent。替身把终端置为原始模式，每收到一次字节就以十六进制和文本显示，组合键泄漏的字节（如 `c3 a5` = å）会直接出现在面板里。`go run ./tests/manual-acceptance` 准备好后用 `-home` 启动桌面；`-prepare` 只打印路径，便于在 Windows/Linux 上配合交叉编译的桌面程序使用。不读写用户自己的桌面状态。
 - 验证：`bash scripts/check.sh` 通过。
+- 原生组合键脚本证据（2026-10-23，真实 app、真实窗口系统、OS 级按键注入、替身 Agent 记录收到的原始字节；流程为输入 `hi`、轻点 Alt+A、Esc、按住再松开 Alt+X、轻点 Alt+C、Esc、输入 `ok`，Agent 必须恰好收到 `68 69 6f 6b`）：
+
+  | 平台 | 窗口系统 / 注入方式 | arm64 | x86_64 |
+  | --- | --- | --- | --- |
+  | Linux | X11（Xvfb + openbox）/ xdotool XTEST | 通过 | 通过（Docker 模拟） |
+  | Linux | Wayland（无头 sway，GTK Wayland 后端）/ wtype virtual-keyboard | 通过 | 通过（Docker 模拟） |
+  | Windows 11 | Win32 / SendInput（登录会话） | 通过 | 通过（arm64 上的 x64 模拟） |
+
+  Windows 另测了微软拼音：输入法打开但空闲时，Alt+A 不向 Agent 发送任何字节；拼音组字（`ni` 候选栏显示）时按 Alt+A，抽屉打开、Agent 收到 0 字节，候选被丢弃，未提交。反向对照：非组合键 Alt+B 照常送达 `1b 62`，证明检查本身能发现泄漏。脚本与用法见 `tests/manual-acceptance/README.md`（`linux/`、`wayland/`、`wincheck/`）。
+- 截图检查时修正一处缺陷：Windows/Linux 的呼吸条快捷键标签写作 `Alt+A`，在窄栏中会折行或被省略，现改为单行且不收缩。
+- 真实 CLI 与服务器（§10.6）：在独立 compose 项目中启动本地 Server（开发模式，仅绑定 127.0.0.1），使用 CLI 0.2.58 和一次性 home，执行仅用户登录。`tests/live-pages-probe` 只读地打开全部 21 个宫格：19 个页面读取正常；开发凭据按 CLI 能力隐藏（需要已登记设备），属正确门禁；Skills 失败，原因见下。由此修正 desktop 的两个问题：未登记设备时 Device 页显示「CLI 协议不兼容」，现为「请登录并登记此设备」（`device_required`）；本机没有 Device 应用时（`local_status_unavailable`）也不再显示为协议错误。新增 `TestDevicePageExplainsAnUnregisteredDevice`（未修复时失败）和 `TestDeviceStatesAreNotProtocolErrors`。
+- 发现但不属于 desktop 的问题（均位于相应仓库尚未提交的工作区，未改动）：① CLI `src/desktop_control/queries.rs`：`skills.list` 先按 `SkillListRequest` 解析参数，随后在约第 294 行又按 `Empty` 校验，导致任何过滤参数（`effective`、`include_system`）都返回 `invalid_params`，desktop 的 Skills 页因此无法读取。② Server `models/device_registration_requests.py`：`token_expires_at`/`result_expires_at` 映射为无时区的 `TIMESTAMP`，而迁移 0062 是 `timezone=True`，插入带时区的时间时 asyncpg 报错，导致 `agent-remote login` 的设备登记 500。
 
 2026-10-23 UI 重构 R4（收敛，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §9–§10）：
 

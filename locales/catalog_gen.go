@@ -13165,3 +13165,13 @@ func ChordModifierHelp() string { return In(i18n.Locale()).ChordModifierHelp() }
 func (msgs Messages) ChordModifierHelp() string {
 	return Catalog.Format(msgs.locale, "chordModifierHelp", nil)
 }
+
+// DeviceLocalAppUnavailable says "The Agent Remote Device app was not found or could not be inspected on this Mac."
+// in the language the app shows.
+func DeviceLocalAppUnavailable() string { return In(i18n.Locale()).DeviceLocalAppUnavailable() }
+
+// DeviceLocalAppUnavailable says "The Agent Remote Device app was not found or could not be inspected on this Mac."
+// in the language of msgs.
+func (msgs Messages) DeviceLocalAppUnavailable() string {
+	return Catalog.Format(msgs.locale, "deviceLocalAppUnavailable", nil)
+}

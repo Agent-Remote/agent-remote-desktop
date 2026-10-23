@@ -2143,5 +2143,6 @@
   "projectFieldAgents": "Agent",
   "projectReading": "读取中…",
   "chordModifierTitle": "层快捷键",
-  "chordModifierHelp": "按住它再按 A、C、X 或 S 打开各层。如果键盘布局或输入法会用 Alt/⌥ + 字母输入字符，请选择 Ctrl+Alt（macOS 为 ⌃⌥）。Windows 上使用 AltGr 的布局中，Ctrl+Alt + 字母同样会输入字符，此时请保留 Alt；macOS 上 ⌃⌥ 也是 VoiceOver 的修饰键。"
+  "chordModifierHelp": "按住它再按 A、C、X 或 S 打开各层。如果键盘布局或输入法会用 Alt/⌥ + 字母输入字符，请选择 Ctrl+Alt（macOS 为 ⌃⌥）。Windows 上使用 AltGr 的布局中，Ctrl+Alt + 字母同样会输入字符，此时请保留 Alt；macOS 上 ⌃⌥ 也是 VoiceOver 的修饰键。",
+  "deviceLocalAppUnavailable": "在此 Mac 上未找到 Agent Remote Device 应用，或无法检查其状态。"
 }

@@ -2649,5 +2649,6 @@
   "projectFieldAgents": "Agents",
   "projectReading": "Reading…",
   "chordModifierTitle": "Layer shortcut",
-  "chordModifierHelp": "Hold this with A, C, X or S to open the layers. Choose Ctrl+Alt (⌃⌥ on macOS) if your keyboard layout or input method types characters with Alt/⌥ + letter. On Windows layouts that use AltGr, Ctrl+Alt + letter also types characters, so keep Alt there; on macOS, ⌃⌥ is also VoiceOver's modifier."
+  "chordModifierHelp": "Hold this with A, C, X or S to open the layers. Choose Ctrl+Alt (⌃⌥ on macOS) if your keyboard layout or input method types characters with Alt/⌥ + letter. On Windows layouts that use AltGr, Ctrl+Alt + letter also types characters, so keep Alt there; on macOS, ⌃⌥ is also VoiceOver's modifier.",
+  "deviceLocalAppUnavailable": "The Agent Remote Device app was not found or could not be inspected on this Mac."
 }

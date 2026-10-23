@@ -69,3 +69,31 @@ func TestDevicePageShowsStructuredLocalStatus(t *testing.T) {
 		t.Fatalf("device diagnose did not open the reviewed schema form: %v", tt.Texts())
 	}
 }
+
+// Found against a real CLI and server (R5 live pages): a home signed in
+// without registering this device opens the Device page on "register this
+// device", not on "incompatible CLI".
+func TestDevicePageExplainsAnUnregisteredDevice(t *testing.T) {
+	binary := testutil.InstallControlHelper(t)
+	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "runtime-unregistered")
+	i18n.SetLocaleFunc(func() string { return "en" })
+	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
+	a, err := app.NewWithOptions(t.TempDir(), app.Options{FindExecutable: func(name string) (string, error) {
+		if name == "agent-remote" {
+			return binary, nil
+		}
+		return "", errors.New("test component not installed")
+	}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = a.Close() })
+	tt := ui.NewTester(a.View, 1100, 820)
+	if err := openPage(tt, locales.DeviceTitle()); err != nil {
+		t.Fatal(err)
+	}
+	waitRemoteText(t, tt, locales.RemoteSetupRequired())
+	if tt.HasText(locales.ErrorCLIProtocol()) {
+		t.Fatal("an unregistered device reads as an incompatible CLI")
+	}
+}

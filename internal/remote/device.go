@@ -75,6 +75,11 @@ func LoadDevice(ctx context.Context, client cliadapter.Client) (DeviceOverview, 
 	if err := client.Call(ctx, "context", struct{}{}, &contextResult); err != nil {
 		return overview, err
 	}
+	if contextResult.Home == client.Home && (contextResult.ServerURL == nil || contextResult.DeviceID == nil) {
+		// Signed out, or signed in without registering this device: a
+		// state to explain, as the CLI's own device.status says.
+		return overview, &cliadapter.OperationError{Code: "device_required"}
+	}
 	if !validDeviceContext(contextResult, client.Home) {
 		return overview, fault.CLIProtocol
 	}

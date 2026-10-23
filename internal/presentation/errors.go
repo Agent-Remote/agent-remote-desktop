@@ -92,6 +92,10 @@ func Error(err error) string {
 			return locales.LogoutOutcomeUnknown()
 		case "configuration_changed":
 			return locales.RemoteContextChanged()
+		case "device_required":
+			return locales.RemoteSetupRequired()
+		case "local_status_unavailable":
+			return locales.DeviceLocalAppUnavailable()
 		case "login_expired":
 			return locales.LoginExpired()
 		case "login_rejected":

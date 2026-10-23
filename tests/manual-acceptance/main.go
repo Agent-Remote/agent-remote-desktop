@@ -138,10 +138,28 @@ func echoAgent(name string) {
 	fmt.Printf("\r\n  %s stand-in — every byte the terminal sends appears below.\r\n", name)
 	fmt.Printf("  A chord (⌥A/⌥C/⌥X/⌥S, Alt+… on Windows/Linux) must print NOTHING here.\r\n")
 	fmt.Printf("  Type normally to see the bytes arrive. Ctrl+D twice to exit.\r\n\r\n")
+	// AGENT_REMOTE_ACCEPTANCE_LOG, when set, also receives the raw bytes,
+	// so a scripted check can assert exactly what reached the Agent.
+	var log *os.File
+	if path := os.Getenv("AGENT_REMOTE_ACCEPTANCE_LOG"); path != "" {
+		var err error
+		if log, err = os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0o600); err != nil {
+			fmt.Printf("  (byte log unavailable: %v)\r\n", err)
+		} else {
+			defer log.Close()
+		}
+		// A ready mark, so a scripted check starts typing once the Agent reads.
+		if mark := path + ".ready"; log != nil {
+			_ = os.WriteFile(mark, []byte(name), 0o600)
+		}
+	}
 	buf := make([]byte, 256)
 	eot := 0
 	for {
 		n, err := os.Stdin.Read(buf)
+		if n > 0 && log != nil {
+			_, _ = log.Write(buf[:n])
+		}
 		if n > 0 {
 			var hex, text strings.Builder
 			for _, b := range buf[:n] {
