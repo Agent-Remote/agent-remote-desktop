@@ -4,7 +4,9 @@ go 1.27.1
 
 require (
 	github.com/charmbracelet/x/xpty v0.1.4
+	github.com/ebitengine/purego v0.11.1
 	github.com/egoist/mygo v0.5.6-0.20261018031609-269e2f9aca82
+	github.com/google/uuid v1.6.0
 	golang.org/x/sys v0.48.0
 	modernc.org/sqlite v1.39.1
 )
@@ -15,9 +17,7 @@ require (
 	github.com/charmbracelet/x/termios v0.1.1 // indirect
 	github.com/creack/pty v1.1.24 // indirect
 	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/ebitengine/purego v0.11.1 // indirect
 	github.com/go-text/typesetting v0.3.5 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
