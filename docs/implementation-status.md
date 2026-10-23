@@ -677,3 +677,7 @@ WireGuard 确认参数在异步能力检查前冻结，专项覆盖原表单指�
 在 macOS Docker Desktop 控制端使用审阅的 Mutagen v0.18.1 源码、当前 Server/Node 工作区和重新构建的 `agent-remote 0.2.58`，真实一次性 Server/Node/SSH/Mutagen 链路已通过：准备、运行 UID/ACL、双向传输、pause/resume、冲突两侧保留、人工 resolve、reset、未知/撤销 SSH key 拒绝，以及 Node worker 与 Mutagen daemon 重启后的 session 持久化和新一轮 pause/resume。证据目录为 `/tmp/agent-remote-sync-chain-delivery-final`，`evidence.json` 明确写入 `native=true`、`cross_compilation=false`、`remote_execution.status=passed` 和 `restart_recovery=passed`；日志包含精确 `RESTART_RECOVERY_STATUS=passed` marker。
 
 复验同时确认：直接重启 Mutagen daemon 会产生新的运行代次，生产 CLI 在没有显式环境审阅时正确拒绝项目变更并返回 `sync_mutagen_environment_mismatch`。Node 真实 fixture 现先执行 `mutagen.environment.preview/apply`，以完整计划摘要和确认更新受管 marker，再继续项目 pause/resume；这保留了项目操作的 fail-closed 边界，没有把 daemon 重启自动当作授权。该证据不覆盖任意 in-flight mutation 崩溃恢复、WireGuard broker、真实用户账户或三平台原生桌面。
+
+## 2026-10-23 Go/mygo 视图构建性能探针
+
+`go run ./tests/performance-probe -frames 120` 在当前 macOS arm64 主机通过：123 帧、10 个持久会话、4 个可见面板，视图构建 P95 为 0.061958 ms，最大值 3.410625 ms，慢帧 0，16 ms 预算内。该结果只覆盖 Go/mygo view build，不代表 GPU、终端栅格渲染或输入反馈延迟；Windows/Linux 和真实 Agent TUI 仍需目标主机测量。

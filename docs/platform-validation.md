@@ -254,3 +254,7 @@ Server 授权、Node forced-command SSH gateway 上传一个临时文件并确�
 ## 2026-10-23 真实同步链路复验
 
 真实同步链路已在当前 macOS Docker Desktop 控制端重新通过，证据位于 `/tmp/agent-remote-sync-chain-delivery-final`。本轮使用当前 Server/Node/CLI 与 Mutagen v0.18.1 源码，`remote_execution.status=passed`、Server/Node/SSH/Mutagen/permission 均为 `passed`，`restart_recovery=passed`，并明确记录 `native=true`、`cross_compilation=false`。daemon 重启后的新运行代次先通过明确的 `mutagen.environment.preview/apply` 审阅，再执行项目 pause/resume；直接跳过该审阅仍保持 `sync_mutagen_environment_mismatch`，因此没有弱化生产 fail-closed 语义。
+
+## 2026-10-23 视图构建性能
+
+macOS arm64 的 host-only performance probe 通过：123 帧、10 个持久会话、4 个可见面板，view-build P95 `0.061958 ms`、最大 `3.410625 ms`，慢帧 `0`，预算 `16 ms`。终端渲染和输入反馈仍标记为未测量，不能替代 Windows/Linux 原生性能证据。
