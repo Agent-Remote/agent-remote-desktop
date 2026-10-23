@@ -666,8 +666,8 @@ WireGuard 确认参数在异步能力检查前冻结，专项覆盖原表单指�
 
 ## 2026-10-23 交付候选复验
 
-本地交付提交为 `db15008697effd7f2db6b0704d2d44c8d58883d4`（工作树干净）。在该提交上重新执行 `DESKTOP_TERMINAL_TESTS=1 bash scripts/check.sh`、`go vet ./...`、darwin/arm64、windows/amd64、linux/amd64 的 `CGO_ENABLED=0 go build ./...`，全部通过。账户导入受管 Skills 场景的独立 race 用例通过（39.36 秒）；完整 `go test -race ./tests/app` 曾在 headless mygo intrinsic layout 阶段超过 600 秒，因此不计作全量 race 通过，也没有放宽生产超时或删除该场景。
+本地交付提交为 `85cf783d4c4bcf29cfe89d19e8a6a4bbfa2f3b2b`（工作树干净）。在该提交上重新执行 `DESKTOP_TERMINAL_TESTS=1 bash scripts/check.sh`、`go vet ./...`、darwin/arm64、windows/amd64、linux/amd64 的 `CGO_ENABLED=0 go build ./...`，全部通过。账户导入受管 Skills 场景的独立 race 用例通过（39.36 秒）；完整 `go test -race ./tests/app` 曾在 headless mygo intrinsic layout 阶段超过 600 秒，因此不计作全量 race 通过，也没有放宽生产超时或删除该场景。
 
-从干净提交构建的社区自签候选位于 `/tmp/agent-remote-desktop-release-delivery`：版本仍为 `0.1.0-dev`，目标为 `darwin/arm64`、`windows/amd64`、`linux/amd64`，manifest 的 `git_dirty=false`，共 18 项制品。macOS 使用 `Agent Remote Community Code Signing`（SHA-1 `53EE33F5BE5A109F8575A75D9E126826B5BB75CE`），Windows/Linux 不使用发行者代码签名，未启用公证。`scripts/verify-release.sh --require-targets` 和 macOS 安装后 `scripts/release-native-smoke.sh` 均通过。
+从干净提交构建的社区自签候选位于 `/tmp/agent-remote-desktop-release-delivery-final`：版本仍为 `0.1.0-dev`，目标为 `darwin/arm64`、`windows/amd64`、`linux/amd64`，manifest 的 `git_dirty=false`，共 18 项制品。macOS 使用 `Agent Remote Community Code Signing`（SHA-1 `53EE33F5BE5A109F8575A75D9E126826B5BB75CE`），Windows/Linux 不使用发行者代码签名，未启用公证。`scripts/verify-release.sh --require-targets` 和 macOS 安装后 `scripts/release-native-smoke.sh` 均通过。
 
 仍未关闭的发布门禁：Windows 真实主机窗口/ConPTY/托盘/安装器、Linux amd64 X11/Wayland/GTK/AppIndicator/PTY/托盘/安装器、三平台真实 WireGuard broker、真实 Server/Node/SSH/fclaude 会话与附件联调、Mutagen restart recovery，以及 GPU/PTY/input P95 性能测量。当前候选是可审阅、可安装的代码交付版本；在这些主机和服务证据补齐前不标记为正式发布。
