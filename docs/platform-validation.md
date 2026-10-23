@@ -249,4 +249,4 @@ Server 授权、Node forced-command SSH gateway 上传一个临时文件并确�
 
 ## 2026-10-23 交付候选
 
-干净提交 `85cf783d4c4bcf29cfe89d19e8a6a4bbfa2f3b2b` 的普通桌面门禁、三目标交叉构建和发布离线校验均通过。候选目录为 `/tmp/agent-remote-desktop-release-delivery-final`，包含 `darwin/arm64`、`windows/amd64`、`linux/amd64` 三目标及 18 项制品；macOS 项目社区自签安装后 smoke 通过。该证据仍只代表当前 macOS 主机和可重复构建，不替代 Windows/Linux 原生主机、WireGuard broker 或真实 Server/Node/SSH 验收。
+干净提交 `85cf783e2a97fc2b74513b4f5fac12302719bad4` 的普通桌面门禁、三目标交叉构建和发布离线校验均通过。候选目录为 `/tmp/agent-remote-desktop-release-delivery-final`，包含 `darwin/arm64`、`windows/amd64`、`linux/amd64` 三目标及 18 项制品；macOS 项目社区自签安装后 smoke 通过。该证据仍只代表当前 macOS 主机和可重复构建，不替代 Windows/Linux 原生主机、WireGuard broker 或真实 Server/Node/SSH 验收。
