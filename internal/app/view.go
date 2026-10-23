@@ -322,8 +322,8 @@ func (a *App) barContent(c *ui.Context, env chrome.Env) {
 			}
 			env.Text(c, "·", theme.Caption, p.TextTer)
 			for _, k := range []string{"A", "C", "X", "S"} {
-				ui.Row(c.Key("kbd"+k)).Padding(1, 6).Radius(6).Background(p.PillBG).Border(1, p.Hairline).Children(func() {
-					env.Text(c, chordLabel(k), theme.Caption, p.TextSecondary).FontWeight(600).FontSize(10.5 * c.Theme().FontSize / 14)
+				ui.Row(c.Key("kbd"+k)).Padding(1, 6).Radius(6).Background(p.PillBG).Border(1, p.Hairline).Shrink(0).Children(func() {
+					env.Text(c, chordLabel(k), theme.Caption, p.TextSecondary).FontWeight(600).FontSize(10.5 * c.Theme().FontSize / 14).SingleLine().Shrink(0)
 				})
 			}
 		})
