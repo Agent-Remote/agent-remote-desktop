@@ -5,3 +5,6 @@
 .DS_Store
 /agent-remote-desktop
 /agent-remote-desktop.exe
+
+__pycache__/
+*.pyc
