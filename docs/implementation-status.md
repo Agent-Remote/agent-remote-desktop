@@ -671,3 +671,9 @@ WireGuard 确认参数在异步能力检查前冻结，专项覆盖原表单指�
 从干净提交构建的社区自签候选位于 `/tmp/agent-remote-desktop-release-delivery-final`：版本仍为 `0.1.0-dev`，目标为 `darwin/arm64`、`windows/amd64`、`linux/amd64`，manifest 的 `git_dirty=false`，共 18 项制品。macOS 使用 `Agent Remote Community Code Signing`（SHA-1 `53EE33F5BE5A109F8575A75D9E126826B5BB75CE`），Windows/Linux 不使用发行者代码签名，未启用公证。`scripts/verify-release.sh --require-targets` 和 macOS 安装后 `scripts/release-native-smoke.sh` 均通过。
 
 仍未关闭的发布门禁：Windows 真实主机窗口/ConPTY/托盘/安装器、Linux amd64 X11/Wayland/GTK/AppIndicator/PTY/托盘/安装器、三平台真实 WireGuard broker、真实 Server/Node/SSH/fclaude 会话与附件联调、Mutagen restart recovery，以及 GPU/PTY/input P95 性能测量。当前候选是可审阅、可安装的代码交付版本；在这些主机和服务证据补齐前不标记为正式发布。
+
+## 2026-10-23 真实同步重启恢复复验
+
+在 macOS Docker Desktop 控制端使用审阅的 Mutagen v0.18.1 源码、当前 Server/Node 工作区和重新构建的 `agent-remote 0.2.58`，真实一次性 Server/Node/SSH/Mutagen 链路已通过：准备、运行 UID/ACL、双向传输、pause/resume、冲突两侧保留、人工 resolve、reset、未知/撤销 SSH key 拒绝，以及 Node worker 与 Mutagen daemon 重启后的 session 持久化和新一轮 pause/resume。证据目录为 `/tmp/agent-remote-sync-chain-delivery-final`，`evidence.json` 明确写入 `native=true`、`cross_compilation=false`、`remote_execution.status=passed` 和 `restart_recovery=passed`；日志包含精确 `RESTART_RECOVERY_STATUS=passed` marker。
+
+复验同时确认：直接重启 Mutagen daemon 会产生新的运行代次，生产 CLI 在没有显式环境审阅时正确拒绝项目变更并返回 `sync_mutagen_environment_mismatch`。Node 真实 fixture 现先执行 `mutagen.environment.preview/apply`，以完整计划摘要和确认更新受管 marker，再继续项目 pause/resume；这保留了项目操作的 fail-closed 边界，没有把 daemon 重启自动当作授权。该证据不覆盖任意 in-flight mutation 崩溃恢复、WireGuard broker、真实用户账户或三平台原生桌面。

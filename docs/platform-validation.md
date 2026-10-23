@@ -250,3 +250,7 @@ Server 授权、Node forced-command SSH gateway 上传一个临时文件并确�
 ## 2026-10-23 交付候选
 
 干净提交 `85cf783e2a97fc2b74513b4f5fac12302719bad4` 的普通桌面门禁、三目标交叉构建和发布离线校验均通过。候选目录为 `/tmp/agent-remote-desktop-release-delivery-final`，包含 `darwin/arm64`、`windows/amd64`、`linux/amd64` 三目标及 18 项制品；macOS 项目社区自签安装后 smoke 通过。该证据仍只代表当前 macOS 主机和可重复构建，不替代 Windows/Linux 原生主机、WireGuard broker 或真实 Server/Node/SSH 验收。
+
+## 2026-10-23 真实同步链路复验
+
+真实同步链路已在当前 macOS Docker Desktop 控制端重新通过，证据位于 `/tmp/agent-remote-sync-chain-delivery-final`。本轮使用当前 Server/Node/CLI 与 Mutagen v0.18.1 源码，`remote_execution.status=passed`、Server/Node/SSH/Mutagen/permission 均为 `passed`，`restart_recovery=passed`，并明确记录 `native=true`、`cross_compilation=false`。daemon 重启后的新运行代次先通过明确的 `mutagen.environment.preview/apply` 审阅，再执行项目 pause/resume；直接跳过该审阅仍保持 `sync_mutagen_environment_mismatch`，因此没有弱化生产 fail-closed 语义。
