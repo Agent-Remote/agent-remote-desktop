@@ -1,5 +1,52 @@
 # 本轮生命周期增量
 
+2026-10-23 UI 重构 R1（token 与组件，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §5–§7）：
+
+- `internal/theme/tokens.go`：浅色/深色/次元三套完整 token。v3 原值逐项照抄；v4 补充值包括 accent 拆为 Accent（非文字）、AccentFill（按钮）、AccentInk（文字），另有 DangerFill、TerminalBG、实色回退、scrim。`theme.UI`/`theme.Terminal` 改为由 token 生成；新增 `Resolve`（跟随系统）、`TerminalPair`（跟随系统时把浅/深两套交给终端）、`Selected`（8% 选中底，保证 4.5:1）、`ToolAccent`。`type.go` 为字号/字重/字距/行高成套的字阶。移除 Sakura 立绘（决策 D4）。
+- `internal/theme/motion.go`：弹簧 token Smooth/Snappy/Press/Sheet/Flick/Page（只有 Flick 带回弹），`Move`/`Fade` 减弱动效策略，`SurfacePolicy`。**修复既有缺陷**：mygo 把 `Duration: 0` 当作默认 500 ms 弹簧而不是「立即」，原「减少动效」设置实际仍在播放动画；现统一为 1 ns 线性曲线 `Instant`，由截图基线与单测锁定。
+- `internal/chrome`：Glass 材质（背景模糊和 v3 渐变着色合成一个 Material，支持分角圆角，降低透明度时为实色，高对比时加强描边、去掉高光）、Button（按下即缩放）、Segmented（基于 SegmentedBase，屏幕阅读器识别为单选组）、Pill/ContextPill/Dot（状态同时有文字）、WheelView（扇区绘制、悬停弹簧、极坐标命中、HUD 槽位）、Sheet（Draggable：1:1 跟手、橡皮筋、投影吸附）、Panel/Stages/KV/Banner（统一操作页）。组件不含文案，文字由调用方传入。
+- 存储：`Preferences` 新增 `follow_system_theme`、`reduce_transparency`（omitempty，存储版本仍为 3）。新安装默认跟随系统；**旧状态行缺该字段时保持原明确主题**，不静默改变外观（`tests/storage/appearance_test.go`）。
+- 设置 → 外观：四段主题（跟随系统/浅色/深色/次元）、减弱动效、降低透明度；中英文案已同步，catalog 已重新生成。12 处把 Accent 当文字色的地方改为 AccentInk；选中底由 18% 降到 8%，以保证 4.5:1。
+- 验证：`tests/theme` 用 WCAG 公式校验所有承诺的文字/背景组合（含终端光标与选区）。`tests/chrome` 覆盖按下反馈、分段选择、Sheet 打开/关闭/拖拽阈值/1:1 跟手/减弱动效，以及扇区命中。截图基线 `tests/chrome/testdata/darwin/`：3 主题 × 默认/降低透明度/高对比 = 9 张，另有 Sheet 在 60 ms 时普通与减弱动效的对比 2 张，均已人工检视。基线按 OS 存放，Windows/Linux 尚未生成，那两个平台上会跳过而不是通过；需要在目标主机上检视后用 `DESKTOP_UPDATE_BASELINES=1` 录制。`bash scripts/check.sh` 通过。
+- 未完成（R2）：工作台布局本身未改，侧栏、顶栏、旧背景圆点仍在；旧 `MotionDuration` 曲线仍用于侧栏和详情栏。次元主题次级文字为 v3 原值 4.36:1，按方案保留。
+
+2026-10-23 UI 重构 R0 验证（[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §8）：新增
+`internal/chord`（⌥ 组合键状态机）、`internal/chrome`（圆环几何与极坐标命中，R1 复用）及
+`tests/chord`、`tests/chrome` 单元测试；`tests/r0-probe` 为只测自身窗口的原生探针，向自己的窗口注入 OS 级按键，
+记录终端背后进程实际收到的字节，不启动 Agent、不读写用户状态。证据目录 `/tmp/r0-evidence/{darwin,linux,windows}`
+（JSON + PNG），均为最终提交的探针构建。三个主机都**不是**正式发行目标：
+
+| 主机 | 注入方式 | 说明 |
+| --- | --- | --- |
+| macOS 27.0.1 arm64 本机 | `NSApp postEvent:`（由 CGEvent 转换；无辅助功能授权时 `CGEventPostToPid` 被静默丢弃） | 跳过 window server，其余走 AppKit 完整路径（keyDown:/flagsChanged:/interpretKeyEvents:） |
+| Linux arm64 Docker（Debian 12，GTK 3） | xdotool XTEST | Xvfb 虚拟 X11、无 GPU；不是 amd64，也不是真实 X11/Wayland |
+| Windows 11（10.0.26200）arm64 Parallels VM | SendInput（登录会话前台窗口） | 不是正式的 windows/amd64；GPU 为虚拟化 |
+
+组合键（每个平台两条路线各跑 6 步：普通输入、⌥A 轻点、⌥C 按住、⌥A A A 轮换、⌥A→X 重定向、⌥S 轻点）：
+
+| 路线 | macOS | Linux | Windows |
+| --- | --- | --- | --- |
+| 窗口 `OnShortcut`（现有工作台注册命令的方式） | 手势全对，但**泄漏** `å ç ≈ ß` 到进程 | 通过 | **失败**：首个 Alt+字母后全部手势丢失，进入系统菜单循环 |
+| 终端 `Options.OnKey` 取组合键，终端未聚焦时才注册窗口快捷键 | 通过，零泄漏 | 通过 | 通过，零泄漏 |
+| 松开 ⌥ 到视图观察到（`c.Modifiers()`，两条路线合计） | 0.2–1.9 ms | 2.6–3.9 ms | 1.0–2.9 ms |
+
+- 结论：R2 必须让终端 `OnKey` 承接 ⌥A/C/X/S；窗口快捷键只在焦点不在终端时注册。原因已在 mygo 源码确认：窗口快捷键认领按键后不吞掉随后的文本（macOS `interpretKeyEvents:` 仍插入 `å`），Windows 未设置 `keyTaken` 时 `WM_SYSCHAR` 交给菜单。
+- 单独轻点 Alt 再按键：Linux、Windows 下一个键被吞（`AutoHideMenuBar` 的 Alt 显示菜单栏，mygo 平台行为，现有工作台同样存在）；macOS 正常送达。用户按 ⌥ 犹豫后松开不会误触发圆环，但会进入菜单。
+- 输入法：Windows 用 IMM 打开微软拼音后组合键仍正常、零字节；但 `ImmSetOpenStatus` 未真正进入拼音组字（随后输入原样送出），**组字中按组合键尚未验证**，需人工在 macOS/Windows 拼音下复测。
+- 未验证：真实键盘硬件路径（macOS 注入跳过 window server）、Wayland、windows/amd64、linux/amd64。
+
+工作区模糊（Layer 1.2 构图：终端约 400 行/s 流式输出 + 缩放/变暗 + 4 扇区圆环 + 玻璃 HUD；`MYGO_FRAME_STATS=all`，CPU 侧 build+layout+paint+present 帧耗时 p95，ms）：
+
+| 变体 | macOS GPU | Windows VM GPU | Linux CPU（无 GPU） |
+| --- | --- | --- | --- |
+| 无遮罩 | 1.0 | 8.7 | 3.6 |
+| scrim + 缩放 | 0.8 | 8.3 | 10.7 |
+| blur σ18 | 1.0 | 8.2 | **17.1** |
+| blur σ30 | 1.0 | 13.0 | **17.7** |
+
+- GPU 下模糊不增加可测开销（被模糊子树合成为 27 个实例）；CPU 渲染超出 16 ms 预算，方案中的「CPU 渲染时以 scrim 替代模糊」回退成立且必要。帧统计不含 GPU 异步执行与合成器时间。
+- 圆环扇区：三次贝塞尔外/内弧在两种圆环上径向误差 < 0.07 DIP（单测），三平台截图渲染与原型一致。
+
 2026-10-23 追加本机合同复验：`bash scripts/remote-interop-acceptance.sh --contracts`
 和 `bash scripts/exact-attachment-acceptance.sh --contracts` 均通过（Desktop
 remote/cliadapter、Node attach/port-forward、Rust desktop-control/Mutagen 及

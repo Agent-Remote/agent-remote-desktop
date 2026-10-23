@@ -446,7 +446,7 @@ func (a *App) egoBrowserDetails(c *ui.Context, status *remote.EgoBrowserStatus) 
 				ui.Text(c, locales.EgoBrowserBindingReview()).Bold()
 				ui.Text(c, locales.EgoBrowserBindingReviewTarget(p.bindingPlan.Binding.ID, p.bindingPlan.Action))
 				if p.bindingPlan.Allowed {
-					ui.Text(c, locales.EgoBrowserBindingReviewAllowed()).TextColor(c.Theme().Accent)
+					ui.Text(c, locales.EgoBrowserBindingReviewAllowed()).TextColor(a.tokens().AccentInk)
 					ui.Row(c).Gap(8).Children(func() {
 						ui.Button(c, locales.Cancel()).OnClick(a.cancelEgoBrowserBindingReview)
 						ui.PrimaryButton(c, locales.EgoBrowserBindingConfirm()).OnClick(a.confirmEgoBrowserBindingAction)

@@ -263,6 +263,9 @@ func (s *Store) Load() (State, error) {
 	if version != 1 && version != 2 && version != 3 {
 		return state, fmt.Errorf("%w: %d", fault.StorageVersion, version)
 	}
+	// A saved state predating follow_system_theme made an explicit theme
+	// choice; never switch its appearance silently (redesign doc §7.3).
+	state.Preferences.FollowSystemTheme = false
 	err = json.Unmarshal([]byte(raw), &state)
 	if err != nil {
 		return state, fmt.Errorf("%w: %v", fault.WorkspaceData, err)

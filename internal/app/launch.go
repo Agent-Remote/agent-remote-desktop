@@ -158,7 +158,7 @@ func (a *App) finishLaunch(result launchResult) {
 			a.bindingConnections[record.ID] = request.bindingKey
 		}
 		host := record.Process.(*terminalhost.Host)
-		host.Terminal.SetTheme(theme.Terminal(a.state.Preferences.Theme), nil)
+		host.Terminal.SetTheme(theme.TerminalPair(a.state.Preferences.Theme, a.state.Preferences.FollowSystemTheme))
 		host.Terminal.SetFont(terminal.Font{Size: a.state.Preferences.FontSize})
 		if request.replaceID == "" || !a.state.Board.Replace(request.replaceID, record.ID) {
 			a.state.Board.Add(request.projectID, record.ID, request.name, request.target, request.vertical)

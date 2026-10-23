@@ -255,7 +255,7 @@ func (a *App) genericCLIView(c *ui.Context) {
 		ui.Text(c, locales.CliFormHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Text(c, locales.CliFormHomeManaged()).FontSize(12).TextColor(c.Theme().TextMuted)
 		if p.dedicated.Method == "fclaude run" || p.dedicated.Method == "fclaude new" {
-			ui.Text(c, locales.CliFclaudeTerminalLifecycleHelp()).FontSize(12).TextColor(c.Theme().Accent)
+			ui.Text(c, locales.CliFclaudeTerminalLifecycleHelp()).FontSize(12).TextColor(a.tokens().AccentInk)
 		}
 		ui.Text(c, locales.CliFormExecutable()+": "+p.executable).Bold()
 		commandName := cliadapter.CommandPath(p.command)
@@ -269,7 +269,7 @@ func (a *App) genericCLIView(c *ui.Context) {
 		if p.dedicated.Method == "agent-remote doctor" {
 			ui.Text(c, locales.CliDoctorHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 			if valuesContainTrue(p.values, "fix") {
-				ui.Text(c, locales.CliDoctorFixHelp()).FontSize(12).TextColor(c.Theme().Accent)
+				ui.Text(c, locales.CliDoctorFixHelp()).FontSize(12).TextColor(a.tokens().AccentInk)
 			}
 		}
 		ui.Text(c, locales.CliFormPlatform(p.platformState)).FontSize(12).TextColor(c.Theme().TextMuted)
@@ -282,10 +282,10 @@ func (a *App) genericCLIView(c *ui.Context) {
 			ui.Text(c, p.command.Description).FontSize(12).TextColor(c.Theme().TextMuted)
 		}
 		if p.workflowSummary != "" {
-			ui.Text(c, p.workflowSummary).FontSize(12).TextColor(c.Theme().Accent)
+			ui.Text(c, p.workflowSummary).FontSize(12).TextColor(a.tokens().AccentInk)
 		}
 		if p.dedicated.Method != "" && p.dedicated.RequiresConfirmation {
-			ui.Text(c, locales.CliDedicatedConfirmationRequired()).FontSize(12).TextColor(c.Theme().Accent)
+			ui.Text(c, locales.CliDedicatedConfirmationRequired()).FontSize(12).TextColor(a.tokens().AccentInk)
 		}
 		if p.err != nil {
 			if p.err == fault.ProjectDirectory {

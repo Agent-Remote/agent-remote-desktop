@@ -48,11 +48,18 @@ type Preferences struct {
 	// ReduceMotion opts the workbench out of decorative transitions. The
 	// native mygo preference is also honored at render time, so platform
 	// accessibility settings always take effect even when this remains false.
-	ReduceMotion    bool    `json:"reduce_motion,omitempty"`
-	FontSize        float32 `json:"font_size"`
-	SidebarWidth    float32 `json:"sidebar_width"`
-	SelectedProject string  `json:"selected_project"`
-	ShowDetails     bool    `json:"show_details,omitempty"`
+	ReduceMotion bool `json:"reduce_motion,omitempty"`
+	// FollowSystemTheme shows daybreak or midnight with the system's
+	// appearance; Theme keeps the last explicit choice. New installs follow
+	// the system; a stored state without the field keeps its explicit theme.
+	FollowSystemTheme bool `json:"follow_system_theme,omitempty"`
+	// ReduceTransparency makes glass surfaces solid and turns blur off.
+	// mygo has no system signal for it; high contrast implies it.
+	ReduceTransparency bool    `json:"reduce_transparency,omitempty"`
+	FontSize           float32 `json:"font_size"`
+	SidebarWidth       float32 `json:"sidebar_width"`
+	SelectedProject    string  `json:"selected_project"`
+	ShowDetails        bool    `json:"show_details,omitempty"`
 }
 
 // Session contains only desktop history metadata, never argv, environment,
@@ -92,7 +99,10 @@ func (r *RemoteSessionInfo) Clone() *RemoteSessionInfo {
 	return &copy
 }
 
-func Defaults() Preferences { return Preferences{Theme: "midnight", FontSize: 14, SidebarWidth: 240} }
+// Defaults are the preferences of a new install.
+func Defaults() Preferences {
+	return Preferences{Theme: "midnight", FollowSystemTheme: true, FontSize: 14, SidebarWidth: 240}
+}
 
 // Pane is a persistent split tree. Leaves reference session IDs, never processes.
 type Pane struct {

@@ -146,6 +146,9 @@ func TestZeroPreferencesRemainCompatibleWithInMemoryState(t *testing.T) {
 		t.Fatal(err)
 	}
 	defaults := workspace.Defaults()
+	// A saved state without follow_system_theme made an explicit theme
+	// choice before the setting existed; it must not start following.
+	defaults.FollowSystemTheme = false
 	if state.Preferences != defaults {
 		t.Fatalf("zero preferences were not normalized: got %+v want %+v", state.Preferences, defaults)
 	}

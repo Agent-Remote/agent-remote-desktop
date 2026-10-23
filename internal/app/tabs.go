@@ -32,7 +32,7 @@ func (a *App) tabbar(c *ui.Context, projectID string) {
 				}
 				button := ui.Button(c, label).Label(locales.SelectTab(tab.Title)).Padding(8, 14).Tooltip(locales.DragTabHelp())
 				if a.state.Board.Current(projectID) == tab {
-					button.Background(c.Theme().Accent.Alpha(.18)).TextColor(c.Theme().Accent)
+					button.Background(a.tokens().Selected()).TextColor(a.tokens().AccentInk)
 				}
 				button.OnClick(func() { a.selectTab(tab.ID) })
 				ui.Button(c, "×").Label(locales.HideTab(tab.Title)).Tooltip(locales.HideTabHelp()).OnClick(func() {

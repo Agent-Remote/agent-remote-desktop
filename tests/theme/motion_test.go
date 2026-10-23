@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
+	"github.com/egoist/mygo/ui"
 )
 
 func TestMotionPolicyHasOneBoundedBudget(t *testing.T) {
@@ -20,8 +21,10 @@ func TestMotionPolicyHasOneBoundedBudget(t *testing.T) {
 }
 
 func TestReducedMotionDisablesDecorativeTransitions(t *testing.T) {
-	if got := theme.Animation(true); got.Duration != 0 {
-		t.Fatalf("reduced-motion animation duration = %s, want zero", got.Duration)
+	// A zero Duration would be mygo's default 500 ms spring; reduced motion
+	// must be a curve that arrives on the next frame.
+	if got := theme.Animation(true); got.Duration <= 0 || got.Duration > time.Millisecond {
+		t.Fatalf("reduced-motion animation = %+v, want an instant curve", got)
 	}
 	if transition := theme.Transition(true); transition != nil {
 		t.Fatal("reduced-motion policy still returned a decorative transition")
@@ -84,5 +87,29 @@ func TestFrameObserverP95UsesRecentBoundedWindow(t *testing.T) {
 	// diagnostic percentile.
 	if stats.P95 != 507*time.Millisecond {
 		t.Fatalf("recent-window p95 = %s, want 507ms", stats.P95)
+	}
+}
+
+// Doc §6.1: bounce only where a release carried momentum.
+func TestSpringTokensOnlyFlickBounces(t *testing.T) {
+	for name, a := range map[string]ui.Animation{"Smooth": theme.Smooth, "Snappy": theme.Snappy, "Press": theme.Press, "Sheet": theme.Sheet, "Page": theme.Page} {
+		if a.Spring.Bounce != 0 || a.Spring.Duration <= 0 || a.Duration != 0 {
+			t.Fatalf("%s must be a critically damped spring: %+v", name, a)
+		}
+	}
+	if theme.Flick.Spring.Bounce <= 0 || theme.Flick.Spring.Bounce > 0.25 {
+		t.Fatalf("Flick bounce = %v", theme.Flick.Spring.Bounce)
+	}
+}
+
+func TestReducedMotionJumpsMovesAndCrossFadesFades(t *testing.T) {
+	if got := theme.Move(theme.Smooth, true); got.Duration <= 0 || got.Duration > time.Millisecond {
+		t.Fatalf("reduced Move = %+v, want an instant curve", got)
+	}
+	if got := theme.Fade(theme.Smooth, true); got.Duration != theme.ReducedFade {
+		t.Fatalf("reduced Fade = %+v, want %s cross-fade", got, theme.ReducedFade)
+	}
+	if theme.Move(theme.Sheet, false).Spring != theme.Sheet.Spring || theme.Fade(theme.Snappy, false).Spring != theme.Snappy.Spring {
+		t.Fatal("tokens must pass through unchanged without reduced motion")
 	}
 }

@@ -25,7 +25,7 @@ func gallery(env chrome.Env) func(c *ui.Context) {
 		p := env.P
 		ui.Box(c).Fill().Background(p.Canvas).Children(func() {
 			for i, col := range []ui.Color{p.AccentClaude, p.AccentCodex, p.AccentGemini, p.AccentCustom} {
-				ui.Box(c.Key(fmt.Sprint("stripe", i))).Absolute().Top(float32(40+i*130)).Left(0).Right(0).Height(46).Background(col.Alpha(0.55))
+				ui.Box(c.Key(fmt.Sprint("stripe", i))).Absolute().Top(float32(40 + i*130)).Left(0).Right(0).Height(46).Background(col.Alpha(0.55))
 			}
 			ui.Row(c).Absolute().Top(0).Left(0).Right(0).Bottom(0).Padding(24).Gap(24).Children(func() {
 				ui.Column(c).Width(520).Gap(16).Children(func() {
@@ -63,7 +63,7 @@ func gallery(env chrome.Env) func(c *ui.Context) {
 				sectors := []chrome.Sector{{Enabled: true, Accent: &p.AccentClaude}, {Enabled: true, Accent: &accent}, {Enabled: true, Accent: &p.AccentGemini}, {Enabled: false}}
 				env.WheelView(c, chrome.CreateWheel, sectors, 1, false, func(i int) {
 					pt := chrome.CreateWheel.LabelCenter(i)
-					ui.Box(c.Key(fmt.Sprint("label", i))).Absolute().Left(chrome.WheelSize/2+pt.X-40).Top(chrome.WheelSize/2+pt.Y-10).Width(80).PassThrough().Children(func() {
+					ui.Box(c.Key(fmt.Sprint("label", i))).Absolute().Left(chrome.WheelSize/2 + pt.X - 40).Top(chrome.WheelSize/2 + pt.Y - 10).Width(80).PassThrough().Children(func() {
 						env.Text(c, []string{"Claude", "Codex", "fclaude", "—"}[i], theme.BodyStrong, p.TextPrimary).TextAlign(ui.Center).FillWidth()
 					})
 				}, 214, func() {

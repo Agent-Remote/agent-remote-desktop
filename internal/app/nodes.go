@@ -222,7 +222,7 @@ func (a *App) nodeReviewView(c *ui.Context, n *cliadapter.NodeRecord) {
 		// frozen so a late checkbox change cannot alter the submitted request.
 		ui.Checkbox(c, &p.enableEgoBrowser, locales.NodeEnableEgoBrowser()).Disabled(p.busy || p.review)
 		ui.Text(c, locales.NodeInstallManaged()).FontSize(12).TextColor(c.Theme().TextMuted)
-		ui.Text(c, locales.NodeArgv(strings.Join(p.argv, " "))).FontSize(12).TextColor(c.Theme().Accent)
+		ui.Text(c, locales.NodeArgv(strings.Join(p.argv, " "))).FontSize(12).TextColor(a.tokens().AccentInk)
 	})
 }
 

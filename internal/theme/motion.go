@@ -8,9 +8,9 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-// MotionDuration is the single budget for decorative workbench transitions.
-// Keeping the budget here makes it possible to audit every animation without
-// affecting terminal rendering, which must remain stable and readable.
+// MotionDuration is the budget of the legacy curve transitions (sidebar,
+// details, hover colour) that the R2 workbench replaces with the spring
+// tokens below. It stays until those views are gone.
 const MotionDuration = 180 * time.Millisecond
 
 // FrameBudget is the target time for a smooth 60 Hz frame. It is intentionally
@@ -105,6 +105,66 @@ func (o *FrameObserver) Snapshot() FrameStats {
 	}
 }
 
+// Spring tokens of the redesign (doc §6.1), in mygo's SwiftUI-style
+// perceptual parameters, identical to prototype-v4/physics.js. Bounce is
+// reserved for releases that carry momentum (Flick); everything opened by a
+// key, hovered or pressed settles without overshoot (apple-design §4).
+var (
+	Smooth = ui.Animation{Spring: ui.SpringOptions{Duration: 400 * time.Millisecond}}
+	Snappy = ui.Animation{Spring: ui.SpringOptions{Duration: 280 * time.Millisecond}}
+	Press  = ui.Animation{Spring: ui.SpringOptions{Duration: 120 * time.Millisecond}}
+	Sheet  = ui.Animation{Spring: ui.SpringOptions{Duration: 360 * time.Millisecond}}
+	Flick  = ui.Animation{Spring: ui.SpringOptions{Duration: 300 * time.Millisecond, Bounce: 0.2}}
+	Page   = ui.Animation{Spring: ui.SpringOptions{Duration: 340 * time.Millisecond}}
+)
+
+// ReducedFade is the cross-fade that replaces movement under reduced motion.
+const ReducedFade = 160 * time.Millisecond
+
+// Instant arrives on the next frame. mygo reads a zero Duration as its
+// default 500 ms spring, not as "no animation", so an instant change needs
+// a curve of its own.
+var Instant = ui.Animation{Duration: time.Nanosecond, Ease: ui.Linear}
+
+// Move returns a for something that moves (position, scale), or an instant
+// change under reduced motion: a vestibular-safe jump (apple-design §14).
+func Move(a ui.Animation, reduced bool) ui.Animation {
+	if reduced {
+		return Instant
+	}
+	return a
+}
+
+// Fade returns a for opacity or colour, or a short linear cross-fade under
+// reduced motion: comprehension-aiding changes stay, overshoot goes.
+func Fade(a ui.Animation, reduced bool) ui.Animation {
+	if reduced {
+		return ui.Animation{Duration: ReducedFade, Ease: ui.Linear}
+	}
+	return a
+}
+
+// Surfaces is the material policy of a frame, from the desktop's settings
+// and the user's own (doc §6.3). Transparency off means solid surfaces and
+// no blur; high contrast also drops the specular highlight and strengthens
+// hairlines. mygo reports no system "reduce transparency" signal, so only
+// the user setting and high contrast turn it on.
+type Surfaces struct {
+	ReduceMotion       bool
+	ReduceTransparency bool
+	HighContrast       bool
+}
+
+// SurfacePolicy reads the frame's surface policy.
+func SurfacePolicy(c *ui.Context, reduceMotion, reduceTransparency bool) Surfaces {
+	prefs := c.Preferences()
+	return Surfaces{
+		ReduceMotion:       reduceMotion || prefs.ReduceMotion,
+		ReduceTransparency: reduceTransparency || prefs.HighContrast,
+		HighContrast:       prefs.HighContrast,
+	}
+}
+
 // Reduced reports whether either the user preference or the native desktop
 // accessibility setting asks for less motion. mygo supplies ReduceMotion from
 // macOS Reduce Motion, Windows animation settings, and Linux desktop settings.
@@ -112,13 +172,13 @@ func Reduced(c *ui.Context, userSetting bool) bool {
 	return userSetting || c.Preferences().ReduceMotion
 }
 
-// Animation returns the workbench animation policy. A zero-duration animation
-// is important here: mygo's native ReduceMotion handling intentionally keeps
-// color changes smooth, while this product setting must also stop decorative
-// color interpolation immediately.
+// Animation returns the workbench animation policy. mygo's native
+// ReduceMotion handling intentionally keeps colour changes smooth, while this
+// product setting must also stop decorative colour interpolation, so reduced
+// motion is Instant (a zero Duration would be mygo's default spring).
 func Animation(reduced bool) ui.Animation {
 	if reduced {
-		return ui.Animation{Duration: 0, Ease: ui.Linear}
+		return Instant
 	}
 	return ui.Animation{Duration: MotionDuration, Ease: ui.CubicBezier(.22, 1, .36, 1)}
 }

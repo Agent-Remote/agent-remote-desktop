@@ -50,7 +50,8 @@ func (a *App) View(c *ui.Context) {
 	if a.savePending.Load() > 0 {
 		c.After(50 * time.Millisecond)
 	}
-	t := theme.UI(a.state.Preferences.Theme)
+	a.resolveTheme(c.Theme().Dark)
+	t := theme.UI(a.shownTheme)
 	c.SetTheme(&t)
 	ui.Box(c).Fill().Background(t.Background).Children(func() {
 		a.backgroundDecoration(c, t)
@@ -115,7 +116,7 @@ func (a *App) toolbar(c *ui.Context) {
 	t := c.Theme()
 	width, _ := c.Size()
 	ui.Row(c).Height(66).Padding(16, 24).Gap(12).Children(func() {
-		ui.Text(c, locales.BrandMark()).FontSize(17).Bold().TextColor(t.Accent)
+		ui.Text(c, locales.BrandMark()).FontSize(17).Bold().TextColor(a.tokens().AccentInk)
 		ui.Text(c, locales.BrandName()).FontSize(16).Bold()
 		if width >= 1100 {
 			ui.Text(c, locales.ToolbarWorkbench()).TextColor(t.TextMuted)
@@ -124,8 +125,9 @@ func (a *App) toolbar(c *ui.Context) {
 		ui.Spacer(c)
 		ui.Button(c, locales.Focus()).Tooltip(locales.HideDecorations()).OnClick(func() { a.state.Preferences.FocusMode = !a.state.Preferences.FocusMode; a.persist() })
 		ui.Button(c, locales.Theme()).OnClick(func() {
-			a.state.Preferences.Theme = theme.Next(a.state.Preferences.Theme)
-			a.applyTheme()
+			// Cycle from what is on screen; an explicit choice stops following
+			// the system appearance.
+			a.setTheme(theme.Next(a.shownTheme), false)
 		})
 		label := locales.NewSessionAction()
 		if a.starting {
@@ -139,16 +141,10 @@ func (a *App) sidebar(c *ui.Context) {
 	t := c.Theme()
 	width, _ := c.Size()
 	navHeight := float32(26)
-	portraitHeight := float32(92)
-	if width < theme.PortraitMinWindowWidth {
+	if width < 1100 {
 		// Preserve the project/session rows in the minimum 900x600 window while
 		// keeping every primary destination in the fixed sidebar region.
 		navHeight = 22
-		portraitHeight = 50
-	}
-	splitMode := false
-	if tab := a.state.Board.Current(a.state.Preferences.SelectedProject); tab != nil && tab.Root != nil {
-		splitMode = tab.Root.First != nil
 	}
 	records := map[string]session.Record{}
 	for _, record := range a.sessions.Records() {
@@ -159,9 +155,6 @@ func (a *App) sidebar(c *ui.Context) {
 			ui.Text(c, locales.Projects()).FontSize(12).TextColor(t.TextMuted).Grow(1)
 			ui.Button(c, "＋").Label(locales.AddProject()).OnClick(func() { a.projectOpen = true })
 		})
-		if portrait := theme.Portrait(a.state.Preferences.Theme); portrait != nil && theme.PortraitVisible(width, a.state.Preferences.FocusMode, splitMode) {
-			ui.Image(c, portrait).FillWidth().Height(portraitHeight).Fit(ui.Contain).Radius(12)
-		}
 		// Keep project switching available at the minimum window size. The
 		// detailed session list remains scrollable below, while this compact row
 		// avoids making a project change depend on the sidebar scroll position.
@@ -169,7 +162,7 @@ func (a *App) sidebar(c *ui.Context) {
 			for _, project := range a.state.Projects {
 				button := ui.Button(c, project.Name).Height(24).Padding(6, 8).Radius(6)
 				if project.ID == a.state.Preferences.SelectedProject {
-					button = button.Background(c.Theme().Accent.Alpha(.12))
+					button = button.Background(a.tokens().Selected())
 				}
 				button.OnClick(func() { a.selectProject(project.ID) })
 			}
@@ -195,7 +188,7 @@ func (a *App) sidebar(c *ui.Context) {
 					button := ui.Button(c, project.Name).FillWidth().Padding(10, 12).Radius(8)
 					bg := ui.Transparent
 					if project.ID == a.state.Preferences.SelectedProject {
-						bg = t.Accent.Alpha(.12)
+						bg = a.tokens().Selected()
 					} else if button.Hovered() {
 						bg = t.SurfaceHover
 					}
@@ -397,7 +390,7 @@ func (a *App) content(c *ui.Context) {
 func (a *App) welcome(c *ui.Context) {
 	t := c.Theme()
 	ui.Column(c).Fill().Padding(64).Justify(ui.Center).Gap(18).Children(func() {
-		ui.Text(c, locales.WelcomeEyebrow()).FontSize(12).TextColor(t.Accent)
+		ui.Text(c, locales.WelcomeEyebrow()).FontSize(12).TextColor(a.tokens().AccentInk)
 		ui.Text(c, locales.WelcomeTitle()).FontSize(38).Bold()
 		ui.Text(c, locales.WelcomeHelp()).FontSize(16).TextColor(t.TextMuted)
 		ui.Row(c).Margin(16, 0).Gap(12).Wrap().Children(func() {
@@ -452,7 +445,8 @@ func (a *App) pane(c *ui.Context, p *workspace.Pane) {
 	r := *found
 	t := c.Theme()
 	host, _ := r.Process.(*terminalhost.Host)
-	ui.Column(c.Key(r.ID)).Fill().MinWidth(0).MinHeight(0).Radius(10).Clip().Background(t.Background).Children(func() {
+	// The pane matches its opaque terminal so no canvas seam shows round it.
+	ui.Column(c.Key(r.ID)).Fill().MinWidth(0).MinHeight(0).Radius(10).Clip().Background(a.tokens().TerminalBG).Children(func() {
 		ui.Row(c).Height(40).Padding(6, 12).Gap(8).Background(t.Surface).Children(func() {
 			label := locales.LocalTool(string(r.Tool))
 			if r.Remote {

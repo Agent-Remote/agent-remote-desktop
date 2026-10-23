@@ -83,6 +83,10 @@ func TestWorkbenchProjectFlowAndTheme(t *testing.T) {
 	if !tt.HasText("新建项目会话") {
 		t.Fatal("project workspace did not open")
 	}
+	// A new install follows the system appearance; with a dark system the
+	// quick switch starts from midnight, so one click chooses sakura and the
+	// explicit choice stops following.
+	tt.SetDark(true)
 	if err = tt.Click("主题"); err != nil {
 		t.Fatal(err)
 	}
@@ -109,7 +113,7 @@ func TestWorkbenchProjectFlowAndTheme(t *testing.T) {
 	}
 	defer saved.Close()
 	state, err := saved.Load()
-	if err != nil || state.Preferences.Theme != "sakura" || len(state.Projects) != 1 {
+	if err != nil || state.Preferences.Theme != "sakura" || state.Preferences.FollowSystemTheme || len(state.Projects) != 1 {
 		t.Fatalf("UI changes were not persisted: %+v %v", state, err)
 	}
 }
@@ -133,6 +137,7 @@ func TestRenderWorkbench(t *testing.T) {
 	previousIndex := 0
 	for index, name := range theme.ThemeNames {
 		tt := ui.NewTester(a.View, 1366, 768)
+		tt.SetDark(true) // the cycle starts from midnight, as ThemeNames does
 		// The toolbar follows the same built-in order as the production
 		// quick-switch action. Advance from the previous capture so each
 		// rendered artifact names the palette it actually captures (including

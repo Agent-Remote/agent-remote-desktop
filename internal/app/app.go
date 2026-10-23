@@ -6,6 +6,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/Agent-Remote/agent-remote-desktop/internal/chrome"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/cliadapter"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/platform"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/presentation"
@@ -64,6 +65,7 @@ type App struct {
 	localeOff           func()
 	tools               []toolLocation
 	focusValue          string
+	shownTheme          string // stored theme ID on screen this frame (theme.Resolve)
 	layoutSaveAt        time.Time
 	recoverID           string
 	recoverReference    string
@@ -321,10 +323,39 @@ func (a *App) selectDirectory() {
 	}
 }
 
+// resolveTheme records the theme to show for the system appearance of this
+// frame. A change while following the system needs no terminal update: the
+// terminals already hold both appearances (theme.TerminalPair).
+func (a *App) resolveTheme(systemDark bool) {
+	p := a.state.Preferences
+	a.shownTheme = theme.Resolve(p.Theme, p.FollowSystemTheme, systemDark)
+}
+
+// chromeEnv is what chrome components draw with this frame.
+func (a *App) chromeEnv(c *ui.Context) chrome.Env {
+	p := a.state.Preferences
+	return chrome.Env{P: a.tokens(), S: theme.SurfacePolicy(c, p.ReduceMotion, p.ReduceTransparency)}
+}
+
+// tokens is the design-token set on screen.
+func (a *App) tokens() theme.Palette { return theme.PaletteFor(a.shownTheme) }
+
+// setTheme makes an explicit choice (follow=false) or follows the system,
+// keeping the last explicit theme for when following is turned off.
+func (a *App) setTheme(name string, follow bool) {
+	if !follow && name != "" {
+		a.state.Preferences.Theme = name
+	}
+	a.state.Preferences.FollowSystemTheme = follow
+	a.applyTheme()
+}
+
+// applyTheme gives every terminal the current theme without restarting it.
 func (a *App) applyTheme() {
+	base, darkVariant := theme.TerminalPair(a.state.Preferences.Theme, a.state.Preferences.FollowSystemTheme)
 	for _, r := range a.sessions.Records() {
 		if t, ok := r.Process.(*terminalhost.Host); ok {
-			t.Terminal.SetTheme(theme.Terminal(a.state.Preferences.Theme), nil)
+			t.Terminal.SetTheme(base, darkVariant)
 		}
 	}
 	a.persist()

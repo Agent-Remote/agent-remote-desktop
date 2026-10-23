@@ -169,7 +169,7 @@ func (a *App) settingsView(c *ui.Context) {
 			for _, tag := range mygo.App.Languages() {
 				button := ui.Button(c.Key(tag), i18n.Autonym(tag))
 				if tag == i18n.Locale() {
-					button.Background(c.Theme().Accent.Alpha(.18)).TextColor(c.Theme().Accent)
+					button.Background(a.tokens().Selected()).TextColor(a.tokens().AccentInk)
 				}
 				button.OnClick(func() { mygo.App.SetLocale(tag) })
 			}
@@ -193,18 +193,19 @@ func (a *App) settingsView(c *ui.Context) {
 			})
 		}
 		ui.Text(c, locales.Appearance()).Bold().Margin(12, 0, 0, 0)
-		ui.Row(c).Gap(12).Wrap().Children(func() {
-			selectTheme := func(name, label string) {
-				button := ui.Button(c.Key("theme-"+name), label)
-				if a.state.Preferences.Theme == name {
-					button.Background(c.Theme().Accent.Alpha(.18)).TextColor(c.Theme().Accent)
-				}
-				button.OnClick(func() { a.state.Preferences.Theme = name; a.applyTheme() })
+		env := a.chromeEnv(c)
+		// Segment order follows the redesign: follow system, light, dark, kawaii.
+		choice := 0
+		if !a.state.Preferences.FollowSystemTheme {
+			choice = map[string]int{"daybreak": 1, "midnight": 2, "sakura": 3}[a.state.Preferences.Theme]
+		}
+		if env.Segmented(c, &choice, locales.AppearanceTheme(), locales.FollowSystem(), locales.ThemeDaybreak(), locales.ThemeMidnight(), locales.ThemeSakura()) {
+			if choice == 0 {
+				a.setTheme("", true)
+			} else {
+				a.setTheme([...]string{"", "daybreak", "midnight", "sakura"}[choice], false)
 			}
-			selectTheme("midnight", locales.ThemeMidnight())
-			selectTheme("daybreak", locales.ThemeDaybreak())
-			selectTheme("sakura", locales.ThemeSakura())
-		})
+		}
 		if ui.Checkbox(c, &a.state.Preferences.FocusMode, locales.FocusMode()).Changed() {
 			a.persist()
 		}
@@ -212,6 +213,10 @@ func (a *App) settingsView(c *ui.Context) {
 			a.persist()
 		}
 		ui.Text(c, locales.ReduceMotionHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
+		if ui.Checkbox(c, &a.state.Preferences.ReduceTransparency, locales.ReduceTransparency()).Changed() {
+			a.persist()
+		}
+		ui.Text(c, locales.ReduceTransparencyHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Row(c).Gap(12).Wrap().Children(func() {
 			ui.Text(c, locales.FontSize(int(a.state.Preferences.FontSize)))
 			ui.Button(c, "－").Label(locales.DecreaseFont()).Disabled(a.state.Preferences.FontSize <= 10).OnClick(func() { a.changeFont(-1) })

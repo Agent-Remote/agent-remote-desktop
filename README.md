@@ -28,13 +28,16 @@ and freeze argv, then run the command in a managed terminal. Dedicated business
 workflows, complete illustrated theme-motion acceptance, distribution, and
 Windows/Linux runtime validation remain on the implementation plan.
 
-The workbench ships three selectable themes. The toolbar cycles Midnight,
-Sakura and Daybreak; Sakura supplies the background accents and vector portrait,
-while terminal panes keep explicit high-contrast cursor and selection colors.
-The portrait collapses below 1100 DIP, in split panes, and in focus mode so
-navigation and terminal content keep their space.
-Decorative motion is bounded to a short entrance transition and follows both
-mygo's native Reduce Motion preference and the persisted desktop setting.
+The workbench uses the redesign's token set (prototype-v3 colours): Light,
+Dark and Kawaii, stored as `daybreak`, `midnight` and `sakura`. New installs
+follow the system appearance; a state saved by an earlier build keeps its
+explicit theme. The toolbar cycles from the theme on screen, which makes the
+choice explicit. Terminal panes use an opaque background per theme with
+contrast-checked cursor and selection colours; ANSI colours are not re-tinted.
+Settings → Appearance also offers Reduce transparency (solid surfaces, no blur;
+the system's increase-contrast setting implies it). Reduce motion makes
+movement instant and keeps short cross-fades, alongside mygo's native Reduce
+Motion preference. The earlier Sakura portrait has been removed.
 `App.MotionStats` retains a bounded 512-frame view-build sample window and
 reports nearest-rank P95; `go run ./tests/performance-probe -frames 120`
 prints a host-only JSON reading for a ten-session, four-pane persisted layout.

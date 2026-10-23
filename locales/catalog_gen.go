@@ -444,31 +444,31 @@ func (msgs Messages) Appearance() string {
 	return Catalog.Format(msgs.locale, "appearance", nil)
 }
 
-// ThemeMidnight says "Midnight · Dark"
+// ThemeMidnight says "Dark"
 // in the language the app shows.
 func ThemeMidnight() string { return In(i18n.Locale()).ThemeMidnight() }
 
-// ThemeMidnight says "Midnight · Dark"
+// ThemeMidnight says "Dark"
 // in the language of msgs.
 func (msgs Messages) ThemeMidnight() string {
 	return Catalog.Format(msgs.locale, "themeMidnight", nil)
 }
 
-// ThemeDaybreak says "Daybreak · Light"
+// ThemeDaybreak says "Light"
 // in the language the app shows.
 func ThemeDaybreak() string { return In(i18n.Locale()).ThemeDaybreak() }
 
-// ThemeDaybreak says "Daybreak · Light"
+// ThemeDaybreak says "Light"
 // in the language of msgs.
 func (msgs Messages) ThemeDaybreak() string {
 	return Catalog.Format(msgs.locale, "themeDaybreak", nil)
 }
 
-// ThemeSakura says "Sakura · Anime"
+// ThemeSakura says "Kawaii"
 // in the language the app shows.
 func ThemeSakura() string { return In(i18n.Locale()).ThemeSakura() }
 
-// ThemeSakura says "Sakura · Anime"
+// ThemeSakura says "Kawaii"
 // in the language of msgs.
 func (msgs Messages) ThemeSakura() string {
 	return Catalog.Format(msgs.locale, "themeSakura", nil)
@@ -494,14 +494,44 @@ func (msgs Messages) ReduceMotion() string {
 	return Catalog.Format(msgs.locale, "reduceMotion", nil)
 }
 
-// ReduceMotionHelp says "Disable decorative transitions while keeping terminal updates immediate and readable."
+// ReduceMotionHelp says "Movement becomes short cross-fades and decorations stop. The system's reduce-motion setting always applies too."
 // in the language the app shows.
 func ReduceMotionHelp() string { return In(i18n.Locale()).ReduceMotionHelp() }
 
-// ReduceMotionHelp says "Disable decorative transitions while keeping terminal updates immediate and readable."
+// ReduceMotionHelp says "Movement becomes short cross-fades and decorations stop. The system's reduce-motion setting always applies too."
 // in the language of msgs.
 func (msgs Messages) ReduceMotionHelp() string {
 	return Catalog.Format(msgs.locale, "reduceMotionHelp", nil)
+}
+
+// AppearanceTheme says "Theme"
+// in the language the app shows.
+func AppearanceTheme() string { return In(i18n.Locale()).AppearanceTheme() }
+
+// AppearanceTheme says "Theme"
+// in the language of msgs.
+func (msgs Messages) AppearanceTheme() string {
+	return Catalog.Format(msgs.locale, "appearanceTheme", nil)
+}
+
+// ReduceTransparency says "Reduce transparency"
+// in the language the app shows.
+func ReduceTransparency() string { return In(i18n.Locale()).ReduceTransparency() }
+
+// ReduceTransparency says "Reduce transparency"
+// in the language of msgs.
+func (msgs Messages) ReduceTransparency() string {
+	return Catalog.Format(msgs.locale, "reduceTransparency", nil)
+}
+
+// ReduceTransparencyHelp says "Glass surfaces become solid and backgrounds stop blurring. The system's increase-contrast setting turns this on too."
+// in the language the app shows.
+func ReduceTransparencyHelp() string { return In(i18n.Locale()).ReduceTransparencyHelp() }
+
+// ReduceTransparencyHelp says "Glass surfaces become solid and backgrounds stop blurring. The system's increase-contrast setting turns this on too."
+// in the language of msgs.
+func (msgs Messages) ReduceTransparencyHelp() string {
+	return Catalog.Format(msgs.locale, "reduceTransparencyHelp", nil)
 }
 
 // ReturnWorkbench says "Back to workbench"

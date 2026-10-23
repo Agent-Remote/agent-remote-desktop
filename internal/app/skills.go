@@ -1184,7 +1184,7 @@ func (a *App) skillsView(c *ui.Context) {
 						if item.Removed {
 							ui.Text(c, locales.SkillsStatus("removed")).TextColor(t.Danger)
 						} else if item.Effective != nil && item.Effective.Enabled {
-							ui.Text(c, locales.SkillsEnabled()).TextColor(t.Accent)
+							ui.Text(c, locales.SkillsEnabled()).TextColor(a.tokens().AccentInk)
 						} else {
 							ui.Text(c, locales.SkillsDisabled()).TextColor(t.TextMuted)
 						}
