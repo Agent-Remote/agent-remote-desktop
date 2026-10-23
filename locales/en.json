@@ -1,0 +1,2403 @@
+{
+  "@@locale": "en",
+  "appTitle": "Agent Remote Desktop",
+  "brandMark": "AR",
+  "brandName": "Agent Remote",
+  "supportedAgents": "CODEX   /   CLAUDE   /   FCLAUDE",
+  "workbench": "Workbench",
+  "openWorkbench": "Open workbench",
+  "openProjectMenu": "Open project…",
+  "newSession": "New session",
+  "splitHorizontal": "Split horizontally",
+  "splitVertical": "Split vertically",
+  "chooseProjectDirectory": "Choose a project directory",
+  "openProject": "Open project",
+  "projectLocationHelp": "Local sessions use this directory. fclaude sets up remote synchronization using its existing rules.",
+  "projectPathPlaceholder": "Full path to the project directory",
+  "projectDirectory": "Project directory",
+  "browse": "Browse…",
+  "cancel": "Cancel",
+  "open": "Open",
+  "newAgentSession": "New Agent session",
+  "launchArgsHelp": "Advanced launch arguments (JSON array, optional)",
+  "launchArgsPlaceholder": "[\"--model\", \"model-name\"]",
+  "launchArgs": "Launch arguments",
+  "launchToolHelp": "Starts the selected tool with its existing account and sign-in configuration.",
+  "startSession": "Start session",
+  "closeSessionQuestion": "Close this session?",
+  "stopLocalHelp": "This stops the local Agent. You can hide the pane to keep the task running.",
+  "detachRemoteHelp": "This disconnects the local terminal. The remote tmux session keeps running.",
+  "forceStopHelp": "The session has not exited. Force stopping terminates the local process and its managed children. Unfinished work may be lost.",
+  "hideOnly": "Hide only",
+  "confirmClose": "Confirm close",
+  "forceStop": "Force stop",
+  "quitQuestion": "Quit Agent Remote?",
+  "quitTimeoutHelp": "Some processes have not exited. Return to the workbench or explicitly force stop the remaining local processes.",
+  "keepWorking": "Keep working",
+  "stopAndQuit": "Stop local sessions and quit",
+  "forceQuit": "Force stop and quit",
+  "settings": "Settings",
+  "sharedConfigHelp": "Accounts and remote operations share the agent-remote configuration environment.",
+  "tools": "Installed tools",
+  "toolMissing": "Not found · Install the tool or add it to PATH",
+  "appearance": "Appearance",
+  "themeMidnight": "Midnight · Dark",
+  "themeDaybreak": "Daybreak · Light",
+  "themeSakura": "Sakura · Anime",
+  "focusMode": "Focus mode: hide the sidebar and decorations",
+  "reduceMotion": "Reduce motion",
+  "reduceMotionHelp": "Disable decorative transitions while keeping terminal updates immediate and readable.",
+  "returnWorkbench": "Back to workbench",
+  "toolbarWorkbench": "/  Workbench",
+  "starting": "Starting…",
+  "focus": "Focus",
+  "hideDecorations": "Hide sidebar and decorations",
+  "theme": "Theme",
+  "newSessionAction": "＋ New session",
+  "projects": "Projects",
+  "addProject": "Add project",
+  "cliUtilityProject": "CLI utilities",
+  "running": "Running",
+  "exited": "Exited",
+  "local": "Local",
+  "remote": "Remote",
+  "sidebarTagline": "Your projects, ready when you are.",
+  "details": "Details",
+  "welcomeEyebrow": "A SPACE FOR YOUR AGENTS",
+  "welcomeTitle": "Start with a project.\nMake room for your work.",
+  "welcomeHelp": "Bring your local and remote Agents together.\nKeep the terminal you know, with room to manage every session.",
+  "openProjectDirectory": "Open project directory",
+  "viewEnvironment": "View environment",
+  "chooseAgent": "Choose an Agent for this project",
+  "newProjectSession": "New project session",
+  "hiddenSessionsHelp": "Hidden sessions remain in the sidebar. Select one to return to its terminal.",
+  "hide": "Hide",
+  "projectDetails": "Project details",
+  "projectDetailsHelp": "Sessions use the project directory. Split panes show several Agents at once; hiding a terminal keeps its process running.",
+  "readyBackground": "Ready · Sessions keep running when you close the window",
+  "splitLimit": "This layout already shows 4 terminals. Create a separate tab for another session.",
+  "invalidLaunchArgs": "Use a JSON array of strings, such as [\"--model\", \"model-name\"].",
+  "waitForStart": "A session is starting. Wait for it to start before quitting.",
+  "language": "Language",
+  "followSystem": "Follow system",
+  "refreshTools": "Refresh tool detection",
+  "decreaseFont": "Decrease terminal font size",
+  "increaseFont": "Increase terminal font size",
+  "homeFlagHelp": "agent-remote configuration home",
+  "versionFlagHelp": "Print version",
+  "errorUnknown": "The operation could not be completed. Diagnostic details: {details}",
+  "errorStopping": "The application is stopping. Wait for it to finish.",
+  "errorSessionLimit": "The session limit has been reached. Remove an exited session first.",
+  "errorSessionMissing": "This session no longer exists. Refresh the session list.",
+  "errorUnsupportedAgent": "This Agent is not supported. Choose Codex, Claude, or fclaude.",
+  "errorProjectDirectory": "Choose an existing project directory.",
+  "errorArgumentNUL": "Launch arguments cannot contain NUL bytes.",
+  "errorExecutableMissing": "The tool is not installed or is not in PATH. Check the installed tools in settings.",
+  "errorStopTimeout": "The Agent has not exited. Keep waiting or explicitly choose force stop.",
+  "errorStorageVersion": "This desktop data version is incompatible. Use a compatible application; existing data has been preserved.",
+  "errorPermission": "Permission was denied. Check access to the selected directory or resource.",
+  "errorNotFound": "The file or directory no longer exists. Check its location and try again.",
+  "errorCLIUnavailable": "CLI discovery is unavailable. Install a desktop-compatible version of agent-remote and fclaude.",
+  "errorCLISchema": "The CLI command schema is invalid or incompatible. Install a compatible CLI version.",
+  "errorSavePreferences": "Desktop preferences could not be saved. {reason}",
+  "localTool": "{tool} · Local",
+  "remoteTool": "{tool} · Remote",
+  "sessionSummary": "{tool} · {location}  {status}",
+  "namedSessionSummary": "{name} · {tool}",
+  "cliFormRequiredLabel": "{label} · {required}",
+  "portForwardPorts": "{local, number, integer}:{remote, number, integer}",
+  "remoteDeleteSessionContext": "{session} · {node} · {backend}",
+  "skillsRevisionState": "{state} · {revision}",
+  "closeSessionLabel": "Close session {id}",
+  "exitCode": "Exited {code, number, integer}",
+  "fontSize": "Terminal font size  {size, number, integer}",
+  "sessionCount": "{count, plural, =0 {No sessions} one {# session} other {# sessions}}",
+  "tabTerminals": "{title} · {count, plural, one {# terminal} other {# terminals}}",
+  "quitSessions": "{count, plural, =0 {No local sessions to stop.} one {Stop # local session.} other {Stop # local sessions.}} Remote connections will disconnect; remote Agents keep running.",
+  "quitSessionDetail": "{name} · {directory}",
+  "@quitSessionDetail": {
+    "description": "One local session listed in the explicit quit confirmation.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "directory": {
+        "type": "String"
+      }
+    }
+  },
+  "@errorUnknown": {
+    "description": "errorUnknown",
+    "placeholders": {
+      "details": {
+        "type": "String"
+      }
+    }
+  },
+  "@localTool": {
+    "description": "localTool",
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@remoteTool": {
+    "description": "remoteTool",
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@sessionSummary": {
+    "description": "sessionSummary",
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      },
+      "location": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@namedSessionSummary": {
+    "description": "namedSessionSummary",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@cliFormRequiredLabel": {
+    "description": "cliFormRequiredLabel",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "required": {
+        "type": "String"
+      }
+    }
+  },
+  "@portForwardPorts": {
+    "description": "portForwardPorts",
+    "placeholders": {
+      "local": {
+        "type": "int"
+      },
+      "remote": {
+        "type": "int"
+      }
+    }
+  },
+  "@remoteDeleteSessionContext": {
+    "description": "remoteDeleteSessionContext",
+    "placeholders": {
+      "session": {
+        "type": "String"
+      },
+      "node": {
+        "type": "String"
+      },
+      "backend": {
+        "type": "String"
+      }
+    }
+  },
+  "@skillsRevisionState": {
+    "description": "skillsRevisionState",
+    "placeholders": {
+      "state": {
+        "type": "String"
+      },
+      "revision": {
+        "type": "String"
+      }
+    }
+  },
+  "@closeSessionLabel": {
+    "description": "closeSessionLabel",
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@exitCode": {
+    "description": "exitCode",
+    "placeholders": {
+      "code": {
+        "type": "int"
+      }
+    }
+  },
+  "@fontSize": {
+    "description": "fontSize",
+    "placeholders": {
+      "size": {
+        "type": "int"
+      }
+    }
+  },
+  "@sessionCount": {
+    "description": "sessionCount",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@tabTerminals": {
+    "description": "tabTerminals",
+    "placeholders": {
+      "title": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@quitSessions": {
+    "description": "quitSessions",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cliBinaryFlagHelp": "Path to the agent-remote executable",
+  "launcherBinaryFlagHelp": "Path to the fclaude executable",
+  "@errorSavePreferences": {
+    "description": "Persistent save failure shown in the workbench status bar. The reason is already localized.",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "resumeSession": "Continue a saved session",
+  "continueSession": "Continue",
+  "localResumeHelp": "Choose a conversation in the Agent’s own history picker, or enter its ID. The tool uses its current configuration.",
+  "remoteResumeHelp": "Enter the existing remote session ID to reconnect. This opens a connection to that session.",
+  "localResumeReference": "Session ID (optional)",
+  "remoteResumeReference": "Remote session ID",
+  "savedSession": "Saved session",
+  "savedSessionStatus": "Not connected",
+  "savedSessionHelp": "This pane was restored from your saved layout. Continue when you are ready to open the Agent’s history or reconnect.",
+  "forgetSavedSession": "Remove from history",
+  "lastExitCode": "Last connection exit code: {code, number, integer}",
+  "dragTabHelp": "Drag to reorder tabs in this project",
+  "hideTab": "Hide tab {title}",
+  "hideTabHelp": "Hide this tab; sessions stay in the sidebar",
+  "errorWorkspaceData": "The saved workspace is invalid. Its data has been preserved. Restore a valid desktop backup before continuing.",
+  "errorResumeReference": "Enter a valid session ID. A remote connection requires an existing remote session ID.",
+  "nextTab": "Next tab",
+  "previousTab": "Previous tab",
+  "nextProject": "Next project",
+  "previousProject": "Previous project",
+  "nextPane": "Focus next pane",
+  "hideActivePane": "Hide active pane",
+  "@lastExitCode": {
+    "placeholders": {
+      "code": {
+        "type": "int"
+      }
+    }
+  },
+  "@hideTab": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "sessionName": "Session name (optional)",
+  "selectTab": "Select tab {title}",
+  "@selectTab": {
+    "placeholders": {
+      "title": {
+        "type": "String"
+      }
+    }
+  },
+  "commandPalette": "Commands and navigation",
+  "searchWorkbench": "Search",
+  "paletteSearch": "Search commands, projects and sessions",
+  "noSearchResults": "No matching commands, projects or sessions",
+  "remoteManagement": "Remote management",
+  "refreshRemote": "Refresh",
+  "loadingRemote": "Reading shared CLI configuration and remote lists…",
+  "cancelRemoteQuery": "Cancel query",
+  "remoteSetupRequired": "Sign in and register this device to query remote accounts and sessions. User-only sign-in does not provide a device credential.",
+  "remoteSessions": "Remote sessions",
+  "remoteAccounts": "Tool accounts",
+  "filterRemote": "Filter by name, ID, path or status",
+  "noRemoteMatches": "No matching records.",
+  "remoteProjectRequired": "Select a local project before connecting a remote terminal.",
+  "connectRemoteSession": "Connect session",
+  "stopRemoteSession": "Stop session",
+  "remoteStopQuestion": "Stop this remote session?",
+  "remoteStopHelp": "Stopping requests the remote Agent to end and records independent process and save status. It does not delete the session.",
+  "remoteStopConfirm": "Stop remote session",
+  "remoteStopPending": "Stop request is pending. Keep this request key to recover its status.",
+  "remoteStopQuery": "Refresh stop status",
+  "remoteStopPhase": "Stop phase: {phase}",
+  "remoteStopProcess": "Remote process: {status}",
+  "remoteStopSave": "Skill save: {status}",
+  "remoteStopSaved": "Saved",
+  "remoteStopUnknown": "Unknown outcome. Query the original stop request before trying again.",
+  "remoteStopFailed": "Remote stop failed. Review the recorded status before retrying.",
+  "remoteStopDeleted": "The remote session was deleted after stopping.",
+  "remoteStopRecovery": "Recover remote stop request",
+  "remoteStopUnsupported": "This CLI does not expose the exact remote stop workflow. Update agent-remote before stopping a session.",
+  "remoteAttachConfirmation": "Connect this existing remote session using the local project shown above. This may take over its current terminal connection. It does not create a new remote session.",
+  "remoteAuthenticationRequired": "The CLI credential is missing, expired or unavailable. Sign in again with the same configuration directory.",
+  "remotePermissionDenied": "The server denied access to this operation.",
+  "remoteConfigurationUnavailable": "The CLI configuration could not be read. Check the selected configuration directory.",
+  "remoteServerUnavailable": "The query could not complete. Check connectivity and try refreshing later.",
+  "errorCLIProtocol": "This CLI does not provide a compatible desktop control protocol. Use a compatible CLI build.",
+  "remoteQueryCanceled": "Query canceled. No remote session was stopped.",
+  "remoteStatusReady": "Ready",
+  "remoteStatusPending": "Preparing",
+  "remoteStatusStopped": "Stopped",
+  "remoteStatusStopping": "Stopping",
+  "remoteStatusInterrupted": "Interrupted",
+  "remoteStatusFailed": "Failed",
+  "remoteStatusDisabled": "Disabled",
+  "remoteStatusOther": "Unknown status ({status})",
+  "@remoteStatusOther": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteBackend": "Runtime: {backend}",
+  "@remoteBackend": {
+    "placeholders": {
+      "backend": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAccountSummary": "{tool} · {status} · {region}",
+  "@remoteAccountSummary": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      },
+      "region": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteSessionSummary": "{tool} · {status}",
+  "@remoteSessionSummary": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteContextChanged": "The CLI server or device changed during this query. Refresh to use the current configuration.",
+  "confirmRemoteConnection": "Confirm and connect",
+  "signInRemote": "Sign in to server",
+  "loginInProgress": "Signing in and saving the shared CLI configuration…",
+  "loginCancelHelp": "Stopping local waiting cannot undo authentication or device registration already accepted by the server.",
+  "stopLoginWaiting": "Stop waiting",
+  "returnRemoteManagement": "Back to remote management",
+  "loginCompleted": "Sign-in completed",
+  "loginWithoutDevice": "User sign-in only; no device registration requested.",
+  "loginSharedCredentialHelp": "The CLI saves credentials using its existing secure storage. The desktop does not save your password or MFA code.",
+  "loginServer": "Server URL",
+  "loginUsername": "Username",
+  "loginPassword": "Password",
+  "loginTOTP": "MFA code (if required)",
+  "loginUserOnly": "Sign in without registering a device",
+  "loginDeviceName": "Device name (optional)",
+  "loginSSHKey": "SSH public key file (optional)",
+  "loginDefaultKeyHelp": "Leave the key path empty to use the CLI’s default public key from ~/.ssh. Only public keys can be registered.",
+  "loginWireGuardKey": "WireGuard public key (optional)",
+  "editLogin": "Edit details",
+  "confirmLogin": "Confirm and sign in",
+  "reviewLogin": "Review sign-in",
+  "loginReviewHelp": "Confirm the server, account and device settings below. Successful sign-in updates the shared CLI environment.",
+  "loginPreviousServer": "Current server: {server}",
+  "loginDeviceRegistrationHelp": "Register this device with the selected public keys. Signing in to the same server reuses the current device and replaces its token.",
+  "loginRejected": "Sign-in was rejected. Check your username, password and MFA code, then start a new sign-in.",
+  "loginRegistrationRejected": "The server rejected device registration. Check the current device status and registration settings before trying again.",
+  "loginOutcomeUnknown": "The sign-in or registration result could not be confirmed. Refresh the shared configuration and inspect the server’s devices before starting another sign-in. This operation was not automatically retried.",
+  "loginPersistenceIncomplete": "The server accepted sign-in, but local credential or configuration saving did not finish. Inspect the CLI configuration and server device state before signing in again.",
+  "loginPublicKeyRequired": "Choose a readable SSH public key file, or sign in without registering a device. Private keys are not accepted.",
+  "loginInvalidParams": "The sign-in details are invalid. Check the server URL, account fields and public keys.",
+  "loginConfirmationRequired": "Review and confirm the exact sign-in details before submitting.",
+  "@loginPreviousServer": {
+    "placeholders": {
+      "server": {
+        "type": "String"
+      }
+    }
+  },
+  "signOutRemote": "Sign out",
+  "logoutInProgress": "Signing out…",
+  "logoutCancelHelp": "Stopping local waiting cannot undo credential removal or remote revocation. The result may be unknown.",
+  "logoutLocalComplete": "Local credentials cleared",
+  "logoutLocalIncomplete": "Local cleanup is incomplete or unconfirmed. Inspect the shared CLI configuration and credential store before signing in again.",
+  "logoutUserCredential": "Local user credential",
+  "logoutDeviceCredential": "Local device and broker credentials",
+  "logoutConfiguration": "Active device and refresh metadata",
+  "logoutCleanupUnconfirmed": "Cleanup unconfirmed",
+  "logoutCleanupConfirmed": "Cleared or already absent",
+  "logoutResultItem": "{item}: {status}",
+  "logoutUserRevocation": "Remote user credential",
+  "logoutDeviceRevocation": "Remote device credential",
+  "logoutSessionsHelp": "This affects the shared CLI login. It does not stop local Agents or send a stop request to remote sessions. Existing connections may lose authorization.",
+  "logoutReviewHelp": "Remove the user and current device credentials for this server from the shared CLI home. The server address is retained. Review the target and revocation choice before confirming. System-store credentials for this server/device may also be shared by other CLI homes.",
+  "logoutRevokeRemote": "Also revoke remote credentials (recommended)",
+  "logoutLocalOnlyHelp": "Only local credentials will be removed. Remote credentials may remain valid; this option works offline.",
+  "stopLogoutWaiting": "Stop waiting for sign-out",
+  "confirmLogout": "Confirm sign-out",
+  "logoutRevocationConfirmed": "Revocation confirmed",
+  "logoutRevocationSkipped": "Not requested; may remain valid",
+  "logoutCredentialAbsent": "No local credential available to revoke",
+  "logoutRevocationUnconfirmed": "Revocation unconfirmed; may remain valid. Check server security settings.",
+  "logoutOutcomeUnknown": "Sign-out result is unknown. Local cleanup or remote revocation may have happened. Refresh the shared CLI context and inspect server security settings; do not assume a rollback.",
+  "@logoutResultItem": {
+    "placeholders": {
+      "item": {
+        "type": "String"
+      },
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "loginWithPassword": "Password sign-in",
+  "loginWithBrowser": "Browser sign-in",
+  "loginBrowserHelp": "Authorize in your browser using a short code. The CLI keeps authorization secrets and saves the shared credentials.",
+  "loginAwaitingApproval": "Authorize this sign-in",
+  "loginCodeExpires": "Code expires in {seconds, number, integer} seconds.",
+  "loginCodeElapsed": "The displayed code has expired. Waiting for the CLI to confirm the final result…",
+  "loginCopyCode": "Copy code",
+  "loginOpenBrowser": "Open authorization page",
+  "loginBrowserOpenFailed": "The browser could not be opened. Open the address shown above in your browser and enter the code.",
+  "loginExpired": "The authorization code expired. Return to remote management and start a new sign-in when you are ready.",
+  "@loginCodeExpires": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "diagnosticsTitle": "Diagnostics",
+  "dependenciesTitle": "Dependencies",
+  "dependenciesHelp": "Inspect the managed dependency manifest and installed artifacts. This page never installs or repairs dependencies.",
+  "dependenciesReadOnly": "Read-only check · no credentials or administrator access requested",
+  "dependenciesPlatform": "CLI platform: {platform}",
+  "dependenciesRefresh": "Refresh dependency status",
+  "dependenciesVersions": "Check dependency versions",
+  "dependenciesBusy": "Checking dependency status…",
+  "dependenciesCanceled": "Dependency check canceled. Completed results were not applied.",
+  "dependenciesUnsupported": "This CLI version does not provide structured dependency status. Update agent-remote.",
+  "dependenciesEmpty": "No managed dependencies were reported by the CLI.",
+  "diagnosticsHelp": "Inspect CLI configuration and dependencies. Repairs and installation require separate actions.",
+  "diagnosticsOnline": "Check server connectivity",
+  "diagnosticsRefresh": "Run checks",
+  "diagnosticsVersions": "Run version checks",
+  "diagnosticsVersionHelp": "Version checks run installed dependency programs with --version (3 seconds and 8 KiB per tool, 20 seconds total). Files and permissions alone do not prove a working installation.",
+  "diagnosticsBusy": "Checking environment…",
+  "diagnosticsCanceled": "Checks canceled. Completed results were not applied.",
+  "diagnosticsDependencies": "Managed dependencies",
+  "diagnosticsChecks": "Environment checks",
+  "diagnosticsUnsupported": "This CLI version does not provide structured diagnostics. Update agent-remote to use this page.",
+  "diagnosticsManifest": "Manifest: {source, select, default {release defaults; no file created} file {local manifest} other {unavailable}}",
+  "diagnosticsCheckLabel": "{id, select, home {CLI home} bin {Binary directory} dependencies {Dependency directory} wireguard {WireGuard directory} sqlite {SQLite file} config {CLI configuration} server {Server configuration} device {Active device configuration} credential {Sign-in credentials} manifest {Dependency manifest} server_connection {Server connection} windows_ssh {Windows OpenSSH Client} windows_scp {Windows SCP} windows_wireguard {WireGuard for Windows} other {Environment item}}",
+  "diagnosticsStatus": "{status, select, present {Present} missing {Missing} inaccessible {Access or execute permission unavailable} invalid {Invalid} not_checked {Not checked} reachable {Reachable} unavailable {Unavailable} other {Unknown}}",
+  "diagnosticsSuggestion": "{action, select, configure {Review server settings and sign in.} check_path {Check this path and its access permissions.} repair_installation {Review the CLI installation and packaged dependencies. No repair was performed.} presence_only {File presence only; database integrity was not checked.} verify_signin {This passive check does not read credentials or prove authorization. Use remote management to verify access.} run_online {Enable the server connectivity check to send a health request.} check_server {Review the configured server, network access and permissions.} install_openssh {Enable the Windows OpenSSH Client optional feature.} install_wireguard {Install the official WireGuard for Windows application.} sqlite_readable {Database metadata is readable; no schema migration was performed.} credential_present {A stored credential is present. Server authorization has not been verified.} credential_binding {The Broker credential belongs to a different server or device. Sign in again.} credential_access {The credential store is unreadable or the Broker credential is invalid. Check access and sign in again.} other {}}",
+  "diagnosticsVersionStatus": "{status, select, not_checked {Version not checked} ok {Version command succeeded} failed {Version command failed} timeout {Version command timed out} output_limit {Version output exceeded limit} unsafe_path {Version check refused: path outside managed directory} unsupported {Version check unavailable for this artifact} missing {Version unavailable: dependency missing} budget_exhausted {Version check skipped: total time limit reached} inaccessible {Version could not be started} other {Unknown version result}}",
+  "diagnosticsVersionRequirement": "Required version: {version}",
+  "diagnosticsLicense": "License: {license}",
+  "@diagnosticsManifest": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsCheckLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsSuggestion": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsVersionStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsVersionRequirement": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsLicense": {
+    "placeholders": {
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "diagnosticsDeepHelp": "Run checks reads the CLI credential store and existing SQLite metadata; the operating system may ask for access. It does not refresh credentials or repair data.",
+  "loginOperationStatus": "Sign-in status",
+  "logoutOperationStatus": "Sign-out status",
+  "providerRequired": "{tool} was not found. Install it and refresh detection before starting or continuing a session.",
+  "providerReady": "The {tool} executable was found.",
+  "providerInstallGuide": "Install {tool}",
+  "providerInstallHelp": "{tool, select, codex {Follow the official Codex CLI installation guide, then sign in from a terminal.} claude {Follow the official Claude Code installation guide, then sign in from a terminal.} fclaude {Install agent-remote-cli, which includes fclaude, and configure remote sign-in.} other {Install agent-remote-cli and add its executables to PATH.}}",
+  "providerGuideOpenFailed": "The installation guide could not be opened. Check your default browser and try again.",
+  "@providerRequired": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@providerReady": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@providerInstallGuide": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@providerInstallHelp": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesTitle": "Capabilities",
+  "capabilitiesHelp": "Inspect available desktop workflows and CLI platform declarations. This page does not contact your server or read credentials.",
+  "capabilitiesOperations": "Desktop workflows",
+  "capabilitiesCommands": "CLI command inventory",
+  "capabilitiesLoading": "Reading local capabilities…",
+  "capabilitiesFilter": "Filter CLI commands",
+  "capabilitiesVersion": "CLI {version} · {platform}",
+  "@capabilitiesVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesCommandVersion": "Command version: {version}",
+  "@capabilitiesCommandVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesArguments": "Declared parameters: {count}",
+  "@capabilitiesArguments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "capabilitiesPermissionHelp": "A configured device or supported command does not prove permission. Query outcomes shown here apply only to the same server and device; the server checks each request.",
+  "capabilitiesCoverageHelp": "Discovery describes command syntax, not completed GUI coverage. Missing platform declarations remain unknown and do not imply support or permission.",
+  "capabilitiesPlatform": "{state, select, supported {CLI declares support for this platform.} unsupported {CLI does not support this command on this platform.} other {Platform support is not declared by this CLI.}}",
+  "@capabilitiesPlatform": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesOperation": "{operation, select, mutagen_environment_preview {Inspect shared synchronization environment} mutagen_environment_apply {Restart shared synchronization service} sync_recovery_preview {Inspect old project mapping} sync_recovery_apply {Remove reviewed old project mapping} setup_local {Local initialization and repair} login_password {Password / MFA sign-in} login_device_code {Browser approval sign-in} logout {Sign out and credential cleanup} accounts_default_get {Read local default account} accounts_default_set {Set default account} accounts_default_clear {Clear local default account} accounts_create {Create remote account} accounts_status {Read account details} accounts_bind {Start account binding} accounts_verify {Verify account login} accounts_disable {Disable account scheduling} accounts_list {List tool accounts} sessions_list {List remote sessions} sessions_create_request {Query session creation} sessions_stop {Stop remote session} sessions_stop_request {Query session stop} sessions_stop_status {Query session stop status} sessions_delete {Delete remote sessions} sessions_delete_request {Query session deletion} sessions_delete_status {Query session deletion status} port_forwards_list {List port forwards} port_forwards_create {Create port forward} port_forwards_stop {Stop port forward} port_forwards_reconnect {Reconnect port forward} device_status {Read device status} device_revoke {Revoke device} device_rotate_token {Rotate device token} diagnostics_inspect {Environment diagnostics} dependencies_inspect {Dependency inspection} wireguard_config_plan {Review WireGuard configuration} wireguard_config_apply {Publish WireGuard configuration} wireguard_check {Check WireGuard configuration} wireguard_status {Inspect WireGuard status} wireguard_tunnel_plan {Preview WireGuard tunnel action} sync_status {Inspect project synchronization} sync_ensure {Establish project synchronization} sync_pause {Pause project synchronization} sync_resume {Resume project synchronization} sync_resolve {Flush resolved synchronization conflicts} sync_reset {Rebuild project synchronization} accounts_runtime_recovery_authority {Check administrator user} accounts_runtime_recovery_inspect {Inspect runtime migration} accounts_runtime_recovery_apply {Submit runtime recovery} accounts_runtime_recovery_status {Query exact runtime recovery} accounts_runtime_recovery_pending {Read runtime recovery records} accounts_runtime_recovery_forget {Remove settled recovery reference} other {Unknown operation}}",
+  "@capabilitiesOperation": {
+    "placeholders": {
+      "operation": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesState": "{state, select, ready {Local prerequisites are ready.} available {The declared operation is available; each request is still checked.} unknown {This command has no permission mapping; the CLI will decide at execution time.} unverified {Permission has not been verified.} observed_allowed {The latest query succeeded; each new request is still checked.} denied {The server denied the latest query.} sign_in_required {Sign in or repair credentials before retrying.} cli_unsupported {This CLI does not provide the required desktop operation.} context_unavailable {The shared configuration could not be read.} setup_required {Configure a server first.} device_required {Register or select a device first.} platform_unsupported {This CLI reports a different operating system.} unavailable {Capability information is unavailable.} other {Capability information is unavailable.}}",
+  "@capabilitiesState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "localSetupTitle": "Local initialization and repair",
+  "localSetupReviewHelp": "Create missing local directories, database tables and the dependency manifest while preserving existing valid data. This does not sign in, install dependencies or start a tunnel.",
+  "localSetupScope": "Scope: the selected configuration directory, bin, dependencies, secrets, wireguard, ssh, the metadata database and the dependency manifest.",
+  "localSetupChecking": "Checking whether the CLI supports local repair…",
+  "localSetupUnsupported": "This CLI or platform does not support local initialization and repair. Update the CLI before continuing.",
+  "confirmLocalSetup": "Confirm initialization and repair",
+  "localSetupBusy": "Initializing and repairing local data…",
+  "localSetupCancelHelp": "Stopping the wait or quitting does not undo completed steps. The result may be unknown.",
+  "stopLocalSetupWaiting": "Stop waiting",
+  "localSetupComplete": "Local initialization and repair completed.",
+  "localSetupIncomplete": "Some steps did not complete. Review the results, then refresh diagnostics.",
+  "localSetupOperationStatus": "Local repair status",
+  "returnDiagnostics": "Back to diagnostics",
+  "localSetupUnknown": "The local repair result is unknown. Completed steps were not rolled back. Refresh diagnostics before deciding whether to run repair again.",
+  "localSetupStep": "{id, select, home {Configuration directory} bin {Tool directory} dependencies {Dependency directory} secrets {Credential directory} wireguard {WireGuard directory} ssh {SSH directory} database {Metadata database} manifest {Dependency manifest} other {Local item}}",
+  "localSetupStatus": "{status, select, ready {Already ready} applied {Applied} failed {Failed} skipped {Skipped} other {Unknown status}}",
+  "localSetupCode": "{code, select, none {No error.} path_invalid {The target is a link or an unexpected file type. Inspect the path before retrying.} state_unavailable {The database is unreadable, incompatible or busy. Existing data was not replaced.} unsupported_state_version {The database belongs to a newer CLI version. Update the CLI.} manifest_invalid {The existing dependency manifest is invalid or unsupported. It was not replaced.} local_io {The local file operation failed. Check the path and access permissions.} dependency_failed {A required earlier step failed, so this step was skipped.} other {The result could not be interpreted. Refresh diagnostics.}}",
+  "@localSetupStep": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@localSetupStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@localSetupCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "localSetupReviewRequired": "Review the selected configuration directory and confirm local initialization and repair before submitting.",
+  "wireGuardConfigTitle": "WireGuard configuration",
+  "wireGuardConfigHelp": "Choose an output location, then review the account and file changes.",
+  "wireGuardDefaultOutput": "Default location",
+  "wireGuardCustomOutput": "Custom location",
+  "wireGuardOutputPath": "Output file",
+  "wireGuardAbsolutePathHelp": "Enter an absolute file path.",
+  "reviewWireGuardConfig": "Review configuration",
+  "wireGuardPlanning": "Reviewing configuration…",
+  "wireGuardReviewHelp": "This may create a local private key and register or update this device’s public key. The tunnel will not be started.",
+  "wireGuardHome": "CLI data directory",
+  "wireGuardServer": "Server",
+  "wireGuardDevice": "Device ID",
+  "editWireGuardConfig": "Edit output",
+  "confirmWireGuardConfig": "Generate configuration",
+  "wireGuardConfigBusy": "Generating configuration…",
+  "wireGuardCancelHelp": "Stopping the wait or quitting will not undo stored keys, enrollment or file changes. The result may be unknown.",
+  "stopWireGuardWaiting": "Stop waiting",
+  "wireGuardConfigComplete": "Configuration file published",
+  "wireGuardConfigIncomplete": "Configuration is incomplete. Review each stage before starting another operation.",
+  "wireGuardOperationStatus": "WireGuard configuration status",
+  "wireGuardUnsupported": "This CLI or platform does not support WireGuard configuration. Update the CLI.",
+  "wireGuardOutcomeUnknown": "The configuration result is unknown. Stored keys, enrollment and file changes may already have taken effect. Review the current state before confirming another operation.",
+  "wireGuardExecutionFailed": "The WireGuard helper could not complete the requested tunnel action. Review tools and permissions, then preview again.",
+  "wireGuardPreconditionFailed": "The reviewed tunnel plan has unmet requirements. Preview the current state before trying again.",
+  "wireGuardReviewRequired": "Review the configuration plan and confirm the exact output before submitting.",
+  "wireGuardOutputAction": "{action, select, create {Create new file} replace {Replace existing file} other {Unconfirmed file change}}",
+  "wireGuardKeyState": "{state, select, not_checked {Key: not checked} reused {Key: existing key reused} created {Key: new key saved} unknown {Key: storage outcome unknown} other {Key: unknown status}}",
+  "wireGuardEnrollment": "{state, select, not_attempted {Registration: not attempted} rejected {Registration: rejected} confirmed {Registration: confirmed} unknown {Registration: outcome unknown} other {Registration: unknown status}}",
+  "wireGuardPublication": "{state, select, not_attempted {File: not published} published {File: published} failed {File: publication failed} unknown {File: publication outcome unknown} other {File: unknown status}}",
+  "wireGuardPeerCount": "Peers: {count}",
+  "@wireGuardOutputAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardKeyState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardEnrollment": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardPublication": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardPeerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wireGuardResultCode": "{code, select, none {No error.} credential_unavailable {Credentials could not be read. Check the system credential store and sign-in state.} wireguard_key_invalid {The stored WireGuard key is invalid. It was not replaced.} wireguard_key_store_incomplete {The key could not be reliably saved. Registration was not attempted.} wireguard_enrollment_rejected {The server rejected registration. The local key was retained.} wireguard_enrollment_unknown {The registration result is unknown. The local key was retained and no configuration was published.} wireguard_config_unavailable {Registration was confirmed, but the configuration could not be retrieved.} wireguard_config_invalid {Registration was confirmed, but the returned configuration was invalid and was not published.} output_changed {The output location or file changed. Review a new plan before submitting again.} output_invalid {The output path is invalid or refers to an unsupported file type. Choose another location.} output_unavailable {The output location could not be accessed. Check the path and permissions.} operation_busy {Another operation is using this device or output. Wait for it to finish, then review a new plan.} wireguard_publication_incomplete {File publication or its durability could not be confirmed. Check the file stage; an already published file was not rolled back.} wireguard_context_changed {The shared configuration changed after the key was selected or saved. Review the reported stages before preparing another operation.} other {The result could not be interpreted. Check the current state before continuing.}}",
+  "@wireGuardResultCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardNetworkTitle": "WireGuard network",
+  "wireGuardNetworkHelp": "Check a configuration, read tunnel status or preview a start/stop plan. Queries begin only when you click a button and do not request administrator access.",
+  "wireGuardCheckConfig": "Check configuration",
+  "wireGuardReadStatus": "Read tunnel status",
+  "wireGuardConfigPath": "Configuration file",
+  "wireGuardDefaultConfig": "Default configuration",
+  "wireGuardCustomConfig": "Custom configuration",
+  "wireGuardCheckSummary": "Configuration check",
+  "wireGuardStatusSummary": "Tunnel observation",
+  "wireGuardBridgeSummary": "Permission bridge",
+  "wireGuardBridgeReadStatus": "Read bridge status",
+  "wireGuardBridgeHelp": "Inspect the protected native bridge without requesting administrator access. An observed component never grants permission to change a tunnel.",
+  "wireGuardBridgeLifecycleLabel": "Lifecycle gate",
+  "wireGuardBridgeLifecycle": "{state, select, unavailable {Status unavailable} unsupported {Unsupported on this platform} installation_required {Broker installation required} approval_pending {Waiting for system approval} approval_required {System approval required} protocol_unavailable {Protocol unavailable} authentication_required {Caller authentication required} authorization_required {Execution authorization required} not_ready {Not ready} ready {Ready for execution} other {Unknown lifecycle state}}",
+  "wireGuardBridgeInstallationLabel": "Installation",
+  "wireGuardBridgeApprovalLabel": "System approval",
+  "wireGuardBridgeProtocolLabel": "Protocol",
+  "wireGuardBridgeAuthenticationLabel": "Caller authentication",
+  "wireGuardBridgeExecutionLabel": "Execution readiness",
+  "wireGuardBridgePlatform": "{platform, select, windows {Windows} macos {macOS} linux {Linux} other {Unsupported platform}}",
+  "wireGuardBridgeState": "{state, select, unavailable {Bridge status unavailable} unsupported {Native permission bridge is not available} observed {Bridge status observed} other {Unknown bridge state}}",
+  "wireGuardBridgeInstallation": "{state, select, not_installed {Not installed} installed {Installed} unknown {Unknown} other {Unknown}}",
+  "wireGuardBridgeApproval": "{state, select, not_requested {Not requested} pending {Pending system approval} approved {Approved} unknown {Unknown} other {Unknown}}",
+  "wireGuardBridgeProtocol": "{state, select, unsupported {Unsupported} incompatible {Incompatible} compatible {Compatible} unknown {Unknown} other {Unknown}}",
+  "wireGuardBridgeAuthentication": "{state, select, unavailable {Unavailable} unauthenticated {Not authenticated} authenticated {Authenticated} unknown {Unknown} other {Unknown}}",
+  "wireGuardBridgeExecution": "{state, select, unavailable {Unavailable} not_ready {Not ready} not_authorized {Not authorized} ready {Ready} other {Unknown}}",
+  "wireGuardQueryBusy": "Reading…",
+  "wireGuardQueryCanceled": "Query canceled. Refresh to obtain a new observation.",
+  "wireGuardObservationStale": "This observation is out of date. Run the query again.",
+  "wireGuardNoInterfaces": "No active WireGuard interfaces were observed.",
+  "wireGuardTools": "WireGuard tools",
+  "wireGuardProcessPrivilegeHelp": "Process elevation is an observation only. It does not prove permission to inspect or change a tunnel.",
+  "wireGuardInterface": "Interface",
+  "wireGuardPeers": "Peers",
+  "wireGuardNeverHandshake": "Never",
+  "wireGuardPreviousPage": "Previous peer page",
+  "wireGuardNextPage": "Next peer page",
+  "wireGuardPreviousInterface": "Previous interface",
+  "wireGuardNextInterface": "Next interface",
+  "wireGuardNoPeers": "This interface has no peers.",
+  "wireGuardUnavailableValue": "Not configured",
+  "wireGuardPeerPage": "Peer page {page, number} of {total, number}",
+  "@wireGuardPeerPage": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "wireGuardInterfacePage": "Interface {page, number} of {total, number}",
+  "@wireGuardInterfacePage": {
+    "placeholders": {
+      "page": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "wireGuardConfigState": "{state, select, ready {Configuration is valid} missing {Configuration not found} unreadable {Configuration cannot be read} unsafe_path {Unsafe file or path} insecure_permissions {Configuration permissions are not private} invalid {Invalid configuration} unsupported {Contains unsupported directives} other {Unknown configuration state}}",
+  "@wireGuardConfigState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardStatusState": "{state, select, observed {Status observed} tool_missing {WireGuard status tool not found} tool_not_executable {WireGuard status tool cannot run} query_failed {Tunnel status query failed} timed_out {Tunnel status query timed out} output_too_large {Tool output exceeded the size limit} invalid_output {Tool returned an invalid status} other {Unknown observation state}}",
+  "@wireGuardStatusState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardToolState": "{state, select, available {Available} missing {Not found} not_executable {Cannot execute} other {Unknown tool state}}",
+  "@wireGuardToolState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardElevation": "{state, select, elevated {Process: elevated} standard {Process: standard privileges} other {Process privileges: unknown}}",
+  "@wireGuardElevation": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardNetworkField": "{field, select, platform {Platform} addresses {Interface addresses} dns {DNS addresses} mtu {MTU} unsupported_directives {Unsupported directives} public_key {Public key} listen_port {Listen port} fwmark {Firewall mark} endpoint {Endpoint} allowed_ips {Allowed IPs} latest_handshake {Latest handshake} received_bytes {Received (bytes)} sent_bytes {Sent (bytes)} persistent_keepalive {Keepalive (seconds)} other {Network field}}",
+  "@wireGuardNetworkField": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardNetworkUnsupported": "This CLI does not support the network query. Update agent-remote and try again.",
+  "wireGuardTunnelPreviewTitle": "Tunnel preview",
+  "wireGuardTunnelPreviewHelp": "Review the selected action, exact target and prerequisites without changing the network.",
+  "wireGuardTunnelActionLabel": "Planned action",
+  "wireGuardPreviewTunnelPlan": "Preview tunnel plan",
+  "wireGuardTunnelPlanSummary": "Tunnel plan",
+  "wireGuardTunnelPrerequisites": "Requirements before execution",
+  "wireGuardTunnelPreviewOnly": "Review the plan before applying a native tunnel action.",
+  "wireGuardTunnelPlanStale": "The configuration or selection changed. Preview the plan again.",
+  "wireGuardTunnelPlanUnsupported": "This CLI does not support tunnel previews. Update the CLI to use this feature.",
+  "wireGuardTunnelSnapshotHelp": "These identities describe observed snapshots. They do not prove tool trust, target ownership or authorization to change the network.",
+  "wireGuardEditTunnelPlan": "Edit preview selection",
+  "wireGuardTunnelAction": "{action, select, up {Start tunnel} down {Stop tunnel} other {Unknown action}}",
+  "wireGuardTunnelApply": "Apply tunnel action",
+  "wireGuardTunnelApplying": "Applying tunnel action…",
+  "wireGuardTunnelApplied": "Tunnel action confirmed: {action}",
+  "@wireGuardTunnelAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelWindowsSemantics": "{action, select, up {Starting installs a Windows tunnel service configured to start automatically.} down {Stopping stops and removes the selected Windows tunnel service.} other {Review the Windows service operation.}}",
+  "@wireGuardTunnelWindowsSemantics": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelTargetState": "{state, select, absent {Target was not found} present {Target exists} unknown {Target could not be verified} conflict {Target conflicts with the request} other {Unknown target state}}",
+  "@wireGuardTunnelTargetState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelTargetReason": "{reason, select, invalid_name {The configuration name is not supported on this platform.} native_query_failed {The system could not report the target identity.} mapping_missing {The configuration-to-interface mapping is missing; an active tunnel may still exist.} mapping_unsafe {The interface mapping is unsafe to read.} mapping_stale {The interface mapping is stale or inconsistent.} interface_not_wireguard {An interface with this name exists but is not WireGuard.} service_invalid {The service configuration cannot be verified.} target_changed {The target changed during observation. Preview again.} status_unavailable {Runtime status could not be observed.} target_not_in_status {The native target was not found in the WireGuard status result.} other {The target identity needs verification.}}",
+  "@wireGuardTunnelTargetReason": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelPrerequisite": "{code, select, config_not_ready {Choose a valid private configuration file.} config_unsupported {Remove unsupported directives before planning execution.} tool_unavailable {Install the required WireGuard tools or correct their paths.} tool_snapshot_unavailable {A stable tool snapshot could not be captured.} target_unknown {The exact target must be observed before execution.} target_conflict {Resolve the target conflict before execution.} target_already_present {A target already exists for this start request.} target_absent {No target was found for this stop request.} config_target_mismatch {The target public key does not match this configuration.} target_key_unobserved {The target public key could not be observed.} service_config_mismatch {The service configuration does not match the selected file.} execution_bridge_required {Desktop tunnel execution requires a trusted system component that is not available yet.} other {A required condition could not be verified.}}",
+  "@wireGuardTunnelPrerequisite": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelPlanField": "{field, select, logical_name {Configuration name} target_name {Actual interface} index {Interface index} namespace {Network namespace identity} mapping_identity {Mapping snapshot} socket_identity {Socket snapshot} service_name {Service name} binary_path {Service executable} config_path {Configuration path} config_identity {Service configuration snapshot} service_state {Service state} start_type {Service startup} account {Service account} public_key {Interface public key} file_identity {Configuration file snapshot} content_sha256 {Configuration content digest} tool_identity {Tool file snapshot} tool_sha256 {Tool content digest} status_state {Runtime observation} other {Tunnel detail}}",
+  "@wireGuardTunnelPlanField": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelStatusState": "{state, select, not_queried {Not queried} observed {Observed} tool_missing {Status tool not found} tool_not_executable {Status tool cannot run} query_failed {Status query failed} timed_out {Status query timed out} output_too_large {Status output exceeded the limit} invalid_output {Invalid status output} other {Unknown observation}}",
+  "@wireGuardTunnelStatusState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelServiceState": "{state, select, 1 {Stopped} 2 {Starting} 3 {Stopping} 4 {Running} 5 {Resuming} 6 {Pausing} 7 {Paused} other {Unknown service state}}",
+  "@wireGuardTunnelServiceState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardTunnelServiceStartType": "{kind, select, 0 {Boot} 1 {System} 2 {Automatic} 3 {On demand} 4 {Disabled} other {Unknown startup type}}",
+  "@wireGuardTunnelServiceStartType": {
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      }
+    }
+  },
+  "credentialsTitle": "Developer credentials",
+  "credentialsHelp": "Review reusable Git, GitHub CLI, and SSH profiles visible to this account.",
+  "credentialsPrivacy": "Only profile metadata and integration modes are shown. Secrets and Git identity values remain inside the CLI credential store.",
+  "credentialsLoading": "Loading developer credential profiles…",
+  "credentialsEmpty": "No developer credential profiles found.",
+  "credentialsUnsupported": "This CLI does not expose the read-only credential inventory yet.",
+  "credentialsStatus": "Status: {status}",
+  "credentialsModes": "GitHub CLI: {github}; SSH: {ssh}",
+  "credentialsUpdated": "Updated: {updated}",
+  "@credentialsStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@credentialsModes": {
+    "placeholders": {
+      "github": {
+        "type": "String"
+      },
+      "ssh": {
+        "type": "String"
+      }
+    }
+  },
+  "@credentialsUpdated": {
+    "placeholders": {
+      "updated": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultTitle": "Default accounts",
+  "accountDefaultScope": "Shared with the CLI: one default per tool in this CLI home, across all servers. This does not change existing sessions.",
+  "accountDefaultTool": "Tool identifier",
+  "accountDefaultToolValue": "Tool: {tool}",
+  "@accountDefaultToolValue": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultCurrent": "Current default: {account}",
+  "@accountDefaultCurrent": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultPrevious": "Previous default: {account}",
+  "@accountDefaultPrevious": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultNext": "New default: {account}",
+  "@accountDefaultNext": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultNone": "None",
+  "accountDefaultClear": "Clear default…",
+  "accountDefaultSelect": "Use this account…",
+  "accountDefaultConfirm": "Confirm change",
+  "accountDefaultConfirmHelp": "Confirm the exact tool, account ID and CLI context above. The CLI will reject a changed context or previous default.",
+  "accountDefaultRefresh": "Read current default",
+  "accountDefaultWaiting": "Saving the default selection…",
+  "accountDefaultStopWaiting": "Stop waiting",
+  "accountDefaultCancelHelp": "Stopping the wait or quitting cannot undo a write already completed. Read the current default before making another change.",
+  "accountDefaultSaved": "Default selection saved.",
+  "accountDefaultUnchanged": "The default selection already matches. No change was needed.",
+  "accountDefaultStatus": "Default account result",
+  "accountDefaultSignIn": "Sign in with a registered device to choose an account. Reading and clearing this local default remain available offline.",
+  "accountDefaultUnknown": "The save result is unknown. Read the current default before confirming another change.",
+  "accountDefaultChanged": "The default changed after review. Read it again before confirming a new change.",
+  "accountDefaultMismatch": "The selected full account ID no longer matches an account for this tool. Refresh the account list.",
+  "accountDefaultStateUnavailable": "The CLI could not read or lock the local default selection. Check access to the CLI home and refresh.",
+  "accountDefaultUnsupported": "This CLI version does not support the required operation. Update the CLI and refresh.",
+  "accountDetailsTitle": "Account details",
+  "accountActionTitle": "{action, select, create {Create account} status {Account details} bind {Start binding} verify {Verify login} disable {Disable account} other {Account operation}}",
+  "@accountActionTitle": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "accountActionHelp": "{action, select, create {Create this remote account with the exact fields above. Creation does not sign in to the tool.} bind {Start a new binding task for this exact account. Acceptance does not mean the tool is signed in.} verify {Ask the node to verify this account’s login. Acceptance does not mean verification succeeded.} disable {Disable future scheduling and revoke this account’s port-forward grants. Existing sessions and stored login credentials remain; this does not stop or delete them.} other {Review the exact account and CLI context before confirming.}}",
+  "@accountActionHelp": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "accountAccepted": "{action, select, create {Account creation accepted.} bind {Binding task accepted; login is not yet confirmed.} verify {Verification task accepted; success is not yet confirmed.} disable {Account disabled for future scheduling.} other {Account request accepted.}}",
+  "@accountAccepted": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "accountState": "{state, select, binding_requested {Binding requested} binding_session_starting {Binding session starting} binding_waiting_user_login {Waiting for your tool login} binding_verifying {Verifying login} active {Active} expired {Login expired} disabled {Disabled} failed {Failed} node_unavailable {Node unavailable} migrating {Migrating} other {Unknown state}}",
+  "@accountState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "accountWorking": "Submitting the account request…",
+  "accountCancelHelp": "Stopping the wait or quitting cannot undo remote work already accepted. Read the account list or status before making a new request.",
+  "accountRebindDisabledHelp": "Rebinding this disabled account moves it into the binding lifecycle. After you complete login and verification succeeds, the account may become eligible for scheduling again. An accepted task does not mean login or verification has completed.",
+  "accountManualRefreshHelp": "Status is a snapshot. Refresh it explicitly to inspect progress; refreshing never resubmits a task.",
+  "accountStopWaiting": "Stop waiting",
+  "accountConfirm": "Confirm account action",
+  "accountReviewCreate": "Review account creation",
+  "accountRefreshStatus": "Refresh account status",
+  "accountDone": "Return to accounts",
+  "accountOperationStatus": "Account operation result",
+  "accountCreateHelp": "These fields match the CLI account create command. The tool locale is independent of the desktop interface language.",
+  "accountFieldTool": "Tool",
+  "accountFieldName": "Account name",
+  "accountFieldRegion": "Region code",
+  "accountFieldTimezone": "IANA timezone",
+  "accountFieldLocale": "Tool locale",
+  "accountFieldTags": "Preferred node tags",
+  "accountTagsHelp": "Tags use a JSON array, for example [\"gpu\", \"east\"]. Use [] for no preference.",
+  "accountNoTags": "No preference",
+  "accountFieldValue": "{field}: {value}",
+  "@accountFieldValue": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "accountExactID": "Account ID: {id}",
+  "@accountExactID": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountNode": "Node: {id}",
+  "@accountNode": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountCreatedAt": "Created: {date}",
+  "@accountCreatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountUpdatedAt": "Updated: {date}",
+  "@accountUpdatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingStatus": "Binding: {state}",
+  "@accountBindingStatus": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingSession": "Binding session: {id}",
+  "@accountBindingSession": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingTmux": "Terminal session: {name}",
+  "@accountBindingTmux": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountTask": "Task: {id}",
+  "@accountTask": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingFailed": "The binding task reported a failure. Refresh status or inspect the node through the CLI.",
+  "accountBindingConnect": "Open binding terminal",
+  "accountBindingConnectDetailsLabel": "Open binding terminal from account details",
+  "accountBindingConfirmLabel": "Confirm open binding terminal",
+  "accountBindingConnectHelp": "Connect to this exact binding session using the local CLI. The selected project supplies the local working directory. Complete the tool login in the native terminal, then explicitly request verification.",
+  "accountOutcomeUnknown": "The remote outcome is unknown. Read the account list or status before confirming another request; the original task may still run.",
+  "accountRejected": "The server rejected this account request. Check the current account status and your permissions before a new request.",
+  "accountResponseInvalid": "The CLI could not validate the account response. Refresh status after checking CLI and server compatibility.",
+  "accountInputInvalid": "Check the account fields: required text must be nonempty, trimmed and within length limits. Tags must be a JSON array of at most 64 strings.",
+  "accountListStale": "Account data may have changed. Refresh the list before choosing another account.",
+  "accountNotFound": "This exact account no longer exists or is unavailable to this device. Refresh the account list.",
+  "accountBindingReconnectHelp": "Binding sessions expire or change. Read fresh account status before opening a terminal; the saved connection is never resumed automatically.",
+  "accountBindingReviewStatus": "Review current binding status",
+  "syncTitle": "Project synchronization",
+  "syncOpen": "Synchronization",
+  "syncOperationStatus": "Synchronization operation",
+  "operationProgress": "Current phase: {phase, select, started {starting} running {running} awaiting_approval {awaiting approval} awaiting_input {waiting for input} input_required {input required} awaiting_confirmation {waiting for confirmation} confirmation_required {confirmation required} confirming {confirming} retrying {retrying} waiting {waiting} stage {processing a stage} other {working}}",
+  "syncChooseProject": "Select a project before managing synchronization.",
+  "syncHelp": "Synchronization status is separate from Agent session status. Observations can change after refresh.",
+  "syncRefresh": "Refresh synchronization",
+  "syncDone": "Finish this operation",
+  "syncConfirm": "Confirm synchronization operation",
+  "syncSkipLocal": "Skip local execution (CLI dry-run)",
+  "syncSkipLocalHelp": "This still changes the Server and shared local mappings. Only local Mutagen actions are skipped; it is not a read-only preview.",
+  "syncNormalExecution": "Execute Server and local Mutagen actions.",
+  "syncWorking": "Synchronization operation is running…",
+  "syncStopWaiting": "Stop waiting for synchronization",
+  "syncCancelHelp": "Stopping may leave completed Server or local phases. Inspect the receipt and refresh status before a new operation.",
+  "syncReceiptHelp": "This receipt stays available while the application runs. Refresh only observes status and never repeats this operation.",
+  "syncNoSession": "No synchronization session is registered for this project.",
+  "syncConflictHelp": "Conflict observations are not proof that every file is synchronized. Resolve conflicting files deliberately; this interface never selects an overwrite winner.",
+  "syncUnknown": "The synchronization outcome is unknown. Do not repeat automatically; refresh status and inspect the Server and local Mutagen state.",
+  "syncAction": "{action, select, ensure {Establish synchronization} pause {Pause synchronization} resume {Resume synchronization} resolve {Flush resolved files} reset {Rebuild synchronization} other {Synchronization}}",
+  "@syncAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "syncActionHelp": "{action, select, ensure {Creates or reuses the remote workspace and synchronization session, then prepares local Mutagen. Files may be synchronized in both directions.} pause {Pauses local Mutagen before asking the Server to pause synchronization.} resume {Resumes on the Server before resuming or creating local Mutagen. Files may be synchronized in both directions.} resolve {Flushes local Mutagen and asks the Server to clear its conflict marker. Resolve conflicting files first. This does not choose which version wins or guarantee all conflicts are gone.} reset {Requests a Server reset, then terminates and recreates the local Mutagen session in safe two-way mode. Rebuilding the baseline may rediscover conflicts or restore previously deleted files. Inspect files before rebuilding.} other {Review the exact target before continuing.}}",
+  "@syncActionHelp": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "syncOutcome": "{outcome, select, completed {Requested phases completed} partial {Operation partially completed} unknown {Operation outcome uncertain} other {Operation result}}",
+  "@syncOutcome": {
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      }
+    }
+  },
+  "syncMutagenState": "{state, select, missing {Local Mutagen: not installed} session_missing {Local Mutagen: session missing} available {Local Mutagen: observation available} unavailable {Local Mutagen: observation unavailable} other {Local Mutagen: unknown}}",
+  "@syncMutagenState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncConflicts": "{state, select, unknown {Local conflicts: unknown} detected {Local conflicts: detected} none_observed {Local conflicts: none observed} other {Local conflicts: unknown}}",
+  "@syncConflicts": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncField": "{field, select, project {Project} local_path {Local path} project_key {Project identity} workspace_id {Workspace ID} sync_session_id {Sync session ID} fingerprint {Target fingerprint} node_id {Node ID} remote_path {Remote path} remote_endpoint {Remote endpoint} mutagen_session_id {Mutagen session} status {Server sync status} conflict_status {Server conflict marker} sync_mode {Synchronization mode} sync_git {Synchronize Git} exclude {Excluded paths} operation_id {Operation ID} namespace_fingerprint {Mutagen environment fingerprint} configuration_fingerprint {Mutagen configuration fingerprint} mutagen_identifier {Exact Mutagen identifier} other {Target}}: {value}",
+  "@syncField": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "syncStage": "{name, select, workspace {Workspace} server {Server} mutagen {Local Mutagen} persist {Shared state} other {Stage}}: {state, select, completed {completed} skipped {skipped} failed {failed} unknown {unknown} other {unknown}}",
+  "@syncStage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncResultCode": "{code, select, sync_recovery_not_required {The saved Server relationship still exists, or no old mapping exists. Nothing was removed. Refresh the current status.} sync_recovery_blocked {The old mapping cannot be removed until its exact local Mutagen scope is verified.} sync_recovery_metadata_incomplete {The old mapping lacks information needed to identify its Mutagen session safely.} sync_target_changed {The project mapping or synchronization target changed. Refresh and review the new target.} sync_not_found {The saved synchronization session is missing. Inspect the old mapping before establishing synchronization again.} sync_local_failed {A local Mutagen action failed. Earlier Server actions may already have completed.} sync_prepare_failed {The remote synchronization session failed during preparation.} sync_prepare_timeout {Remote preparation did not finish in time. Inspect status before continuing.} sync_rejected {The Server rejected this synchronization request.} sync_response_invalid {The Server response could not be validated.} mutagen_unavailable {Local Mutagen could not be inspected or executed. Check the packaged dependencies.} state_unavailable {Shared synchronization state could not be saved or read.} canceled {Waiting was canceled. Inspect completed phases before continuing.} sync_conflicts_remaining {Local conflicts remain. Edit the conflicting files before flushing again.} sync_conflicts_unknown {Conflict status cannot be confirmed. The Server conflict marker was not cleared.} sync_git_locked {A Git lock exists. Wait for the Git operation to finish before synchronizing.} sync_mutagen_target_changed {The local Mutagen session points to a different target. Inspect its endpoints before continuing.} sync_mutagen_ambiguous {Multiple local Mutagen sessions match. Inspect them before continuing.} sync_mutagen_environment_mismatch {Mutagen was started with a different managed SSH environment. Repair the CLI environment before continuing.} sync_mutagen_missing {Managed Mutagen is missing. Install the packaged CLI dependencies.} sync_mutagen_not_running {The local Mutagen daemon is not running. Check the CLI environment.} sync_mutagen_timeout {The local Mutagen operation timed out. Its effects may be incomplete; refresh status before continuing.} other {This synchronization phase did not complete. Inspect the receipt and refresh current status.}}",
+  "@syncResultCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "syncPaused": "Local Mutagen paused: {value}",
+  "syncConflictCount": "Observed local conflicts: {count}",
+  "syncLocalStatus": "{state, select, watching {Watching for changes} scanning {Scanning files} disconnected {Disconnected} connecting_alpha {Connecting to local files} connecting_beta {Connecting to remote files} reconciling {Reconciling changes} staging_alpha {Staging local files} staging_beta {Staging remote files} transitioning {Applying file changes} saving {Saving synchronization state} waiting_for_rescan {Waiting to scan again} halted_on_root_deletion {Stopped: root directory deleted} halted_on_root_emptied {Stopped: root directory emptied} halted_on_root_type_change {Stopped: root type changed} other {Local state unknown}}",
+  "@syncPaused": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "@syncConflictCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@syncLocalStatus": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncBoolean": "{value, select, true {Yes} false {No} other {Unknown}}",
+  "@syncBoolean": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "syncReceiptScope": "Recorded operation context",
+  "syncObservationScope": "Latest status observation",
+  "syncReceiptObservation": "Observation recorded by this operation (not a fresh status query)",
+  "syncServerState": "{state, select, starting {Preparing} active {Active} healthy {Healthy (legacy Server state)} paused {Paused} conflicted {Conflicted} failed {Failed} stopped {Stopped} other {Unknown}}",
+  "@syncServerState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncServerConflicts": "{state, select, none {No Server conflict marker} has_conflicts {Server marked conflicts} other {Unknown}}",
+  "@syncServerConflicts": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncMode": "{state, select, two_way {Two-way synchronization} other {Unknown}}",
+  "@syncMode": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncRecoveryInspect": "Inspect old mapping",
+  "syncRecoveryTitle": "Recover an old local mapping",
+  "syncRecoveryHelp": "The CLI checks whether the saved Server resource is missing. Nothing changes until you review and confirm the exact old mapping and local Mutagen session.",
+  "syncRecoveryConfirm": "Remove reviewed old mapping",
+  "syncRecoveryEffects": "Recovery only removes the reviewed CLI mapping and, if present, terminates its exact old Mutagen session. Project files and remote resources are preserved. Establishing a new relationship requires a separate review.",
+  "syncRecoveryScope": "{state, select, sync_not_found {The Server synchronization session is missing. The workspace mapping will be kept.} workspace_not_found {The Server workspace is missing. Both workspace and synchronization mappings will be removed.} other {The recovery scope could not be verified.}}",
+  "@syncRecoveryScope": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncRecoveryBlocked": "This mapping cannot be recovered with the current evidence. Resolve the reported issue, then inspect again.",
+  "syncRecoveryFresh": "Review the current relationship",
+  "syncRecoveryFreshHelp": "The old result is retained. This reads the current relationship; choose Establish synchronization and confirm separately to create a new one.",
+  "syncRecoveryReceipt": "Mapping recovery result",
+  "syncRecoveryMapping": "Saved CLI mapping",
+  "syncRecoveryMutagenState": "{state, select, available {Exact old Mutagen session: verified for termination} session_missing {Exact old Mutagen session: already absent} missing {Managed Mutagen: not installed} unavailable {Managed Mutagen: unavailable for inspection} blocked {Old Mutagen session: could not be verified} other {Old Mutagen session: unknown}}",
+  "@syncRecoveryMutagenState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncRecoveryResultTarget": "Local mapping after this operation",
+  "mutagenEnvironmentTitle": "Synchronization environment",
+  "mutagenEnvironmentHelp": "Inspect the shared local Mutagen service and its synchronization and forwarding sessions. This does not require a project or a Server login.",
+  "mutagenEnvironmentInspect": "Inspect shared environment",
+  "mutagenEnvironmentReview": "Review the shared service change",
+  "mutagenEnvironmentImpact": "Restarting this shared service temporarily interrupts every active synchronization and forwarding session listed below, including sessions from other projects. Paused sessions must remain paused.",
+  "mutagenEnvironmentConfirm": "Confirm shared service restart",
+  "mutagenEnvironmentWorking": "Updating the shared synchronization environment…",
+  "mutagenEnvironmentCancelHelp": "Stopping the wait or exiting the app cannot undo a service restart or environment change. Inspect the recorded phases and current state before making another request.",
+  "mutagenEnvironmentOperation": "Synchronization environment result",
+  "mutagenEnvironmentReceiptScope": "Environment reviewed for this operation",
+  "mutagenEnvironmentSessions": "All affected sessions",
+  "mutagenEnvironmentNoSessions": "No synchronization or forwarding sessions were found in the inspected service.",
+  "mutagenEnvironmentNoReplay": "The original result is retained. Inspect again to review a new request; nothing is retried automatically.",
+  "mutagenEnvironmentUnavailable": "This CLI does not provide the shared environment recovery workflow on this platform.",
+  "mutagenEnvironmentInspecting": "Inspecting the complete local service scope…",
+  "mutagenEnvironmentPrevious": "Last recorded environment",
+  "mutagenEnvironmentPreviousUnknown": "No verified recorded binding is available. This does not identify the environment inherited by the running service.",
+  "mutagenEnvironmentDesired": "Environment to use after restart",
+  "mutagenEnvironmentReady": "The shared service environment is ready and session configurations and paused states were verified. This does not prove remote endpoints are healthy.",
+  "mutagenEnvironmentUnknown": "The shared service operation outcome is unknown. It may already have stopped or restarted. Inspect current state before submitting a new reviewed request.",
+  "mutagenEnvironmentQueryCanceled": "Environment inspection canceled. No restart was requested.",
+  "mutagenEnvironmentPreviousPage": "Previous sessions",
+  "mutagenEnvironmentNextPage": "Next sessions",
+  "mutagenEnvironmentPage": "Page {page} of {pages} · the review covers every page",
+  "@mutagenEnvironmentPage": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentSessionCount": "{count} affected sessions in the complete inventory",
+  "@mutagenEnvironmentSessionCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentSession": "{kind, select, sync {Synchronization} forward {Forwarding} other {Session}} · {number}",
+  "@mutagenEnvironmentSession": {
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentPaused": "{value, select, true {Paused · must remain paused} false {Active · interrupted by restart} other {Paused state unknown}}",
+  "@mutagenEnvironmentPaused": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentOutcome": "{outcome, select, completed {Shared service environment updated} partial {Environment update partially completed} unknown {Environment update outcome unknown} other {Environment operation result}}",
+  "@mutagenEnvironmentOutcome": {
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentState": "Service: {state, select, running {running} stopped {stopped} other {unavailable}} · Registration: {registration, select, unmanaged {no external registration} external {managed by another service} other {unknown}}",
+  "@mutagenEnvironmentState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      },
+      "registration": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentStage": "{name, select, stop {Stop service} start {Start service} verify {Verify environment and sessions} persist {Record environment} other {Phase}}: {state, select, completed {completed} skipped {skipped} failed {failed} unknown {unknown} other {unknown}}",
+  "@mutagenEnvironmentStage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentTool": "{name}: {path}",
+  "@mutagenEnvironmentTool": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentField": "{field, select, home {CLI home} ssh_directory {SSH tool directory} data_directory {Shared Mutagen data} fingerprint {Review fingerprint} inventory_fingerprint {Complete inventory fingerprint} namespace_fingerprint {Data directory identity} running_fingerprint {Running service identity} marker_fingerprint {Recorded environment identity} binding_fingerprint {Environment binding fingerprint} tool_fingerprint {Tool fingerprint} configuration_fingerprint {Session configuration fingerprint} identifier {Exact session identifier} name {Session name} other {Scope}}: {value}",
+  "@mutagenEnvironmentField": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentEndpoint": "{side, select, source {Source} destination {Destination} other {Endpoint}}: {protocol} · user={user} · host={host} · port={port} · path={path}",
+  "@mutagenEnvironmentEndpoint": {
+    "placeholders": {
+      "side": {
+        "type": "String"
+      },
+      "protocol": {
+        "type": "String"
+      },
+      "user": {
+        "type": "String"
+      },
+      "host": {
+        "type": "String"
+      },
+      "port": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentResultCode": "{code, select, sync_mutagen_environment_changed {The environment changed after review. Inspect the complete service scope again.} sync_mutagen_inventory_changed {The session inventory changed after review. Inspect all sessions again.} sync_mutagen_registration_external {This service is managed externally. Its service integration must be handled before this application can restart it.} sync_mutagen_registration_unknown {The service registration could not be verified. A restart was not authorized.} sync_mutagen_inventory_invalid {The complete stored session inventory could not be verified. No partial inventory may be used for confirmation.} sync_mutagen_inventory_limit {The complete inventory exceeds the supported inspection limit. It was not truncated or authorized for restart.} sync_mutagen_missing {Managed Mutagen is missing. Install the CLI dependencies and inspect again.} sync_mutagen_proxy_missing {The managed SSH or SCP tool could not be verified. Repair the CLI dependencies and inspect again.} sync_mutagen_daemon_busy {The shared service is busy or its process state changed. Inspect again after the current operation finishes.} operation_busy {Another operation owns the shared configuration. Wait for it to finish and inspect again.} sync_mutagen_environment_unverified {The expected environment and complete session state could not be verified after the operation.} sync_mutagen_environment_write_failed {The service may have restarted, but the new environment record could not be saved.} sync_mutagen_timeout {The operation timed out. Inspect its recorded phases before making another request.} other {The shared environment could not be verified or updated. Inspect the recorded phases and local CLI dependencies.}}",
+  "@mutagenEnvironmentResultCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportTitle": "Import local Claude configuration",
+  "accountImportRecoveryTitle": "Configuration import history",
+  "accountImportHelp": "Review local Claude configuration before uploading it to this remote account. Opening this page reads no local configuration files.",
+  "accountImportPrivacy": "Configuration, rules, hooks, plugins and skills can contain private text, credentials or executable instructions. History can contain conversations and project data. File contents stay inside the CLI until you explicitly confirm upload to this Server. Review every listed path.",
+  "accountImportHistory": "Include resume history",
+  "accountImportExcludeSkills": "Exclude the top-level skills directory",
+  "accountImportSkillsHelp": "Excluding skills does not exclude plugins or skills bundled inside plugins. Nothing is automatically excluded after a Server rejection.",
+  "accountImportDiscover": "Discover local file scope",
+  "accountImportDiscoverHelp": "Discovery inspects file metadata only; it does not read file contents or contact the Server.",
+  "accountImportPrepare": "Read files and prepare review",
+  "accountImportPrepareHelp": "This reads the selected local file contents and calculates a complete manifest. It does not upload them.",
+  "accountImportInclude": "Included scope",
+  "accountImportExclude": "Excluded scope",
+  "accountImportEmpty": "No files found in this scope.",
+  "accountImportValidate": "Review Server policy check",
+  "accountImportValidateConfirm": "Confirm Server policy check",
+  "accountImportValidateHelp": "This sends the selected path scope to the Server and writes an audit event. It sends no file contents. The result describes current policy only; upload is checked again.",
+  "accountImportApply": "Review upload",
+  "accountImportApplyConfirm": "Confirm upload to this account",
+  "accountImportApplyHelp": "Upload covers the entire reviewed manifest, including every page. The CLI rereads files and rejects changes before submitting. Acceptance creates a remote task; it does not mean the configuration has finished applying.",
+  "accountImportWorking": "Processing configuration import…",
+  "accountImportStopWaiting": "Stop waiting",
+  "accountImportCancelHelp": "Stopping waiting does not cancel an accepted Server task. Keep the original request and query its status.",
+  "accountImportUnknown": "The result is unknown. Query this original request; do not submit again with a new request key.",
+  "accountImportPending": "Load saved import requests",
+  "accountImportPendingHelp": "The CLI stores only public request context, identifiers and digests for recovery. Opening history sends no request. Load saved requests, then explicitly query the original request.",
+  "accountImportStatus": "Query original request",
+  "accountImportNoPending": "No saved import requests.",
+  "accountImportNew": "Finish review",
+  "accountImportNoReplay": "This request is retained for recovery. It is never automatically resubmitted.",
+  "accountImportUnavailable": "This CLI does not support the required configuration import operation.",
+  "accountImportResultUnavailable": "The import response could not be verified. Keep the original request and check its status.",
+  "accountImportManifest": "Complete file manifest",
+  "accountImportSource": "Local source: {path}",
+  "@accountImportSource": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportDigest": "Review digest: {digest}",
+  "@accountImportDigest": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportCount": "{count} files · {bytes} bytes · confirmation covers every page",
+  "@accountImportCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "bytes": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportFile": "{path} · {bytes} bytes",
+  "@accountImportFile": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      },
+      "bytes": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportRequest": "Request: {id}",
+  "@accountImportRequest": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportTask": "Remote task: {id}",
+  "@accountImportTask": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportCode": "Result code: {code}",
+  "@accountImportCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportPhase": "{phase, select, pending {Awaiting confirmation of acceptance} accepted {Accepted; remote task not yet complete} leased {Assigned to a node} running {Remote task running} succeeded {Configuration import completed} failed {Remote task failed} cancelled {Remote task cancelled} expired {Remote task expired} rejected {Submission rejected} other {Unknown state; query the original request}}",
+  "@accountImportPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportErrorCode": "{code, select, account_import_source_invalid {The local source is unsupported or unsafe. Review its paths and file types.} account_import_source_changed {Local files changed after review. Discover and review a new manifest.} account_import_source_limit {The selected files exceed the supported limits. Narrow the selection and review again.} account_import_empty {The selected scope contains no importable files.} account_import_journal_unavailable {The CLI could not save the recovery record. No new upload should be assumed. Check saved requests before continuing.} account_import_recovery_required {A saved request needs recovery. Query its original key before starting another import.} account_import_request_not_recorded {The original request has no saved CLI record. Do not infer that an upload was rolled back.} account_import_request_mismatch {The request context or digest does not match its saved reference.} account_import_not_settled {This request is not confirmed as finished. Keep its recovery record.} account_import_response_invalid {The response could not be verified. Keep the original request and query it.} account_import_rejected {The Server rejected this submission. Selection remains unchanged; review the saved request before trying again.} account_import_outcome_unknown {The result is unknown. Keep the original request; do not resubmit with a new key.} account_import_status_unknown {The original request is not yet observable. It may still be committing. Keep the original key and query again later.} invalid_params {The reviewed import input is invalid.} confirmation_required {Explicit confirmation is required for this step.} configuration_changed {The CLI configuration changed. Return to the intended environment before continuing.} configuration_unavailable {The CLI configuration is unavailable.} authentication_required {Sign in to the original Server and device before continuing.} credential_unavailable {The required device credential is unavailable.} permission_denied {This operation is not permitted for the current device.} canceled {Waiting stopped. Query the original request if a submission was started.} timeout {Waiting timed out. Keep and query the original request.} account_import_validation_unknown {The Server policy check result is unknown. An audit event may have been written; no configuration upload was requested.} account_import_skills_managed {The selected skills are managed by the Server. Keep the current selection, load the rejected request and explicitly remove its local record. You can then choose to exclude the top-level skills directory and review a new manifest.} other {The import operation could not be verified. Keep any original request for recovery.}}",
+  "@accountImportErrorCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportWarning": "{code, select, CONFIG_IMPORT_EXECUTABLE_REVIEW_REQUIRED {The selected scope contains executable instructions. Review hooks, plugins and skills before uploading.} CONFIG_IMPORT_CUSTOM_MARKDOWN_REVIEW_REQUIRED {The selected scope contains custom Markdown instructions. Review their contents before uploading.} other {The response contains an unrecognized warning. Review the import again.}}",
+  "@accountImportWarning": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportValidationCounts": "{accepted} accepted paths · {rejected} rejected paths",
+  "accountImportForget": "Review removing this local record",
+  "accountImportForgetConfirm": "Confirm removing local record",
+  "accountImportForgetHelp": "This removes only the local recovery reference. An explicitly rejected submission can be removed locally. Other requests are checked again by their original key and exact task and must be finished. Remote tasks and configuration are not deleted.",
+  "accountImportShowReview": "Return to current review",
+  "@accountImportValidationCounts": {
+    "placeholders": {
+      "accepted": {
+        "type": "String"
+      },
+      "rejected": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportPreviousPage": "Previous files",
+  "accountImportNextPage": "Next files",
+  "accountImportPage": "Page {page} of {pages} · review covers every page",
+  "@accountImportPage": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportRetainedHelp": "This account has a retained request. Query its original key. Remove the local reference only after a confirmed rejection or final task result before preparing another upload.",
+  "accountImportNotSubmitted": "The upload was not submitted, and the CLI has no saved request with this key. End this review, then prepare and confirm a new upload.",
+  "runtimeRecoveryTitle": "Administrator runtime recovery",
+  "runtimeRecoveryHelp": "Recover one exact failed runtime migration. Check your user administrator identity, inspect the original task, then confirm a separate recovery action.",
+  "runtimeRecoveryWorking": "Checking runtime recovery…",
+  "runtimeRecoveryCancelHelp": "Stopping the wait or leaving this page does not cancel a submitted server task. Keep the original request key and query it; nothing is automatically resubmitted.",
+  "runtimeRecoveryAuthorityUnknown": "Administrator identity has not been checked. A device connection does not grant administrator access.",
+  "runtimeRecoveryAuthorityAdmin": "The current user is an administrator. Each operation rechecks this identity and role.",
+  "runtimeRecoveryAuthorityDenied": "The current user is not an administrator. Sign in with an authorized user to manage runtime recovery.",
+  "runtimeRecoveryAccount": "Exact account UUID",
+  "runtimeRecoveryOriginalTask": "Exact original migration task ID",
+  "runtimeRecoveryAction": "{action, select, verify_target {Verify target completion} verify_source {Verify source restoration} repair_source {Repair source permissions} other {Unknown recovery action}}",
+  "@runtimeRecoveryAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryRetained": "This account has a retained request. Query its original key and explicitly remove a rejected or settled local record before preparing another recovery.",
+  "runtimeRecoveryConfirmHelp": "{action, select, verify_target {Create a recovery task to verify target completion. This writes server state and may finalize the account on the target backend.} verify_source {Create a recovery task to verify source restoration. This writes server state and may restore the account on the source backend.} repair_source {Create a recovery task that may repair source permissions using retained backups and restore the account on the source backend.} other {Review the recovery action before continuing.}} The original migration failure remains in history.",
+  "@runtimeRecoveryConfirmHelp": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryNoPending": "No retained runtime recovery requests.",
+  "runtimeRecoveryActor": "Current administrator: {actor}",
+  "@runtimeRecoveryActor": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryOwner": "Account owner: {owner}",
+  "@runtimeRecoveryOwner": {
+    "placeholders": {
+      "owner": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryOriginal": "Original task: {task}\nOriginal record: {record}",
+  "@runtimeRecoveryOriginal": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "record": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryBackends": "Node: {node}\nSource: {source} → Target: {target}",
+  "@runtimeRecoveryBackends": {
+    "placeholders": {
+      "node": {
+        "type": "String"
+      },
+      "source": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryObservation": "Observed task and account state. This does not guarantee that recovery can be accepted.",
+  "runtimeRecoveryObservedStatuses": "Original task status: {original}\nAccount status: {account}",
+  "@runtimeRecoveryObservedStatuses": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryDigest": "Reviewed digest: {digest}",
+  "@runtimeRecoveryDigest": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryTask": "Recovery task: {task}\nRecovery record: {record}",
+  "@runtimeRecoveryTask": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "record": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryStatus": "{status, select, pending {Pending} leased {Leased to worker} running {Running} succeeded {Succeeded} failed {Failed} cancelled {Cancelled} expired {Expired} other {Unknown task status}}",
+  "@runtimeRecoveryStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryTargetConfirmed": "Target completion confirmed by the successful recovery task.",
+  "runtimeRecoverySourceConfirmed": "Source restoration confirmed by the successful recovery task.",
+  "runtimeRecoveryUnconfirmed": "Recovery completion is not confirmed. Acceptance alone is not success.",
+  "runtimeRecoveryRequest": "Recovery request: {request}",
+  "@runtimeRecoveryRequest": {
+    "placeholders": {
+      "request": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryNotSubmitted": "The recovery was not submitted and the CLI has no saved request with this key. End this review before inspecting and confirming a new recovery.",
+  "runtimeRecoverySubmission": "{phase, select, unknown {Submission outcome unknown; original key retained.} accepted {Submission accepted; query the task for completion.} rejected {Submission explicitly rejected.} other {Unknown submission evidence.}}",
+  "@runtimeRecoverySubmission": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryNoReplay": "This key is retained for exact recovery queries. No automatic retry or new key is created.",
+  "runtimeRecoveryQuery": "Query original recovery",
+  "runtimeRecoveryForget": "Remove settled local reference",
+  "runtimeRecoveryForgetHelp": "Remove only this local recovery reference. Rejected submissions can be removed offline; other requests require a fresh authorized query proving a final task result. This cannot undo the server task.",
+  "runtimeRecoveryForgetConfirm": "Confirm removal of local reference",
+  "runtimeRecoveryManualTitle": "Query an existing request key",
+  "runtimeRecoveryManualHelp": "For older requests without a saved local record. This only queries the exact key; it never creates a recovery plan, a new task, or a local registry record. The account owner is not necessarily the original submitting administrator.",
+  "runtimeRecoveryManualAccount": "Account UUID for the existing key",
+  "runtimeRecoveryManualKey": "Existing recovery request UUID",
+  "runtimeRecoveryManualQuery": "Query existing key only",
+  "runtimeRecoveryStopWaiting": "Stop waiting for recovery",
+  "runtimeRecoveryFinish": "End this recovery review",
+  "runtimeRecoveryPending": "Read retained recovery requests",
+  "runtimeRecoveryAuthority": "Check user administrator identity",
+  "runtimeRecoveryInspect": "Inspect original migration",
+  "runtimeRecoveryApply": "Review recovery submission",
+  "runtimeRecoveryApplyConfirm": "Confirm recovery task creation",
+  "runtimeRecoveryError": "{code, select, unsupported_method {This CLI does not support the required runtime recovery operation.} authentication_required {Sign in again with a user account. Recovery reads do not refresh credentials.} credential_unavailable {User credentials are unavailable. Device credentials cannot be used for administrator recovery.} permission_denied {The current user is not authorized as an administrator.} runtime_recovery_status_unknown {The original request could not be found. Keep its key; this does not prove that submission failed.} runtime_recovery_outcome_unknown {The submission result is unknown. Keep the original key and query it without resubmitting.} runtime_recovery_review_changed {The original migration changed. This submission was rejected; remove its local reference before reviewing again.} runtime_recovery_rejected {The server explicitly rejected this submission.} runtime_recovery_pending {A retained request requires resolution before another submission.} runtime_recovery_not_terminal {The original recovery is not confirmed as finished. Its local reference was kept.} runtime_recovery_receipt_changed {The recovery receipt differs from the reviewed request. Keep the original key for investigation.} runtime_recovery_context_changed {The user or server context changed. Check administrator identity again.} invalid_params {Check the exact account, migration task, action and request identifiers.} other {Runtime recovery could not be completed ({code}). Keep any original request key and check its status.}}",
+  "@runtimeRecoveryError": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachUnsupported": "This CLI does not support connections bound to a reviewed server and device. Update the CLI to connect.",
+  "remoteAttachContextInvalid": "The CLI returned an invalid connection identity. Refresh the list before connecting.",
+  "remoteAttachDevice": "Device: {id}",
+  "@remoteAttachDevice": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachAccount": "Account: {id}",
+  "@remoteAttachAccount": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachNode": "Node: {id}",
+  "@remoteAttachNode": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachLocalProject": "Local project: {id}. This directory is the terminal working directory; it does not identify the remote workspace.",
+  "@remoteAttachLocalProject": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteHistoryReviewHelp": "Refresh the current server and session list before reviewing this connection. Confirmation may take over another terminal client.",
+  "remoteHistorySelectAgain": "This older history has no saved server and device. Select an existing session from the refreshed list and confirm its identity.",
+  "remoteHistoryContextChanged": "The current connection context no longer matches this review. End the review to choose another session; the saved history is unchanged.",
+  "remoteHistoryUnavailable": "The saved remote session is missing or is not running. No replacement session was created.",
+  "remoteHistoryReviewAction": "Review remote history",
+  "remoteHistoryResumeTitle": "Review remote session",
+  "remoteHistoryContinue": "Review and continue",
+  "remoteHistoryEndReview": "End history review",
+  "remoteAttachClipboardHelp": "Text copy and paste are available. Image and file paste are not supported for this connection yet.",
+  "createRemoteSession": "Create remote session",
+  "createRemoteSessionHelp": "The CLI creates and retains the caller key. This review contains project, account, workspace and synchronization evidence only; it never stores command arguments or credentials.",
+  "sessionCreateTool": "Agent tool",
+  "sessionCreateAccount": "Tool account ID",
+  "sessionCreateWorkspace": "Workspace ID",
+  "sessionCreateProject": "Project key",
+  "sessionCreateArgvDigest": "Arguments digest (sha256)",
+  "sessionCreateSyncTarget": "Synchronization target evidence (JSON)",
+  "sessionCreateReplacement": "Interrupted session replacement (optional)",
+  "sessionCreateReplacementContext": "Replacement context must exactly match the interrupted session",
+  "sessionCreateReplacementAccount": "Replacement account ID",
+  "sessionCreateReplacementWorkspace": "Replacement workspace ID",
+  "sessionCreateReplacementProject": "Replacement project key",
+  "sessionCreateReplacementNode": "Replacement node ID",
+  "sessionCreateReplacementBackend": "Replacement runtime backend",
+  "sessionCreateQueryKey": "Original request UUID",
+  "sessionCreateRecovery": "Recover remote create request",
+  "sessionCreateSubmit": "Create with caller key",
+  "sessionCreateQuery": "Query original request",
+  "sessionCreateCancel": "End review",
+  "sessionCreateUnsupported": "This CLI does not support caller-key session creation. Update agent-remote before creating a session.",
+  "sessionCreateReviewHelp": "Review every exact target before confirming. The CLI generates and persists the request UUID after confirmation.",
+  "sessionCreateRecoveryHelp": "This is a query-only recovery for the exact request saved by the CLI. Review the current server and device context, then query the original key; no new session request can be submitted here.",
+  "sessionCreateRecoveryContext": "Frozen context: {server} · device {device}",
+  "sessionCreatePhase": "{phase, select, prepared {Prepared} admission_pending {Admission pending} accepted {Accepted; task not complete} running {Running} failed {Failed} unknown {Outcome unknown; keep the original key} deleted {Session deleted; receipt retained} other {Unknown creation phase}}",
+  "sessionCreateRequest": "Original request: {id}",
+  "sessionCreateTask": "Session: {session}\nTask: {task}",
+  "sessionCreatePending": "The original request is still being admitted. Query it again later; do not submit a new request.",
+  "sessionCreateUnknown": "The submission outcome is unknown. Keep the original request key and query it; no replacement request was created.",
+  "sessionCreateConflict": "The original request key was used with different intent. Start a new reviewed request.",
+  "sessionCreateDeleted": "The session was deleted, but the immutable creation receipt is still available. No replacement was created.",
+  "sessionCreateTargetChanged": "The reviewed synchronization target changed. Inspect the project and prepare a new request.",
+  "sessionCreateNodeMismatch": "The Server selected a node that does not match the reviewed synchronization target. Review synchronization again.",
+  "sessionCreatePrepareUnproven": "The CLI could not prove the reviewed synchronization preparation. No session was created.",
+  "sessionCreateInputInvalid": "The session creation review is incomplete or invalid. Check every exact field.",
+  "sessionCreateNoReceipt": "No creation receipt is loaded. Query the original request UUID.",
+  "sessionCreateReceiptHelp": "Acceptance proves only that the Server recorded the request. Session startup, synchronization and terminal attachment have separate status.",
+  "sessionCreateNoSession": "The receipt does not contain a session UUID yet.",
+  "sessionCreateToolPlaceholder": "claude",
+  "sessionCreateAccountPlaceholder": "account UUID",
+  "sessionCreateWorkspacePlaceholder": "workspace UUID",
+  "sessionCreateProjectPlaceholder": "project key",
+  "sessionCreateDigestPlaceholder": "sha256:…",
+  "sessionCreateReplacementPlaceholder": "session UUID",
+  "sessionCreateNodePlaceholder": "node UUID",
+  "sessionCreateBackendPlaceholder": "native or docker_sandbox",
+  "sessionCreateQueryPlaceholder": "request UUID",
+  "sessionCreateTargetPlaceholder": "JSON object",
+  "deleteRemoteSession": "Delete remote session",
+  "remoteDeleteQuestion": "Delete the reviewed remote sessions?",
+  "remoteDeleteHelp": "The exact session IDs, selection digest and server context are frozen before confirmation. Stop and Skill retention blockers remain visible; this action never expands the collection.",
+  "remoteDeleteCollection": "Reviewed collection: {count, plural, one {# session} other {# sessions}}",
+  "remoteDeletePending": "Deletion request is pending. Keep the original request key to recover its status.",
+  "remoteDeleteConfirm": "Delete reviewed sessions",
+  "remoteDeleteQuery": "Query original deletion request",
+  "remoteDeleteRecovery": "Recover remote deletion",
+  "remoteDeleteRecoveryHelp": "This is a query-only recovery of the original request and frozen collection. No sessions will be added or deleted again.",
+  "remoteDeletePhase": "Deletion phase: {phase}",
+  "remoteDeleteRequest": "Original deletion request: {id}",
+  "remoteDeleteDeleted": "Deleted {deleted, number, integer} of {total, number, integer} reviewed sessions",
+  "remoteDeleteCollectionMismatch": "The reviewed collection changed. No additional sessions were selected.",
+  "remoteDeleteRetentionBlocker": "Retention blocker: {reason}",
+  "@remoteDeleteCollection": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "@remoteDeletePhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "@remoteDeleteRequest": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@remoteDeleteDeleted": {
+    "placeholders": {
+      "deleted": {
+        "type": "num"
+      },
+      "total": {
+        "type": "num"
+      }
+    }
+  },
+  "@remoteDeleteRetentionBlocker": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteDeleteSelect": "Select for deletion",
+  "remoteDeleteReviewSelection": "Review selected sessions",
+  "remoteDeleteWorkspace": "Workspace: {id}",
+  "remoteDeleteProject": "Project: {id}",
+  "@remoteDeleteWorkspace": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@remoteDeleteProject": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteDeleteUnknown": "The deletion outcome is unknown. Query the original request key before trying again.",
+  "remoteDeleteFailed": "Remote deletion failed or remains unresolved. Review retention and task status.",
+  "remoteDeleteConflict": "The original deletion request no longer matches the reviewed collection.",
+  "remoteDeleteUnsupported": "This CLI does not expose the exact remote deletion workflow. Update agent-remote before deleting a session.",
+  "portForwardTitle": "Port forwarding",
+  "portForwardHelp": "Create and manage loopback forwards for remote Agent sessions. The Rust CLI owns the listener, tunnel, TTL and reconnect; Desktop shows its observed state.",
+  "portForwardSetupRequired": "Sign in and select a device before managing forwards.",
+  "portForwardCreateTitle": "Create a port forward",
+  "portForwardSession": "Remote session ID",
+  "portForwardSessionPlaceholder": "Full session UUID",
+  "portForwardRemotePort": "Remote port",
+  "portForwardLocalPort": "Local port",
+  "portForwardTTL": "Lease (seconds)",
+  "portForwardRemotePortPlaceholder": "5173",
+  "portForwardLocalPortPlaceholder": "3000 or auto (blank also chooses a free port)",
+  "portForwardTTLPlaceholder": "3600",
+  "portForwardCreate": "Create forward",
+  "portForwardActionPending": "Applying port-forward action…",
+  "portForwardActionComplete": "Forward {id} is {status}.",
+  "portForwardLoading": "Loading port forwards…",
+  "portForwardStale": "The list is stale. Refresh before making a new decision.",
+  "portForwardEmpty": "No port forwards are available.",
+  "portForwardUnsupported": "This CLI does not expose port-forward desktop control yet.",
+  "portForwardCreateUnsupported": "This CLI does not expose port-forward creation. Listing remains read-only.",
+  "portForwardStopUnsupported": "This CLI does not expose stopping an existing port forward.",
+  "portForwardReconnectUnsupported": "This CLI does not expose reconnecting an existing port forward.",
+  "portForwardStatus": "Status: {status}",
+  "portForwardSessionValue": "Session: {id}",
+  "portForwardConnections": "Connections: {count, number, integer} · ↑ {up, number, integer} · ↓ {down, number, integer}",
+  "portForwardExpires": "Expires: {value}",
+  "portForwardStop": "Stop",
+  "portForwardReconnect": "Reconnect",
+  "portForwardRefresh": "Refresh forwards",
+  "portForwardListenerBound": "Local listener: 127.0.0.1:{port, number, integer}",
+  "portForwardListenerExited": "Local listener process is no longer running",
+  "cliFormTitle": "Run CLI command",
+  "cliFormHelp": "Build the command from the discovered schema. Submission freezes argv and opens a managed terminal.",
+  "cliFormHomeManaged": "The desktop keeps this command on the selected agent-remote configuration home.",
+  "cliFclaudeTerminalLifecycleHelp": "fclaude owns the remote account, server authorization and run/new session semantics. The desktop stores only the local terminal pane, project, cwd and lifecycle summary; without an exact session context from the CLI, history cannot reconnect automatically.",
+  "cliFormExecutable": "Executable",
+  "cliFormCommand": "Command",
+  "cliFormPlatform": "{state, select, supported {Client platform: supported by this CLI.} unsupported {Client platform: not supported by this CLI.} other {Client platform: support is not declared by this CLI.}}",
+  "cliFormCapability": "{state, select, available {Known capability: available.} ready {Known capability: ready.} unverified {Known capability permission is not verified.} observed_allowed {Known capability permission was recently observed.} unsupported {Known capability is not supported.} unavailable {Known capability is unavailable.} context_unavailable {Known capability context is unavailable.} setup_required {Known capability requires setup.} device_required {Known capability requires a device.} denied {Known capability is denied.} sign_in_required {Known capability requires sign-in.} cli_unsupported {Known capability is not provided.} other {Known capability: {state}.}}",
+  "cliFormUnknownCapability": "No capability mapping; the CLI remains responsible for authorization.",
+  "cliFormArgument": "Argument",
+  "cliFormRequired": "Required",
+  "cliFormChoices": "Choices",
+  "cliFormValues": "Values",
+  "cliFormValuesHelp": "Enter one value per line for repeatable arguments.",
+  "cliFormReview": "Review argv",
+  "cliFormStart": "Start command",
+  "cliFormFrozen": "Frozen argv",
+  "cliFormProjectRequired": "Open a project before running a command.",
+  "cliFormPlatformUnsupported": "This command is not declared for the current client platform.",
+  "cliFormCapabilityUnavailable": "The known capability is unavailable on this client.",
+  "cliFormCommandInvalid": "The command values are invalid: {reason}",
+  "cliFormRemoteWorkflow": "This lifecycle command is managed from Remote management, where the session context and recovery key are frozen.",
+  "cliFormPortForwardWorkflow": "This forwarding command is managed from Network → Port forwarding, where the session and forward IDs are verified.",
+  "cliFormOpenRemote": "Open remote management",
+  "cliFormOpenPortForward": "Open port forwarding",
+  "cliFormOpen": "Open form",
+  "cliFormNoProject": "Select a project to run this command.",
+  "cliFormNoArguments": "This command has no additional parameters.",
+  "cliFormAddValue": "Add value",
+  "cliFormRemoveValue": "Remove value",
+  "cliFormArgumentMissing": "A required argument is missing.",
+  "cliFormArgumentCount": "An argument has an invalid number of values.",
+  "cliFormArgumentChoice": "Choose one of the listed values.",
+  "cliFormArgumentUnknown": "This form is stale. Reopen the command.",
+  "cliFormArgumentFlag": "A flag value is invalid.",
+  "cliFormArgumentManaged": "This value is controlled by the desktop configuration.",
+  "cliDedicatedUnsafePath": "The export destination contains an unsafe path. Choose a directory without parent traversal.",
+  "cliFormSecureWorkflow": "This command contains credential-like parameters. Use its dedicated secure workflow; values are never sent through a generic argv form.",
+  "cliDedicatedConfirmationRequired": "Review the exact frozen request before this dedicated workflow can start.",
+  "cliDedicatedArgvChanged": "The dedicated workflow request changed. Reopen and review it again.",
+  "cliDedicatedYesRequired": "This change must include the CLI's non-interactive confirmation flag.",
+  "credentialsCreateTitle": "Create profile",
+  "credentialsBindTitle": "Bind profile",
+  "credentialsUnbindTitle": "Unbind profile",
+  "credentialsDisplayName": "Display name",
+  "credentialsGitUserName": "Git user name",
+  "credentialsGitUserEmail": "Git user email",
+  "credentialsGitHubMode": "GitHub CLI mode",
+  "credentialsGitHubModeDefault": "remote_login",
+  "credentialsSSHMode": "SSH mode",
+  "credentialsSSHModeDefault": "agent_forwarding",
+  "credentialsAccountID": "Tool account ID",
+  "credentialsProfileID": "Profile ID",
+  "credentialsReview": "Review credential change",
+  "credentialsConfirm": "Confirm credential change",
+  "credentialsReviewHelp": "Review the exact account/profile and metadata. Device credentials stay in the CLI secure store; no secret is placed in argv or desktop state.",
+  "credentialsReviewAccount": "Account ID: {id}",
+  "credentialsReviewProfile": "Profile ID: {id}",
+  "credentialsMutationAccepted": "Credential change accepted: {action}",
+  "credentialsMutationWorking": "Applying the credential change through the CLI secure workflow…",
+  "skillsRetryOperation": "Failed deployment operation ID",
+  "skillsRetryOperationPlaceholder": "Paste the original operation UUID",
+  "skillsRetryPlan": "Inspect retryable targets",
+  "skillsRetryReview": "Retry the ended failed Skill targets?",
+  "skillsRetryTargets": "{count, plural, one {# target} other {# targets}} will receive a new deployment attempt.",
+  "skillsRetryConfirm": "Retry selected targets",
+  "skillsRetryWorking": "Checking the original operation…",
+  "skillsRetryAccepted": "Retry accepted for {count, plural, one {# target} other {# targets}}. Keep the original operation ID for status checks.",
+  "skillsRetryUnknown": "Retry outcome is unknown. Keep the original operation ID and inspect its status; no automatic retry was sent.",
+  "skillsTitle": "Skills",
+  "skillsHelp": "Review the remote Skill catalog and local account Skill state. Content and credentials stay outside desktop-control.",
+  "skillsLoading": "Loading Skills…",
+  "skillsUnsupported": "This CLI does not expose the Skills desktop workflow yet.",
+  "skillsEmpty": "No Skills are available for this scope.",
+  "skillsGeneration": "Catalog generation: {generation, number, integer}",
+  "skillsRefresh": "Refresh Skills",
+  "skillsEnabled": "Enabled",
+  "skillsDisabled": "Disabled",
+  "skillsIncluded": "Included",
+  "skillsExcluded": "Excluded",
+  "skillsRevision": "Revision: {id}",
+  "skillsDiscovery": "Project discovery: {value}",
+  "skillsModelLoaded": "Model loaded",
+  "skillsModelPending": "Model not loaded",
+  "skillsLocal": "Account-local Skills",
+  "skillsFilterPlaceholder": "Filter by Skill name or ID",
+  "skillsNoMatch": "No Skills match this filter",
+  "skillsAccount": "Account: {id}",
+  "skillsStatus": "Status: {value}",
+  "skillsEnable": "Enable Skill",
+  "skillsDisable": "Disable Skill",
+  "skillsChangeReview": "Review Skill change",
+  "skillsChangeTarget": "Target: {name}",
+  "skillsChangeAction": "Action: {action}",
+  "skillsChangeConfirm": "Confirm Skill change",
+  "skillsChangeWorking": "Applying Skill change…",
+  "skillsChangeAccepted": "Skill change accepted: {action}",
+  "skillsChangeReceipt": "Operation: {id}",
+  "skillsConflictAccountPlaceholder": "Account UUID for state conflicts",
+  "skillsConflictAccountHelp": "Enter the exact account UUID. State conflict reads are metadata-only; paths and saved content stay in the CLI.",
+  "skillsConflictsRefresh": "Check state conflicts",
+  "skillsConflictsLoading": "Loading state conflicts…",
+  "skillsConflictsUnsupported": "This CLI does not expose Skill state conflict reads.",
+  "skillsConflictsEmpty": "No conflicts in this scope.",
+  "skillsConflictPublication": "Publication conflicts",
+  "skillsConflictMigration": "Migration conflicts",
+  "skillsConflictStatus": "Status: {value}",
+  "skillsConflictReason": "Reason: {value}",
+  "skillsConflictTarget": "{name} · {status}",
+  "skillsConflictResolve": "Review resolution",
+  "skillsConflictMigrate": "Review migration",
+  "skillsConflictRestore": "Review restore",
+  "skillsConflictWorkflow": "Conflict {id}: review the {action} command before submitting. Paths, branch inputs and content stay inside the CLI.",
+  "operationsTitle": "Operation center",
+  "operationsHelp": "Track active and recent desktop operations in one place. Details and credentials remain on the owning page or in the CLI.",
+  "operationsEmpty": "No active or recent operations.",
+  "operationsSummary": "{active, plural, =0 {No active operations} one {# active operation} other {# active operations}} · {total, plural, one {# recorded operation} other {# recorded operations}}",
+  "operationsOpen": "Open details",
+  "operationsClear": "Remove saved summary",
+  "operationRunning": "Running",
+  "operationCompleted": "Completed",
+  "operationFailed": "Failed",
+  "operationAttention": "Needs attention",
+  "operationLogin": "Sign-in",
+  "operationLogout": "Sign-out",
+  "operationAccount": "Account change",
+  "operationDefaultAccount": "Default account",
+  "operationCredentials": "Developer credentials",
+  "operationAccountImport": "Configuration import",
+  "operationRuntimeRecovery": "Runtime recovery",
+  "operationSync": "Project synchronization",
+  "operationMutagen": "Synchronization environment",
+  "operationSetup": "Local setup",
+  "operationWireGuard": "WireGuard configuration",
+  "operationTunnel": "WireGuard tunnel",
+  "operationPortForward": "Port forwarding",
+  "operationRemoteCreate": "Remote session creation",
+  "operationRemoteStop": "Remote session stop",
+  "operationRemoteDelete": "Remote session deletion",
+  "operationQuery": "Background query",
+  "operationDetailsHelp": "Open the owning page to review the exact context and receipt.",
+  "dedicatedOperationTitle": "CLI terminal · {command}",
+  "dedicatedOperationDetailsHelp": "Desktop stores only this lifecycle summary. Review the managed terminal or CLI journal for the exact result; nothing is replayed after restart.",
+  "operationsSidebar": "Operation center",
+  "initWizardTitle": "Complete initialization",
+  "initWizardOperation": "Initialization wizard",
+  "initWizardHelp": "Prepare local data, sign in, optionally register this device and publish WireGuard configuration, then verify network and session readiness.",
+  "initWizardProgress": "Completing initialization…",
+  "initWizardApproval": "Approve sign-in in your browser",
+  "initWizardStage": "Current step: {stage}",
+  "initWizardCancelHelp": "Stopping the wait does not undo completed local, login or registration steps. Refresh the context before deciding what to do next.",
+  "initWizardRetry": "Start again",
+  "initWizardConfigureWireGuard": "Configure WireGuard after sign-in",
+  "initWizardWireGuardOutput": "WireGuard output path (optional)",
+  "initWizardDefaultOutput": "Use the CLI default path",
+  "initWizardReview": "Review the complete initialization scope",
+  "initWizardScope": "Local setup, credentials and diagnostics use the selected agent-remote home.",
+  "initWizardDeviceScope": "Device registration: {skip, select, true {skip; keep a user-only login} other {register a device with the supplied public keys}}",
+  "initWizardWireGuardScope": "WireGuard will be planned and explicitly confirmed at: {path}",
+  "initWizardConfirm": "Confirm initialization",
+  "initWizardWireGuardReview": "Review WireGuard publication",
+  "initWizardWireGuardReviewHelp": "The CLI produced this read-only plan after sign-in. Confirm the exact path and action before writing anything.",
+  "initWizardWireGuardAction": "Action: {action}",
+  "initWizardWireGuardDirectories": "Missing directories to create: {count}",
+  "initWizardConfirmWireGuard": "Confirm WireGuard publication",
+  "initWizardComplete": "Initialization complete",
+  "initWizardLocalReady": "Local setup complete: {complete}",
+  "initWizardLoginReady": "Signed in to {server}",
+  "initWizardWireGuardReady": "WireGuard publication complete: {complete} · {path}",
+  "initWizardWireGuardSkipped": "WireGuard publication was skipped.",
+  "initWizardDiagnosticsReady": "Diagnostics verified {checks} checks and {dependencies} dependencies.",
+  "initWizardReadiness": "Readiness: {ready, select, true {ready} other {needs attention}} · {accounts} accounts · {sessions} sessions",
+  "deviceTitle": "Device",
+  "deviceHelp": "Inspect the active device and perform reviewed credential actions.",
+  "deviceLocalTitle": "Local Device app",
+  "deviceLocalInstallation": "Installation: {status}",
+  "deviceLocalPath": "Path: {path}",
+  "deviceLocalVersion": "Version: {version}",
+  "deviceLocalChecks": "Bundle ID: {bundle} · signature: {signature} · identity: {identity} · Gatekeeper: {gatekeeper}",
+  "deviceLocalXPC": "Network broker XPC: {network} · GUI executor XPC: {gui}",
+  "deviceLocalRunning": "Process: {running}",
+  "deviceLocalPlanTitle": "Lifecycle plan: {action}",
+  "deviceLocalPlanHelp": "The reviewed {method} terminal workflow will execute these bounded stages.",
+  "deviceLocalPlanStage": "Stage {stage}: {state}",
+  "deviceLocalPlanUnavailable": "Lifecycle plan unavailable: {error}",
+  "deviceLocalStatusUnavailable": "Local Device status unavailable: {error}",
+  "deviceLoading": "Loading device status…",
+  "deviceID": "Device: {id}",
+  "devicePlatform": "Platform: {platform}",
+  "deviceStatus": "Status: {status}",
+  "deviceServer": "Server: {server}",
+  "deviceContext": "Configuration home: {home}",
+  "deviceRotate": "Rotate token",
+  "deviceRevoke": "Revoke device",
+  "deviceReview": "Review device action",
+  "deviceAction": "Action: {action}",
+  "deviceConfirmHelp": "The exact home, server, active device and action are frozen. Confirm only if they match your intent.",
+  "deviceConfirm": "Confirm device action",
+  "deviceReceipt": "Device action receipt",
+  "deviceRemoteStatus": "Remote result: {status}",
+  "deviceLocalCleanup": "Local cleanup complete: {complete}",
+  "deviceLocalCredential": "Local credential stored: {complete}",
+  "deviceRefresh": "Refresh",
+  "deviceStopWaiting": "Stop waiting",
+  "deviceNotConfigured": "Not configured",
+  "deviceYes": "yes",
+  "deviceNo": "no",
+  "egoBrowserTitle": "Ego Browser",
+  "egoBrowserHelp": "Inspect the local Bridge installation and its remote browser bindings.",
+  "egoBrowserLoading": "Loading ego-browser status…",
+  "egoBrowserRefresh": "Refresh",
+  "egoBrowserLocalState": "Local Bridge: {installation} · store: {store}",
+  "egoBrowserPolicy": "Enrollment: {enrollment} · execution: {execution}",
+  "egoBrowserServer": "Server: {server}",
+  "egoBrowserDeviceCount": "Registered Bridge devices: {count}",
+  "egoBrowserDevice": "Device {id} · {status}",
+  "egoBrowserVersion": "Bridge: {bridge} · runtime: {runtime}",
+  "egoBrowserBindingCount": "Browser bindings: {count}",
+  "egoBrowserBinding": "Binding {id} · {status} · lease: {lease}",
+  "egoBrowserUnknown": "unknown",
+  "egoBrowserRequestsOpen": "Inspect requests",
+  "egoBrowserRequestsTitle": "Active requests for binding {id}",
+  "egoBrowserRequestsLoading": "Loading browser requests…",
+  "egoBrowserRequestsEmpty": "No active browser requests.",
+  "egoBrowserRequest": "Request {id} · {status} · {type} · {bytes} bytes",
+  "egoBrowserRequestCancel": "Cancel",
+  "nodesTitle": "Managed Nodes",
+  "nodesHelp": "Select a managed Node, review its exact context and intent, then run the controlled CLI installer in a native terminal.",
+  "nodesLoading": "Loading managed Nodes…",
+  "nodesFilter": "Filter Nodes",
+  "nodesEmpty": "No managed Nodes match this filter.",
+  "nodesRefresh": "Refresh Nodes",
+  "nodeSummary": "{name} · {status}",
+  "nodeID": "Node: {id}",
+  "nodeVersion": "Release: {version}",
+  "nodeSSH": "SSH: {user}@{host}:{port}",
+  "nodeAdmission": "Enrollment: {enrollment, select, true {allowed} false {denied} other {unknown}} · execution: {execution, select, true {allowed} false {denied} other {unknown}}",
+  "nodeSelect": "Select Node",
+  "nodeReview": "Review Node installation",
+  "nodeContext": "Configuration home: {home}",
+  "nodeServer": "Server: {server}",
+  "nodeDevice": "Device: {id}",
+  "nodeEnableEgoBrowser": "Enable ego-browser on this Node",
+  "nodeInstallManaged": "Installation and SSH enrollment run in the managed agent-remote terminal. No join code or credential is stored by desktop.",
+  "nodeArgv": "Frozen command: {argv}",
+  "nodeConfirm": "Run Node installation",
+  "@nodeAdmission": {
+    "placeholders": {
+      "enrollment": {
+        "type": "String"
+      },
+      "execution": {
+        "type": "String"
+      }
+    }
+  },
+  "operationDevice": "Device operation",
+  "fileDropInserted": "Inserted {count, plural, one {# dropped path} other {# dropped paths}} into the active terminal.",
+  "fileDropNeedsLocal": "File drops can be inserted into a local Agent terminal only.",
+  "fileDropNoSession": "Focus a running local Agent terminal before dropping files.",
+  "fileDropExited": "The active Agent terminal has exited. Start or focus a running local session.",
+  "fileDropInvalid": "The dropped file path could not be inserted safely.",
+  "remoteAttachmentDropUnsupported": "Exact remote sessions remain text-only because CLI exact attachment transfer v1 is not declared for this session.",
+  "remoteAttachAttachmentStatus": "Attachment channel: text only (v{version}). Files and images stay disabled until a transfer protocol verifies this exact session identity.",
+  "@dependenciesPlatform": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "cliDoctorHelp": "Doctor checks the local installation, configuration, credentials, dependencies, and server reachability. Review the exact command before it runs.",
+  "cliDoctorFixHelp": "The --fix option may create or refresh local metadata before checks run. Continue only after reviewing the frozen argv.",
+  "commandDiagnosticsStatus": "Inspect status",
+  "commandDiagnosticsDoctor": "Inspect doctor",
+  "commandDiagnosticsSSH": "Inspect SSH",
+  "commandDiagnosticsDependencies": "Inspect dependencies",
+  "commandDiagnosticsMethod": "Control method: {method}",
+  "commandDiagnosticsSSHVersion": "OpenSSH version: {version}",
+  "commandDiagnosticsAuthorization": "Authorization: {status}",
+  "commandDiagnosticsRepairDoctor": "Repair local setup",
+  "commandDiagnosticsRepairDependencies": "Repair dependencies",
+  "commandDiagnosticsRepairReview": "Review repair: {command}",
+  "commandDiagnosticsRepairHelp": "This action can change local metadata or managed dependencies. Confirm the exact command and home before continuing.",
+  "commandDiagnosticsRepairHome": "Managed home: {home}",
+  "commandDiagnosticsRepairConfirm": "Confirm repair",
+  "remoteAttachAttachmentStatusText": "Attachment channel: text only (v{version}). Files and images stay disabled because CLI exact transfer v1 is not declared.",
+  "remoteAttachAttachmentStatusTransfer": "Attachment channel: exact transfer v{version}. File and image payloads use the identity-bound CLI channel; Server and Node verify every lease.",
+  "skillsStateTitle": "State history",
+  "skillsStateHelp": "Inspect bounded checkpoint and pending-finalization metadata for one exact account scope. Content and paths stay in the CLI.",
+  "skillsStateAccountPlaceholder": "Account UUID for state history",
+  "skillsStateScopeAccount": "Account directory",
+  "skillsStateScopeItem": "One Skill",
+  "skillsStateSkillPlaceholder": "Skill UUID",
+  "skillsStateRefresh": "Load state history",
+  "skillsStateLoading": "Loading state history…",
+  "skillsStateUnsupported": "This CLI does not expose Skill state history reads.",
+  "skillsStateEmpty": "No records in this scope.",
+  "skillsStateCheckpoints": "Checkpoints",
+  "skillsStatePending": "Pending finalization",
+  "skillsStateCheckpoint": "Checkpoint: {id}",
+  "skillsStateCheckpointStatus": "Storage: {storage}; retained: {retained}; head: {head}",
+  "skillsStateCheckpointCreated": "Created: {value}",
+  "skillsStatePendingItem": "{id} · Node {node} · {status}",
+  "skillsStateCheckpointStorage": "Storage: {value}",
+  "skillsStateCheckpointRetained": "retained",
+  "skillsStateCheckpointUnretained": "not retained",
+  "skillsStateCheckpointHead": "head",
+  "skillsStateCheckpointNotHead": "not head",
+  "skillsStateExport": "Export checkpoint",
+  "skillsStateExportReview": "Review checkpoint export",
+  "skillsStateNextCheckpoints": "Load next checkpoint page",
+  "skillsStateNextPending": "Load next pending page",
+  "skillsStateInfo": "Inspect checkpoint",
+  "skillsStateInfoTitle": "Checkpoint details",
+  "skillsStateInfoLoading": "Loading checkpoint details…",
+  "skillsStateInfoUnsupported": "This CLI does not expose checkpoint details.",
+  "skillsStateInfoStatus": "Checkpoint status: {value}",
+  "skillsStateInfoDigest": "Content digest: {value}",
+  "skillsStateDiff": "Inspect changed paths",
+  "skillsStateCurrentDiff": "Compare current state",
+  "skillsStateDiffTitle": "State diff",
+  "skillsStateDiffLoading": "Loading state diff…",
+  "skillsStateDiffUnsupported": "This CLI does not expose state diff reads.",
+  "skillsStateDiffSummary": "{mode} · {count} changed paths",
+  "skillsStateDiffPath": "{path} · {kind} · {size} bytes",
+  "skillsStateDiffDigest": "digest {value}",
+  "skillsStateDiffNext": "Load next diff page",
+  "skillsInfo": "View Skill details",
+  "skillsInfoLoading": "Loading Skill details…",
+  "skillsInfoUnsupported": "This CLI does not expose Skill details reads.",
+  "skillsInfoKind": "Type: {value}",
+  "skillsInfoStatus": "Status: {value}",
+  "skillsInfoEpoch": "Installation epoch: {value}",
+  "skillsInfoRevisions": "Retained revisions: {count}",
+  "skillsInfoRevision": "Revision {number}: {id} ({retained})",
+  "skillsInfoRetained": "retained",
+  "skillsInfoUnretained": "not retained",
+  "skillsInfoAccount": "Account: {id}",
+  "skillsInfoSourceCheckpoint": "Source checkpoint: {id}",
+  "skillsInfoEffective": "Effective rule: {enabled} · revision {revision} · {included}",
+  "skillsInfoIncluded": "included",
+  "skillsInfoExcluded": "excluded",
+  "egoBrowserBindingAction": "{action, select, pause {Pause} resume {Resume} stop {Stop} revoke {Revoke} other {Manage}}",
+  "egoBrowserBindingWorking": "Applying binding lifecycle action…",
+  "egoBrowserBindingReview": "Review browser binding action",
+  "egoBrowserBindingReviewTarget": "Binding {id} · action: {action}",
+  "egoBrowserBindingReviewAllowed": "The current generation is valid and the action is admitted.",
+  "egoBrowserBindingReviewDenied": "The current binding state does not admit this action.",
+  "egoBrowserBindingConfirm": "Apply action",
+  "egoBrowserBindingAccepted": "Binding action {action} completed · status: {status}",
+  "egoBrowserDeleteDevice": "Delete revoked device",
+  "egoBrowserDeleteBinding": "Delete terminal binding",
+  "egoBrowserDeleteWorking": "Preparing deletion review…",
+  "egoBrowserDeleteReview": "Review permanent deletion",
+  "egoBrowserDeleteReviewTarget": "{target} {id} · observed generation {generation}",
+  "egoBrowserDeleteReviewAllowed": "The target is in a deletable terminal state. This cannot be undone.",
+  "egoBrowserDeleteReviewDenied": "The target is not in a deletable terminal state.",
+  "egoBrowserDeleteConfirm": "Delete permanently",
+  "egoBrowserDeleteAccepted": "Deleted {target} {id}.",
+  "egoBrowserCandidatesTitle": "Available Claude sessions",
+  "egoBrowserCandidatesLoading": "Loading claimable sessions…",
+  "egoBrowserCandidatesEmpty": "No Claude sessions are currently eligible for browser control.",
+  "egoBrowserCandidate": "{name} · {status} · Node {node}",
+  "egoBrowserCandidateClaim": "Review full-trust claim",
+  "egoBrowserClaimWorking": "Preparing full-trust claim review…",
+  "egoBrowserClaimReview": "Review full-trust browser claim",
+  "egoBrowserClaimReviewTarget": "Claude session {id} · {name}",
+  "egoBrowserClaimReviewWarning": "This grants the remote Agent full-trust browser control as the current user. Review the exact session before continuing.",
+  "egoBrowserClaimConfirm": "Authorize full-trust claim",
+  "egoBrowserClaimAccepted": "Browser claim submitted for {id}. Local admission is open.",
+  "egoBrowserClaimUnsupported": "This CLI does not expose structured browser claim controls.",
+  "remoteSessionServerFilter": "Server session filters",
+  "remoteSessionServerFilterHelp": "These filters query the remote inventory. Text search below only filters the sessions already loaded.",
+  "remoteSessionFilterActive": "Server-side filters are active",
+  "remoteSessionHideFilter": "Hide filters",
+  "remoteSessionToolFilter": "Agent",
+  "remoteSessionStatusFilter": "Status",
+  "remoteSessionFilterAll": "All",
+  "remoteSessionApplyFilter": "Apply filters",
+  "remoteSessionClearFilter": "Clear filters"
+}

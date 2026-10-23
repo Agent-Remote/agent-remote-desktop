@@ -1,0 +1,7 @@
+/dist/
+/build/
+/artifacts/
+*.test
+.DS_Store
+/agent-remote-desktop
+/agent-remote-desktop.exe

@@ -1,0 +1,123 @@
+name: Desktop checks
+on:
+  push:
+  pull_request:
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            goos: darwin
+          - os: ubuntu-latest
+            goos: linux
+          - os: windows-latest
+            goos: windows
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Linux native UI dependencies
+        if: runner.os == 'Linux'
+        run: >-
+          sudo apt-get update && sudo apt-get install -y
+          libgtk-3-0 libgl1 libegl1 libwebkit2gtk-4.1-0
+          libayatana-appindicator3-1 dbus-x11 xvfb
+      - name: Catalog, layout, unit and PTY checks
+        shell: bash
+        env:
+          DESKTOP_TERMINAL_TESTS: "1"
+        run: bash scripts/check.sh
+      - name: Native installer upgrade and rollback probe
+        shell: bash
+        run: go run ./tests/installer-probe
+      - name: Runtime-only host acceptance evidence
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          DESKTOP_NATIVE_EVIDENCE_DIR: ${{ runner.temp }}/agent-remote-desktop-native
+        run: scripts/native-acceptance.sh --target "${{ matrix.goos }}"
+      - name: Runtime-only host acceptance evidence (PowerShell)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          DESKTOP_NATIVE_EVIDENCE_DIR: ${{ runner.temp }}/agent-remote-desktop-native
+        run: ./scripts/native-acceptance.ps1 -EvidenceDir "$env:DESKTOP_NATIVE_EVIDENCE_DIR" -Target "${{ matrix.goos }}"
+      - name: Upload runtime-only host acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-acceptance-${{ matrix.os }}
+          path: ${{ runner.temp }}/agent-remote-desktop-native
+          # A missing directory must fail the host job instead of allowing a
+          # later verifier to mistake a missing runner record for success.
+          if-no-files-found: error
+      - run: go build .
+
+  cross-build:
+    name: Cross-build (no runtime evidence) ${{ matrix.goos }}/${{ matrix.goarch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - goos: darwin
+            goarch: arm64
+          - goos: windows
+            goarch: amd64
+          - goos: linux
+            goarch: amd64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Build desktop and installer for target
+        shell: bash
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+          CGO_ENABLED: "0"
+        run: |
+          go build ./...
+          mkdir -p "$RUNNER_TEMP/agent-remote-desktop-cross"
+          installer="$RUNNER_TEMP/agent-remote-desktop-cross/agent-remote-desktop-installer"
+          if [[ "$GOOS" == windows ]]; then installer+=".exe"; fi
+          go build -trimpath -o "$installer" ./cmd/release-installer
+          test -s "$installer"
+
+  verify-native-evidence:
+    name: Verify native acceptance evidence
+    # Each runner records its own host-only evidence.  Keep this as a separate
+    # job so a green runner cannot silently become the release gate without
+    # proving that all three target hosts produced a complete record.
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download macOS host evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: native-acceptance-macos-latest
+          path: ${{ runner.temp }}/native-evidence/macos
+      - name: Download Windows host evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: native-acceptance-windows-latest
+          path: ${{ runner.temp }}/native-evidence/windows
+      - name: Download Linux host evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: native-acceptance-ubuntu-latest
+          path: ${{ runner.temp }}/native-evidence/linux
+      - name: Verify all host records
+        shell: bash
+        run: >-
+          scripts/verify-native-evidence.sh
+          --allow-virtual-display
+          "${{ runner.temp }}/native-evidence/macos"
+          "${{ runner.temp }}/native-evidence/windows"
+          "${{ runner.temp }}/native-evidence/linux"

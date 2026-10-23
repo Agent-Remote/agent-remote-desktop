@@ -1,0 +1,207 @@
+name: Desktop community release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+# A release is created only from an immutable version tag.  The workflow does
+# not run on pull requests or ordinary branch pushes, so the protected
+# community signing environment is never exposed to untrusted source.
+permissions:
+  contents: write
+
+concurrency:
+  group: desktop-community-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  source-check:
+    name: Validate tagged source
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the tagged source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Validate release ref and application version
+        shell: bash
+        env:
+          RELEASE_REF: ${{ github.ref }}
+          RELEASE_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          case "$RELEASE_REF" in
+            refs/tags/v*) ;;
+            *)
+              echo "community releases must run from a v* tag (got $RELEASE_REF)" >&2
+              exit 1
+              ;;
+          esac
+          test "$RELEASE_NAME" != "v" || {
+            echo "release tag has no version" >&2
+            exit 1
+          }
+          version="$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          value = json.loads(Path("mygo.json").read_text(encoding="utf-8"))
+          version = str(value.get("version", "")).strip()
+          if not version or version.endswith("-dev"):
+              raise SystemExit("mygo.json must contain a formal (non -dev) version")
+          print(version)
+          PY
+          )"
+          expected="v${version}"
+          test "$RELEASE_NAME" = "$expected" || {
+            echo "tag $RELEASE_NAME does not match mygo.json version $version" >&2
+            exit 1
+          }
+
+      - name: Install Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Run desktop checks
+        env:
+          DESKTOP_TERMINAL_TESTS: '1'
+        run: bash scripts/check.sh
+
+  build-and-publish:
+    name: Build and publish community artifacts
+    needs: source-check
+    runs-on: macos-14
+    environment: community-release
+    steps:
+      - name: Check out the tagged source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Import the project community certificate
+        id: keychain
+        shell: bash
+        env:
+          COMMUNITY_P12_B64: ${{ secrets.COMMUNITY_MACOS_CERTIFICATE_P12_B64 }}
+          COMMUNITY_P12_PASSWORD: ${{ secrets.COMMUNITY_MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          test -n "$COMMUNITY_P12_B64" || {
+            echo "COMMUNITY_MACOS_CERTIFICATE_P12_B64 is required for a formal macOS community release" >&2
+            exit 1
+          }
+          test -n "$COMMUNITY_P12_PASSWORD" || {
+            echo "COMMUNITY_MACOS_CERTIFICATE_PASSWORD is required for a formal macOS community release" >&2
+            exit 1
+          }
+          keychain="$RUNNER_TEMP/agent-remote-community-release.keychain-db"
+          keychain_password="$(uuidgen)"
+          certificate="$RUNNER_TEMP/agent-remote-community-release.p12"
+          printf '%s' "$COMMUNITY_P12_B64" | base64 --decode > "$certificate"
+          security create-keychain -p "$keychain_password" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$keychain_password" "$keychain"
+          security import "$certificate" -k "$keychain" -P "$COMMUNITY_P12_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "$keychain_password" "$keychain"
+          security list-keychains -d user -s "$keychain"
+          security default-keychain -s "$keychain"
+          {
+            echo "keychain=$keychain"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build all supported targets with the community policy
+        shell: bash
+        env:
+          DESKTOP_MACOS_SIGNING_IDENTITY: ${{ secrets.COMMUNITY_MACOS_SIGNING_IDENTITY }}
+          DESKTOP_MACOS_SIGNER_CERTIFICATE_SHA1: ${{ secrets.COMMUNITY_MACOS_CERTIFICATE_SHA1 }}
+          DESKTOP_RELEASE_OUT: ${{ runner.temp }}/agent-remote-desktop-release
+        run: |
+          set -euo pipefail
+          test -n "$DESKTOP_MACOS_SIGNING_IDENTITY" || {
+            echo "COMMUNITY_MACOS_SIGNING_IDENTITY is required" >&2
+            exit 1
+          }
+          test -n "$DESKTOP_MACOS_SIGNER_CERTIFICATE_SHA1" || {
+            echo "COMMUNITY_MACOS_CERTIFICATE_SHA1 is required" >&2
+            exit 1
+          }
+          # build-release.sh rejects commercial signing and ad-hoc fallback,
+          # then verifies the actual community bundle with codesign.
+          # Keep the first formal release target set explicit. The build script
+          # still supports subsets for local smoke builds, but the publication
+          # workflow must never depend on a mutable default or runner env.
+          formal_targets='darwin/arm64,windows/amd64,linux/amd64'
+          scripts/build-release.sh --platforms "$formal_targets" --out "$DESKTOP_RELEASE_OUT" --clean
+          scripts/verify-release.sh "$DESKTOP_RELEASE_OUT" --require-targets "$formal_targets"
+
+      - name: Smoke test the installed macOS package
+        shell: bash
+        env:
+          DESKTOP_RELEASE_OUT: ${{ runner.temp }}/agent-remote-desktop-release
+        run: |
+          set -euo pipefail
+          # This runs on the macOS packaging host and verifies the copied
+          # bundle, installer status, and --version after installation. It
+          # never enables ad-hoc signing and does not publish anything.
+          scripts/release-native-smoke.sh "$DESKTOP_RELEASE_OUT"
+
+      - name: Archive the verified release directory
+        id: archive
+        shell: bash
+        env:
+          DESKTOP_RELEASE_OUT: ${{ runner.temp }}/agent-remote-desktop-release
+        run: |
+          set -euo pipefail
+          version="$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          print(json.loads(Path("mygo.json").read_text(encoding="utf-8"))["version"])
+          PY
+          )"
+          archive="$RUNNER_TEMP/agent-remote-desktop-${version}-community.tar.gz"
+          tar -C "$(dirname "$DESKTOP_RELEASE_OUT")" -czf "$archive" "$(basename "$DESKTOP_RELEASE_OUT")"
+          shasum -a 256 "$archive" > "$archive.sha256"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "archive=$archive" >> "$GITHUB_OUTPUT"
+
+      - name: Upload the verified release directory as workflow evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-remote-desktop-${{ steps.archive.outputs.version }}-community
+          path: |
+            ${{ steps.archive.outputs.archive }}
+            ${{ steps.archive.outputs.archive }}.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Publish the tagged GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_NAME: ${{ github.ref_name }}
+          ARCHIVE: ${{ steps.archive.outputs.archive }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh release create "$RELEASE_NAME" "$ARCHIVE" "$ARCHIVE.sha256" \
+            --verify-tag \
+            --title "agent-remote-desktop ${RELEASE_NAME#v}" \
+            --generate-notes
+
+      - name: Remove the temporary signing keychain
+        if: always() && steps.keychain.outputs.keychain != ''
+        shell: bash
+        env:
+          KEYCHAIN: ${{ steps.keychain.outputs.keychain }}
+        run: |
+          set -euo pipefail
+          security delete-keychain "$KEYCHAIN" || true

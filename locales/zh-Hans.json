@@ -1,0 +1,2055 @@
+{
+  "@@locale": "zh-Hans",
+  "appTitle": "Agent Remote Desktop",
+  "brandMark": "AR",
+  "brandName": "Agent Remote",
+  "supportedAgents": "CODEX   /   CLAUDE   /   FCLAUDE",
+  "workbench": "工作台",
+  "openWorkbench": "打开工作台",
+  "openProjectMenu": "打开项目…",
+  "newSession": "新建会话",
+  "splitHorizontal": "横向分屏",
+  "splitVertical": "纵向分屏",
+  "chooseProjectDirectory": "选择项目目录",
+  "openProject": "打开项目",
+  "projectLocationHelp": "本地会话直接使用这个目录；远程会话由 fclaude 按现有规则建立同步。",
+  "projectPathPlaceholder": "项目的完整目录路径",
+  "projectDirectory": "项目目录",
+  "browse": "浏览…",
+  "cancel": "取消",
+  "open": "打开",
+  "newAgentSession": "新建 Agent 会话",
+  "launchArgsHelp": "高级启动参数（JSON 数组，可留空）",
+  "launchArgsPlaceholder": "[\"--model\", \"模型名称\"]",
+  "launchArgs": "启动参数",
+  "launchToolHelp": "只启动所选工具，不修改其账户或登录配置。",
+  "startSession": "启动会话",
+  "closeSessionQuestion": "关闭这个会话？",
+  "stopLocalHelp": "这会停止本地 Agent。你也可以只隐藏面板，让任务继续运行。",
+  "detachRemoteHelp": "这会断开本机终端，远端 tmux 会话继续运行。",
+  "forceStopHelp": "会话尚未退出。强制结束会终止本地进程及其受管子进程，未完成的工作可能丢失。",
+  "hideOnly": "仅隐藏",
+  "confirmClose": "确认关闭",
+  "forceStop": "强制结束",
+  "quitQuestion": "退出 Agent Remote？",
+  "quitTimeoutHelp": "部分进程没有退出。可以返回工作台，或明确强制结束剩余本地进程。",
+  "keepWorking": "继续工作",
+  "stopAndQuit": "停止本地会话并退出",
+  "forceQuit": "强制结束并退出",
+  "settings": "环境与设置",
+  "sharedConfigHelp": "账户与远程业务继续共用 agent-remote 的配置环境。",
+  "tools": "工具检测",
+  "toolMissing": "未找到 · 请安装工具或将其加入 PATH",
+  "appearance": "外观",
+  "themeMidnight": "夜航 · 深色",
+  "themeDaybreak": "晨光 · 浅色",
+  "themeSakura": "樱幕 · 二次元",
+  "focusMode": "专注模式：隐藏侧栏与装饰",
+  "reduceMotion": "减少动效",
+  "reduceMotionHelp": "关闭装饰性过渡；终端更新仍保持即时且清晰可读。",
+  "returnWorkbench": "回到工作台",
+  "toolbarWorkbench": "/  工作台",
+  "starting": "正在启动…",
+  "focus": "专注",
+  "hideDecorations": "隐藏侧栏与装饰",
+  "theme": "主题",
+  "newSessionAction": "＋ 新建会话",
+  "projects": "项目空间",
+  "addProject": "添加项目",
+  "cliUtilityProject": "CLI 工具",
+  "running": "运行",
+  "exited": "已退出",
+  "local": "本地",
+  "remote": "远程",
+  "sidebarTagline": "你的项目，随时继续。",
+  "details": "详情",
+  "welcomeEyebrow": "为你的 AGENT 留一片空间",
+  "welcomeTitle": "从一个项目，\n开启你的工作空间。",
+  "welcomeHelp": "让本地与远程 Agent 各就其位。\n保留熟悉的终端，用更从容的方式管理每一次会话。",
+  "openProjectDirectory": "打开项目目录",
+  "viewEnvironment": "查看运行环境",
+  "chooseAgent": "为这个项目选择一位 Agent",
+  "newProjectSession": "新建项目会话",
+  "hiddenSessionsHelp": "已隐藏的会话仍在侧栏中，点击即可回到终端。",
+  "hide": "隐藏",
+  "projectDetails": "项目详情",
+  "projectDetailsHelp": "会话属于项目目录。分屏可同时查看多个 Agent；隐藏终端不会结束进程。",
+  "readyBackground": "就绪 · 关闭窗口后会话在后台继续",
+  "splitLimit": "当前布局已显示 4 个终端；可以新建独立标签。",
+  "invalidLaunchArgs": "高级参数使用 JSON 字符串数组，例如 [\"--model\", \"模型名称\"]",
+  "waitForStart": "正在启动会话，请等待启动完成后退出。",
+  "language": "语言",
+  "followSystem": "跟随系统",
+  "refreshTools": "重新检测工具",
+  "decreaseFont": "减小终端字号",
+  "increaseFont": "增大终端字号",
+  "homeFlagHelp": "agent-remote 配置目录",
+  "versionFlagHelp": "显示版本",
+  "errorUnknown": "操作未能完成。诊断详情：{details}",
+  "errorStopping": "应用正在退出，请等待完成。",
+  "errorSessionLimit": "会话数量已达上限，请先移除已退出的会话。",
+  "errorSessionMissing": "此会话已不存在，请刷新会话列表。",
+  "errorUnsupportedAgent": "不支持此 Agent，请选择 Codex、Claude 或 fclaude。",
+  "errorProjectDirectory": "请选择已存在的项目目录。",
+  "errorArgumentNUL": "启动参数不能包含 NUL 字节。",
+  "errorExecutableMissing": "工具尚未安装或不在 PATH 中，请在设置中检查工具。",
+  "errorStopTimeout": "Agent 未在等待时间内退出；可以继续等待或明确强制结束。",
+  "errorStorageVersion": "桌面数据版本不兼容，请使用兼容版本的应用；既有数据已保留。",
+  "errorPermission": "权限不足，请检查所选目录或资源的访问权限。",
+  "errorNotFound": "文件或目录不存在，请检查位置后重试。",
+  "errorCLIUnavailable": "无法发现 CLI 能力，请安装兼容桌面端的 agent-remote 和 fclaude。",
+  "errorCLISchema": "CLI 命令协议无效或不兼容，请安装兼容版本的 CLI。",
+  "errorSavePreferences": "无法保存桌面设置。{reason}",
+  "localTool": "{tool} · 本地",
+  "remoteTool": "{tool} · 远程",
+  "sessionSummary": "{tool} · {location}  {status}",
+  "namedSessionSummary": "{name} · {tool}",
+  "cliFormRequiredLabel": "{label} · {required}",
+  "portForwardPorts": "{local, number, integer}:{remote, number, integer}",
+  "remoteDeleteSessionContext": "{session} · {node} · {backend}",
+  "skillsRevisionState": "{state} · {revision}",
+  "closeSessionLabel": "关闭会话 {id}",
+  "exitCode": "退出 {code, number, integer}",
+  "fontSize": "终端字号  {size, number, integer}",
+  "sessionCount": "{count, plural, =0 {无会话} other {# 个会话}}",
+  "tabTerminals": "{title} · {count, plural, other {# 个终端}}",
+  "quitSessions": "{count, plural, =0 {没有需要停止的本地会话。} other {将停止 # 个本地会话。}}断开远程连接后，远程 Agent 会继续运行。",
+  "quitSessionDetail": "{name} · {directory}",
+  "@quitSessionDetail": {
+    "description": "明确退出确认中列出的本地会话。",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "directory": {
+        "type": "String"
+      }
+    }
+  },
+  "cliBinaryFlagHelp": "agent-remote 可执行文件路径",
+  "launcherBinaryFlagHelp": "fclaude 可执行文件路径",
+  "resumeSession": "继续历史会话",
+  "continueSession": "继续",
+  "localResumeHelp": "在 Agent 自带的历史选择器中选择会话，也可输入会话 ID；工具将使用当前配置。",
+  "remoteResumeHelp": "输入已有远程会话的 ID，重新连接到该会话。",
+  "localResumeReference": "会话 ID（可选）",
+  "remoteResumeReference": "远程会话 ID",
+  "savedSession": "历史会话",
+  "savedSessionStatus": "未连接",
+  "savedSessionHelp": "此面板已从保存的布局恢复。你可以选择历史会话继续工作，或重新连接远程会话。",
+  "forgetSavedSession": "移除历史记录",
+  "lastExitCode": "上次终端连接退出码：{code, number, integer}",
+  "dragTabHelp": "拖动以调整当前项目的标签顺序",
+  "hideTab": "隐藏标签 {title}",
+  "hideTabHelp": "隐藏此标签；会话仍保留在侧栏中",
+  "errorWorkspaceData": "保存的工作台数据无效，原数据已保留。请恢复有效的桌面备份后重试。",
+  "errorResumeReference": "请输入有效的会话 ID。连接远程会话时必须填写已有的远程会话 ID。",
+  "nextTab": "下一个标签",
+  "previousTab": "上一个标签",
+  "nextProject": "下一个项目",
+  "previousProject": "上一个项目",
+  "nextPane": "聚焦下一个面板",
+  "hideActivePane": "隐藏当前面板",
+  "sessionName": "会话名称（可选）",
+  "selectTab": "选择标签 {title}",
+  "commandPalette": "命令与导航",
+  "searchWorkbench": "搜索",
+  "paletteSearch": "搜索命令、项目与会话",
+  "noSearchResults": "没有匹配的命令、项目或会话",
+  "remoteManagement": "远程管理",
+  "refreshRemote": "刷新",
+  "loadingRemote": "正在读取 CLI 共用配置与远程列表…",
+  "cancelRemoteQuery": "取消查询",
+  "remoteSetupRequired": "请登录并登记此设备，以查询远程账户和会话。仅用户登录不会提供设备凭据。",
+  "remoteSessions": "远程会话",
+  "remoteAccounts": "工具账户",
+  "filterRemote": "按名称、ID、路径或状态筛选",
+  "noRemoteMatches": "没有匹配的记录。",
+  "remoteProjectRequired": "连接远程终端前，请先选择本地项目。",
+  "connectRemoteSession": "连接会话",
+  "stopRemoteSession": "停止会话",
+  "remoteStopQuestion": "停止这个远程会话吗？",
+  "remoteStopHelp": "停止会请求远程 Agent 结束，并分别记录进程和保存状态；不会删除会话。",
+  "remoteStopConfirm": "停止远程会话",
+  "remoteStopPending": "停止请求正在等待。请保留此请求键以恢复查询状态。",
+  "remoteStopQuery": "刷新停止状态",
+  "remoteStopPhase": "停止阶段：{phase}",
+  "remoteStopProcess": "远程进程：{status}",
+  "remoteStopSave": "Skill 保存：{status}",
+  "remoteStopSaved": "已保存",
+  "remoteStopUnknown": "结果未知。请先查询原停止请求，再尝试其他操作。",
+  "remoteStopFailed": "远程停止失败。重试前请查看已记录的状态。",
+  "remoteStopDeleted": "远程会话已在停止后删除。",
+  "remoteStopRecovery": "恢复远程停止请求",
+  "remoteStopUnsupported": "当前 CLI 未提供准确的远程停止流程。请更新 agent-remote 后再停止会话。",
+  "remoteAttachConfirmation": "使用上方本地项目连接此已有远程会话。这可能接管当前终端连接；不会新建远程会话。",
+  "remoteAuthenticationRequired": "CLI 凭据缺失、过期或不可用。请使用同一配置目录重新登录。",
+  "remotePermissionDenied": "服务器拒绝了此操作的访问权限。",
+  "remoteConfigurationUnavailable": "无法读取 CLI 配置，请检查所选配置目录。",
+  "remoteServerUnavailable": "查询未能完成，请检查连接并稍后刷新。",
+  "errorCLIProtocol": "此 CLI 未提供兼容的桌面控制协议，请使用兼容的 CLI 构建。",
+  "remoteQueryCanceled": "查询已取消，远程会话未被停止。",
+  "remoteStatusReady": "就绪",
+  "remoteStatusPending": "准备中",
+  "remoteStatusStopped": "已停止",
+  "remoteStatusStopping": "停止中",
+  "remoteStatusInterrupted": "已中断",
+  "remoteStatusFailed": "失败",
+  "remoteStatusDisabled": "已禁用",
+  "remoteStatusOther": "未知状态（{status}）",
+  "remoteBackend": "运行环境：{backend}",
+  "remoteAccountSummary": "{tool} · {status} · {region}",
+  "remoteSessionSummary": "{tool} · {status}",
+  "remoteContextChanged": "查询期间 CLI 的服务器或设备配置发生了变化，请刷新以使用当前配置。",
+  "confirmRemoteConnection": "确认并连接",
+  "signInRemote": "登录服务器",
+  "loginInProgress": "正在登录并保存 CLI 共用配置…",
+  "loginCancelHelp": "停止本地等待不会撤销服务器已接受的认证或设备登记。",
+  "stopLoginWaiting": "停止等待",
+  "returnRemoteManagement": "返回远程管理",
+  "loginCompleted": "登录完成",
+  "loginWithoutDevice": "仅登录用户，本次不登记设备。",
+  "loginSharedCredentialHelp": "CLI 使用现有安全存储保存凭据，桌面端不保存密码或 MFA 验证码。",
+  "loginServer": "服务器地址",
+  "loginUsername": "用户名",
+  "loginPassword": "密码",
+  "loginTOTP": "MFA 验证码（如需）",
+  "loginUserOnly": "仅登录，不登记设备",
+  "loginDeviceName": "设备名称（可选）",
+  "loginSSHKey": "SSH 公钥文件（可选）",
+  "loginDefaultKeyHelp": "公钥路径留空时使用 CLI 在 ~/.ssh 中找到的默认公钥；仅可登记公钥。",
+  "loginWireGuardKey": "WireGuard 公钥（可选）",
+  "editLogin": "修改信息",
+  "confirmLogin": "确认并登录",
+  "reviewLogin": "检查登录信息",
+  "loginReviewHelp": "请确认下方服务器、账户及设备信息。登录成功后将更新 CLI 共用环境。",
+  "loginPreviousServer": "当前服务器：{server}",
+  "loginDeviceRegistrationHelp": "使用所选公钥登记设备。登录同一服务器时会复用当前设备并替换其 token。",
+  "loginRejected": "登录被拒绝。请检查用户名、密码及 MFA 验证码，再重新发起登录。",
+  "loginRegistrationRejected": "服务器拒绝了设备登记。请检查当前设备状态和登记信息后再操作。",
+  "loginOutcomeUnknown": "无法确认登录或登记结果。再次登录前，请刷新共用配置并检查服务器设备记录。本次操作未自动重试。",
+  "loginPersistenceIncomplete": "服务器已接受登录，但本地凭据或配置未完整保存。再次登录前，请检查 CLI 配置及服务器设备状态。",
+  "loginPublicKeyRequired": "请选择可读取的 SSH 公钥文件，或选择仅登录、不登记设备。不接受私钥文件。",
+  "loginInvalidParams": "登录信息无效，请检查服务器地址、账户字段及公钥。",
+  "loginConfirmationRequired": "提交前请检查并确认准确的登录信息。",
+  "signOutRemote": "注销登录",
+  "logoutInProgress": "正在注销…",
+  "logoutCancelHelp": "停止本地等待无法撤销凭据清理或远端撤销操作，结果可能无法确认。",
+  "logoutLocalComplete": "本地凭据已清理",
+  "logoutLocalIncomplete": "本地清理未完成或无法确认。再次登录前，请检查共用 CLI 配置及凭据存储。",
+  "logoutUserCredential": "本地用户凭据",
+  "logoutDeviceCredential": "本地设备及 Broker 凭据",
+  "logoutConfiguration": "当前设备及刷新元数据",
+  "logoutCleanupUnconfirmed": "清理未确认",
+  "logoutCleanupConfirmed": "已清理或原本不存在",
+  "logoutResultItem": "{item}：{status}",
+  "logoutUserRevocation": "远端用户凭据",
+  "logoutDeviceRevocation": "远端设备凭据",
+  "logoutSessionsHelp": "此操作影响共用 CLI 登录态，不停止本地 Agent，也不向远端会话发送停止请求；现有连接可能失去授权。",
+  "logoutReviewHelp": "从共用 CLI 配置目录清理此服务器的用户及当前设备凭据，保留服务器地址。请核对目标及远端撤销选项后确认。系统凭据库中，同一服务器/设备的凭据可能被其他配置目录共用。",
+  "logoutRevokeRemote": "同时撤销远端凭据（推荐）",
+  "logoutLocalOnlyHelp": "仅清理本地凭据，远端凭据可能仍有效；此选项可离线使用。",
+  "stopLogoutWaiting": "停止等待注销结果",
+  "confirmLogout": "确认注销",
+  "logoutRevocationConfirmed": "已确认撤销",
+  "logoutRevocationSkipped": "未请求撤销，可能仍有效",
+  "logoutCredentialAbsent": "本地无可用于撤销的凭据",
+  "logoutRevocationUnconfirmed": "撤销未确认，可能仍有效。请检查服务器安全设置。",
+  "logoutOutcomeUnknown": "注销结果未知，本地清理或远端撤销可能已发生。请刷新共用 CLI 状态并检查服务器安全设置，不要视为操作已回滚。",
+  "loginWithPassword": "密码登录",
+  "loginWithBrowser": "浏览器登录",
+  "loginBrowserHelp": "使用短验证码在浏览器中授权。CLI 保管授权机密并保存共享凭据。",
+  "loginAwaitingApproval": "授权此次登录",
+  "loginCodeExpires": "验证码将在 {seconds, number, integer} 秒后过期。",
+  "loginCodeElapsed": "显示的验证码已过期。正在等待 CLI 确认最终结果…",
+  "loginCopyCode": "复制验证码",
+  "loginOpenBrowser": "打开授权页面",
+  "loginBrowserOpenFailed": "无法打开浏览器。请在浏览器中打开上方地址并输入验证码。",
+  "loginExpired": "授权验证码已过期。准备好后，请返回远程管理并重新发起登录。",
+  "@loginCodeExpires": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "diagnosticsTitle": "环境诊断",
+  "dependenciesTitle": "依赖管理",
+  "dependenciesHelp": "检查托管依赖清单与已安装制品。此页面不会安装或修复依赖。",
+  "dependenciesReadOnly": "只读检查 · 不需要凭据或管理员权限",
+  "dependenciesPlatform": "CLI 平台：{platform}",
+  "dependenciesRefresh": "刷新依赖状态",
+  "dependenciesVersions": "检查依赖版本",
+  "dependenciesBusy": "正在检查依赖状态…",
+  "dependenciesCanceled": "已取消依赖检查，未应用本次检查结果。",
+  "dependenciesUnsupported": "此 CLI 版本未提供结构化依赖状态，请更新 agent-remote。",
+  "dependenciesEmpty": "CLI 未报告托管依赖。",
+  "diagnosticsHelp": "检查 CLI 配置与依赖。修复和安装需要单独执行。",
+  "diagnosticsOnline": "检查服务器连接",
+  "diagnosticsRefresh": "运行检查",
+  "diagnosticsVersions": "运行版本检查",
+  "diagnosticsVersionHelp": "版本检查会以 --version 运行已安装的依赖程序（每项最多 3 秒、8 KiB，总计最多 20 秒）。文件存在与权限检查不代表安装可正常运行。",
+  "diagnosticsBusy": "正在检查环境…",
+  "diagnosticsCanceled": "已取消检查，未应用本次检查结果。",
+  "diagnosticsDependencies": "托管依赖",
+  "diagnosticsChecks": "环境检查",
+  "diagnosticsUnsupported": "此 CLI 版本未提供结构化诊断，请更新 agent-remote 后使用此页面。",
+  "diagnosticsManifest": "依赖清单：{source, select, default {使用发布默认值，未创建文件} file {本地清单} other {不可用}}",
+  "diagnosticsCheckLabel": "{id, select, home {CLI 主目录} bin {可执行文件目录} dependencies {依赖目录} wireguard {WireGuard 目录} sqlite {SQLite 文件} config {CLI 配置} server {服务器配置} device {当前设备配置} credential {登录凭据} manifest {依赖清单} server_connection {服务器连接} windows_ssh {Windows OpenSSH 客户端} windows_scp {Windows SCP} windows_wireguard {Windows WireGuard} other {环境项目}}",
+  "diagnosticsStatus": "{status, select, present {存在} missing {缺失} inaccessible {缺少访问或执行权限} invalid {无效} not_checked {未检查} reachable {可连接} unavailable {不可用} other {未知}}",
+  "diagnosticsSuggestion": "{action, select, configure {请检查服务器配置并登录。} check_path {请检查此路径及其访问权限。} repair_installation {请检查 CLI 安装与打包依赖，当前未执行修复。} presence_only {仅确认文件存在，未检查数据库完整性。} verify_signin {此被动检查不读取凭据，也不代表已获得授权。请在远程管理中验证访问权限。} run_online {启用服务器连接检查后将发送健康检查请求。} check_server {请检查服务器配置、网络连接与访问权限。} install_openssh {请启用 Windows OpenSSH 客户端可选功能。} install_wireguard {请安装官方 Windows WireGuard 应用。} sqlite_readable {数据库元数据可读取，未执行结构迁移。} credential_present {已找到存储凭据，尚未验证服务器授权。} credential_binding {Broker 凭据属于其他服务器或设备，请重新登录。} credential_access {无法读取凭据存储，或 Broker 凭据无效。请检查访问权限并重新登录。} other {}}",
+  "diagnosticsVersionStatus": "{status, select, not_checked {未检查版本} ok {版本命令执行成功} failed {版本命令执行失败} timeout {版本命令超时} output_limit {版本输出超过限制} unsafe_path {拒绝版本检查：路径超出托管目录} unsupported {此制品不支持版本检查} missing {依赖缺失，无法检查版本} budget_exhausted {已达总时限，跳过版本检查} inaccessible {无法启动版本检查} other {未知版本结果}}",
+  "diagnosticsVersionRequirement": "要求版本：{version}",
+  "diagnosticsLicense": "许可证：{license}",
+  "@diagnosticsManifest": {
+    "placeholders": {
+      "source": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsCheckLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsSuggestion": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsVersionStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsVersionRequirement": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "@diagnosticsLicense": {
+    "placeholders": {
+      "license": {
+        "type": "String"
+      }
+    }
+  },
+  "diagnosticsDeepHelp": "运行检查会读取 CLI 凭据存储及已有 SQLite 元数据，操作系统可能请求访问权限。不会刷新凭据或修复数据。",
+  "loginOperationStatus": "登录状态",
+  "logoutOperationStatus": "退出登录状态",
+  "providerRequired": "未找到 {tool}。请先安装并刷新检测，再启动或继续会话。",
+  "providerReady": "已找到 {tool} 可执行程序。",
+  "providerInstallGuide": "安装 {tool}",
+  "providerInstallHelp": "{tool, select, codex {按照 Codex CLI 官方指引安装，然后在终端中登录。} claude {按照 Claude Code 官方指引安装，然后在终端中登录。} fclaude {安装包含 fclaude 的 agent-remote-cli，并配置远程登录。} other {安装 agent-remote-cli，并将可执行文件加入 PATH。}}",
+  "providerGuideOpenFailed": "无法打开安装指引，请检查默认浏览器后重试。",
+  "@providerRequired": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@providerReady": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@providerInstallGuide": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "@providerInstallHelp": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesTitle": "能力说明",
+  "capabilitiesHelp": "查看桌面操作能力及 CLI 平台声明。进入本页不会连接服务器或读取凭据。",
+  "capabilitiesOperations": "桌面操作",
+  "capabilitiesCommands": "CLI 命令清单",
+  "capabilitiesLoading": "正在读取本地能力…",
+  "capabilitiesFilter": "筛选 CLI 命令",
+  "capabilitiesVersion": "CLI {version} · {platform}",
+  "@capabilitiesVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesCommandVersion": "命令版本：{version}",
+  "@capabilitiesCommandVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesArguments": "声明的参数数量：{count}",
+  "@capabilitiesArguments": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "capabilitiesPermissionHelp": "已配置设备或支持某条命令不代表拥有权限。这里的查询结果仅用于相同服务器和设备；服务器仍会校验每次请求。",
+  "capabilitiesCoverageHelp": "命令发现描述语法，不代表已完成图形化。未声明的平台范围保持未知，不推断为支持或已授权。",
+  "capabilitiesPlatform": "{state, select, supported {CLI 声明支持当前平台。} unsupported {CLI 不支持在当前平台执行此命令。} other {此 CLI 未声明该命令的平台支持范围。}}",
+  "@capabilitiesPlatform": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesOperation": "{operation, select, mutagen_environment_preview {检查共享同步运行环境} mutagen_environment_apply {重启共享同步服务} sync_recovery_preview {检查旧项目映射} sync_recovery_apply {移除已审阅的旧项目映射} setup_local {本地初始化与修复} login_password {密码 / MFA 登录} login_device_code {浏览器授权登录} logout {注销及凭据清理} accounts_default_get {读取本地默认账号} accounts_default_set {设置默认账号} accounts_default_clear {清除本地默认账号} accounts_create {创建远程账号} accounts_status {读取账号详情} accounts_bind {开始账号绑定} accounts_verify {验证账号登录} accounts_disable {停用账号调度} accounts_list {查询工具账户} sessions_list {查询远程会话} sessions_create_request {查询会话创建} sessions_stop {停止远程会话} sessions_stop_request {查询会话停止} sessions_stop_status {查询会话停止状态} sessions_delete {删除远程会话} sessions_delete_request {查询会话删除} sessions_delete_status {查询会话删除状态} port_forwards_list {查询端口转发} port_forwards_create {创建端口转发} port_forwards_stop {停止端口转发} port_forwards_reconnect {重连端口转发} device_status {查询设备状态} device_revoke {撤销设备} device_rotate_token {轮换设备令牌} diagnostics_inspect {环境诊断} dependencies_inspect {依赖检查} wireguard_config_plan {预览 WireGuard 配置} wireguard_config_apply {发布 WireGuard 配置} wireguard_check {检查 WireGuard 配置} wireguard_status {读取 WireGuard 状态} wireguard_tunnel_plan {预览 WireGuard 启停计划} sync_status {查询项目同步} sync_ensure {建立项目同步} sync_pause {暂停项目同步} sync_resume {恢复项目同步} sync_resolve {刷新已处理的同步冲突} sync_reset {重建项目同步} accounts_runtime_recovery_authority {检查管理员用户} accounts_runtime_recovery_inspect {查看运行时迁移} accounts_runtime_recovery_apply {提交运行时恢复} accounts_runtime_recovery_status {准确查询运行时恢复} accounts_runtime_recovery_pending {读取运行时恢复记录} accounts_runtime_recovery_forget {移除已结束的恢复记录} other {未知操作}}",
+  "@capabilitiesOperation": {
+    "placeholders": {
+      "operation": {
+        "type": "String"
+      }
+    }
+  },
+  "capabilitiesState": "{state, select, ready {本地前置条件已满足。} available {CLI 已声明提供该操作，但每次请求仍会重新校验。} unknown {此命令没有权限映射，执行时由 CLI 决定结果。} unverified {尚未验证访问权限。} observed_allowed {最近查询成功；新的请求仍需校验。} denied {服务器拒绝了最近一次查询。} sign_in_required {请先登录或修复凭据，再重试。} cli_unsupported {此 CLI 尚未提供对应桌面操作。} context_unavailable {无法读取共用配置。} setup_required {请先配置服务器。} device_required {请先登记或选择设备。} platform_unsupported {此 CLI 报告的操作系统与当前系统不同。} unavailable {能力信息不可用。} other {能力信息不可用。}}",
+  "@capabilitiesState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "localSetupTitle": "本地初始化与修复",
+  "localSetupReviewHelp": "创建缺失的本地目录、数据库表和依赖清单，保留已有有效数据。此操作不会登录、安装依赖或启动隧道。",
+  "localSetupScope": "修改范围：所选配置目录、bin、dependencies、secrets、wireguard、ssh、元数据库和依赖清单。",
+  "localSetupChecking": "正在检查 CLI 是否支持本地修复…",
+  "localSetupUnsupported": "当前 CLI 或平台不支持本地初始化与修复。请先更新 CLI。",
+  "confirmLocalSetup": "确认初始化与修复",
+  "localSetupBusy": "正在初始化与修复本地数据…",
+  "localSetupCancelHelp": "停止等待或退出不会回滚已完成的步骤，结果可能未知。",
+  "stopLocalSetupWaiting": "停止等待",
+  "localSetupComplete": "本地初始化与修复已完成。",
+  "localSetupIncomplete": "部分步骤未完成。请查看结果后刷新诊断。",
+  "localSetupOperationStatus": "本地修复操作状态",
+  "returnDiagnostics": "返回环境诊断",
+  "localSetupUnknown": "本地修复结果未知，已完成的步骤没有回滚。请先刷新诊断，再决定是否重新修复。",
+  "localSetupStep": "{id, select, home {配置目录} bin {工具目录} dependencies {依赖目录} secrets {凭据目录} wireguard {WireGuard 目录} ssh {SSH 目录} database {元数据库} manifest {依赖清单} other {本地项目}}",
+  "localSetupStatus": "{status, select, ready {已就绪，无需修改} applied {已完成修改} failed {失败} skipped {已跳过} other {状态未知}}",
+  "localSetupCode": "{code, select, none {无错误。} path_invalid {目标是链接或非预期文件类型。请检查路径后再重试。} state_unavailable {数据库不可读、结构不兼容或正被占用。已有数据未被替换。} unsupported_state_version {数据库由较新版本的 CLI 创建。请更新 CLI。} manifest_invalid {现有依赖清单无效或版本不受支持，未被替换。} local_io {本地文件操作失败。请检查路径与访问权限。} dependency_failed {前置步骤失败，因此跳过此步骤。} other {无法解析结果，请刷新诊断。}}",
+  "@localSetupStep": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@localSetupStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@localSetupCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "localSetupReviewRequired": "提交前请核对所选配置目录，并确认本地初始化与修复。",
+  "wireGuardConfigTitle": "WireGuard 配置",
+  "wireGuardConfigHelp": "选择输出位置后，核对账户与文件修改。",
+  "wireGuardDefaultOutput": "默认位置",
+  "wireGuardCustomOutput": "自定义位置",
+  "wireGuardOutputPath": "输出文件",
+  "wireGuardAbsolutePathHelp": "请输入绝对文件路径。",
+  "reviewWireGuardConfig": "预览配置",
+  "wireGuardPlanning": "正在准备配置预览…",
+  "wireGuardReviewHelp": "此操作可能生成本地私钥，并登记或更新此设备的公钥；不会启动隧道。",
+  "wireGuardHome": "CLI 数据目录",
+  "wireGuardServer": "服务器",
+  "wireGuardDevice": "设备 ID",
+  "editWireGuardConfig": "修改输出位置",
+  "confirmWireGuardConfig": "生成配置",
+  "wireGuardConfigBusy": "正在生成配置…",
+  "wireGuardCancelHelp": "停止等待或退出不会撤销已保存的密钥、登记或文件修改，结果可能未知。",
+  "stopWireGuardWaiting": "停止等待",
+  "wireGuardConfigComplete": "配置文件已发布",
+  "wireGuardConfigIncomplete": "配置未完成，请先检查各阶段结果再发起新的操作。",
+  "wireGuardOperationStatus": "WireGuard 配置操作状态",
+  "wireGuardUnsupported": "当前 CLI 或平台不支持 WireGuard 配置，请更新 CLI。",
+  "wireGuardOutcomeUnknown": "配置结果未知。密钥保存、设备登记或文件修改可能已经生效。请先检查当前状态，再确认新的操作。",
+  "wireGuardExecutionFailed": "WireGuard helper 未能完成请求的隧道操作。请检查工具和权限后重新预览。",
+  "wireGuardPreconditionFailed": "审阅的隧道计划仍有未满足条件。请重新预览当前状态后再试。",
+  "wireGuardReviewRequired": "请先预览配置计划，核对并确认准确的输出位置后再提交。",
+  "wireGuardOutputAction": "{action, select, create {新建文件} replace {替换已有文件} other {文件修改未确认}}",
+  "wireGuardKeyState": "{state, select, not_checked {密钥：尚未检查} reused {密钥：复用已有密钥} created {密钥：新密钥已保存} unknown {密钥：保存结果未知} other {密钥：状态未知}}",
+  "wireGuardEnrollment": "{state, select, not_attempted {登记：尚未尝试} rejected {登记：已拒绝} confirmed {登记：已确认} unknown {登记：结果未知} other {登记：状态未知}}",
+  "wireGuardPublication": "{state, select, not_attempted {文件：尚未发布} published {文件：已发布} failed {文件：发布失败} unknown {文件：发布结果未知} other {文件：状态未知}}",
+  "wireGuardPeerCount": "对端数量：{count}",
+  "@wireGuardOutputAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardKeyState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardEnrollment": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardPublication": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "@wireGuardPeerCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "wireGuardResultCode": "{code, select, none {无错误。} credential_unavailable {无法读取凭据，请检查系统凭据库与登录状态。} wireguard_key_invalid {已有 WireGuard 密钥无效，未替换该密钥。} wireguard_key_store_incomplete {无法确认密钥已可靠保存，未尝试登记。} wireguard_enrollment_rejected {服务器拒绝了登记，本地密钥已保留。} wireguard_enrollment_unknown {登记结果未知，本地密钥已保留，未发布配置文件。} wireguard_config_unavailable {登记已确认，但无法获取配置。} wireguard_config_invalid {登记已确认，但返回的配置无效，未发布文件。} output_changed {输出位置或文件已变化，请重新预览计划后再提交。} output_invalid {输出路径无效或指向不支持的文件类型，请选择其他位置。} output_unavailable {无法访问输出位置，请检查路径与权限。} operation_busy {其他操作正在使用此设备或输出位置，请待其完成后重新预览计划。} wireguard_publication_incomplete {无法确认文件发布或持久保存已完成。请查看文件阶段，已发布的文件不会回滚。} wireguard_context_changed {密钥选定或保存后，共用配置发生变化。请先查看各阶段结果，再准备新的操作。} other {无法解释该结果，请先检查当前状态再继续。}}",
+  "@wireGuardResultCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "wireGuardNetworkTitle": "WireGuard 网络",
+  "wireGuardNetworkHelp": "检查配置、读取隧道状态或预览启停计划。点击相应按钮才会查询，不会自动请求管理员权限。",
+  "wireGuardCheckConfig": "检查配置",
+  "wireGuardReadStatus": "读取隧道状态",
+  "wireGuardConfigPath": "配置文件",
+  "wireGuardDefaultConfig": "默认配置",
+  "wireGuardCustomConfig": "自定义配置",
+  "wireGuardCheckSummary": "配置检查结果",
+  "wireGuardStatusSummary": "隧道观察结果",
+  "wireGuardBridgeSummary": "权限桥状态",
+  "wireGuardBridgeReadStatus": "读取权限桥状态",
+  "wireGuardBridgeHelp": "查看受保护原生权限桥，不会请求管理员权限。即使观察到组件，也不代表已获准修改隧道。",
+  "wireGuardBridgeLifecycleLabel": "生命周期门槛",
+  "wireGuardBridgeLifecycle": "{state, select, unavailable {状态不可用} unsupported {此平台不支持} installation_required {需要安装权限桥} approval_pending {等待系统批准} approval_required {需要系统批准} protocol_unavailable {协议不可用} authentication_required {需要调用方认证} authorization_required {需要执行授权} not_ready {尚未就绪} ready {已具备执行条件} other {未知生命周期状态}}",
+  "wireGuardBridgeInstallationLabel": "安装状态",
+  "wireGuardBridgeApprovalLabel": "系统批准",
+  "wireGuardBridgeProtocolLabel": "协议",
+  "wireGuardBridgeAuthenticationLabel": "调用方认证",
+  "wireGuardBridgeExecutionLabel": "执行就绪状态",
+  "wireGuardBridgePlatform": "{platform, select, windows {Windows} macos {macOS} linux {Linux} other {不支持的平台}}",
+  "wireGuardBridgeState": "{state, select, unavailable {权限桥状态不可用} unsupported {尚未提供原生权限桥} observed {已观察权限桥状态} other {未知权限桥状态}}",
+  "wireGuardBridgeInstallation": "{state, select, not_installed {未安装} installed {已安装} unknown {未知} other {未知}}",
+  "wireGuardBridgeApproval": "{state, select, not_requested {未请求} pending {等待系统批准} approved {已批准} unknown {未知} other {未知}}",
+  "wireGuardBridgeProtocol": "{state, select, unsupported {不支持} incompatible {不兼容} compatible {兼容} unknown {未知} other {未知}}",
+  "wireGuardBridgeAuthentication": "{state, select, unavailable {不可用} unauthenticated {未认证} authenticated {已认证} unknown {未知} other {未知}}",
+  "wireGuardBridgeExecution": "{state, select, unavailable {不可用} not_ready {未就绪} not_authorized {未获授权} ready {已就绪} other {未知}}",
+  "wireGuardQueryBusy": "正在读取…",
+  "wireGuardQueryCanceled": "查询已取消。请重新查询以获取新的观察结果。",
+  "wireGuardObservationStale": "此观察结果已失效，请重新查询。",
+  "wireGuardNoInterfaces": "本次查询未观察到活动的 WireGuard 接口。",
+  "wireGuardTools": "WireGuard 工具",
+  "wireGuardProcessPrivilegeHelp": "进程权限仅为观察结果，不代表已获准查看或修改隧道。",
+  "wireGuardInterface": "接口",
+  "wireGuardPeers": "对等节点",
+  "wireGuardNeverHandshake": "尚未握手",
+  "wireGuardPreviousPage": "节点上一页",
+  "wireGuardNextPage": "节点下一页",
+  "wireGuardPreviousInterface": "上一个接口",
+  "wireGuardNextInterface": "下一个接口",
+  "wireGuardNoPeers": "此接口没有对等节点。",
+  "wireGuardUnavailableValue": "未配置",
+  "wireGuardPeerPage": "节点第 {page, number} / {total, number} 页",
+  "wireGuardInterfacePage": "接口 {page, number} / {total, number}",
+  "wireGuardConfigState": "{state, select, ready {配置校验通过} missing {未找到配置} unreadable {无法读取配置} unsafe_path {文件或路径不安全} insecure_permissions {配置文件权限不够私密} invalid {配置无效} unsupported {包含尚不支持的指令} other {未知配置状态}}",
+  "wireGuardStatusState": "{state, select, observed {已读取隧道状态} tool_missing {未找到 WireGuard 状态工具} tool_not_executable {WireGuard 状态工具无法执行} query_failed {隧道状态查询失败} timed_out {隧道状态查询超时} output_too_large {工具输出超过大小限制} invalid_output {工具返回的状态无效} other {未知观察状态}}",
+  "wireGuardToolState": "{state, select, available {可用} missing {未找到} not_executable {无法执行} other {未知工具状态}}",
+  "wireGuardElevation": "{state, select, elevated {进程：已提升权限} standard {进程：普通权限} other {进程权限：未知}}",
+  "wireGuardNetworkField": "{field, select, platform {平台} addresses {接口地址} dns {DNS 地址} mtu {MTU} unsupported_directives {尚不支持的指令} public_key {公钥} listen_port {监听端口} fwmark {防火墙标记} endpoint {端点} allowed_ips {允许的 IP} latest_handshake {最近握手时间} received_bytes {已接收（字节）} sent_bytes {已发送（字节）} persistent_keepalive {保活间隔（秒）} other {网络字段}}",
+  "wireGuardNetworkUnsupported": "当前 CLI 不支持此网络查询，请更新 agent-remote 后重试。",
+  "wireGuardTunnelPreviewTitle": "启停预览",
+  "wireGuardTunnelPreviewHelp": "预览所选动作、准确目标和所需条件，不改变网络。",
+  "wireGuardTunnelActionLabel": "计划动作",
+  "wireGuardPreviewTunnelPlan": "预览启停计划",
+  "wireGuardTunnelPlanSummary": "启停计划",
+  "wireGuardTunnelPrerequisites": "执行前需要满足的条件",
+  "wireGuardTunnelPreviewOnly": "请先审阅计划，再执行原生隧道操作。",
+  "wireGuardTunnelPlanStale": "配置或选择已变化，请重新预览计划。",
+  "wireGuardTunnelPlanUnsupported": "此 CLI 不支持启停预览，请更新 CLI 后使用。",
+  "wireGuardTunnelSnapshotHelp": "这些标识仅描述本次观察的快照，不能证明工具可信、目标归属或网络修改授权。",
+  "wireGuardEditTunnelPlan": "修改预览条件",
+  "wireGuardTunnelAction": "{action, select, up {启动隧道} down {停止隧道} other {未知动作}}",
+  "wireGuardTunnelApply": "执行隧道操作",
+  "wireGuardTunnelApplying": "正在执行隧道操作…",
+  "wireGuardTunnelApplied": "隧道操作已确认：{action}",
+  "wireGuardTunnelWindowsSemantics": "{action, select, up {启动将安装配置为自动启动的 Windows 隧道服务。} down {停止将停止并删除所选 Windows 隧道服务。} other {请核对 Windows 服务操作。}}",
+  "wireGuardTunnelTargetState": "{state, select, absent {未发现该目标} present {目标已存在} unknown {无法核实目标} conflict {目标与请求存在冲突} other {未知目标状态}}",
+  "wireGuardTunnelTargetReason": "{reason, select, invalid_name {配置名称不符合此平台要求。} native_query_failed {系统未能返回目标身份。} mapping_missing {缺少配置与接口的映射；仍可能有活动隧道。} mapping_unsafe {接口映射不满足安全读取条件。} mapping_stale {接口映射已失效或不一致。} interface_not_wireguard {存在同名接口，但它不是 WireGuard 接口。} service_invalid {无法核实服务配置。} target_changed {目标在观察期间发生变化，请重新预览。} status_unavailable {无法观察运行状态。} target_not_in_status {WireGuard 状态结果中未发现该系统目标。} other {需要进一步核实目标身份。}}",
+  "wireGuardTunnelPrerequisite": "{code, select, config_not_ready {请选择有效且权限私密的配置文件。} config_unsupported {执行前需移除不受支持的配置指令。} tool_unavailable {请安装所需的 WireGuard 工具或修正其路径。} tool_snapshot_unavailable {未能取得稳定的工具快照。} target_unknown {执行前必须核实准确目标。} target_conflict {执行前需解决目标冲突。} target_already_present {该启动请求对应的目标已存在。} target_absent {未发现该停止请求对应的目标。} config_target_mismatch {目标公钥与此配置不匹配。} target_key_unobserved {未能观察到目标公钥。} service_config_mismatch {服务配置与所选文件不匹配。} execution_bridge_required {桌面启停需要受信任的系统组件，该组件尚未提供。} other {未能核实必要条件。}}",
+  "wireGuardTunnelPlanField": "{field, select, logical_name {配置名称} target_name {实际接口} index {接口索引} namespace {网络命名空间标识} mapping_identity {映射快照} socket_identity {套接字快照} service_name {服务名称} binary_path {服务程序路径} config_path {配置路径} config_identity {服务配置快照} service_state {服务状态} start_type {服务启动方式} account {服务账户} public_key {接口公钥} file_identity {配置文件快照} content_sha256 {配置内容摘要} tool_identity {工具文件快照} tool_sha256 {工具内容摘要} status_state {运行状态观察} other {隧道详情}}",
+  "wireGuardTunnelStatusState": "{state, select, not_queried {未查询} observed {已观察} tool_missing {未找到状态工具} tool_not_executable {状态工具无法执行} query_failed {状态查询失败} timed_out {状态查询超时} output_too_large {状态输出超过上限} invalid_output {状态输出无效} other {未知观察状态}}",
+  "wireGuardTunnelServiceState": "{state, select, 1 {已停止} 2 {正在启动} 3 {正在停止} 4 {运行中} 5 {正在恢复} 6 {正在暂停} 7 {已暂停} other {未知服务状态}}",
+  "wireGuardTunnelServiceStartType": "{kind, select, 0 {引导时启动} 1 {系统启动} 2 {自动启动} 3 {按需启动} 4 {已禁用} other {未知启动方式}}",
+  "credentialsTitle": "开发者凭据",
+  "credentialsHelp": "查看当前账户可见的 Git、GitHub CLI 和 SSH 配置档案。",
+  "credentialsPrivacy": "这里只显示配置档案元数据和集成模式。秘密及 Git 身份值仍由 CLI 凭据存储保管。",
+  "credentialsLoading": "正在加载开发者凭据配置档案…",
+  "credentialsEmpty": "没有找到开发者凭据配置档案。",
+  "credentialsUnsupported": "当前 CLI 尚未提供只读凭据清单。",
+  "credentialsStatus": "状态：{status}",
+  "credentialsModes": "GitHub CLI：{github}；SSH：{ssh}",
+  "credentialsUpdated": "更新时间：{updated}",
+  "@credentialsStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "@credentialsModes": {
+    "placeholders": {
+      "github": {
+        "type": "String"
+      },
+      "ssh": {
+        "type": "String"
+      }
+    }
+  },
+  "@credentialsUpdated": {
+    "placeholders": {
+      "updated": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultTitle": "默认账号",
+  "accountDefaultScope": "与 CLI 共用：本 CLI 主目录内，每种工具只有一个默认账号，跨所有服务器生效。不会改变已有会话。",
+  "accountDefaultTool": "工具标识",
+  "accountDefaultToolValue": "工具：{tool}",
+  "@accountDefaultToolValue": {
+    "placeholders": {
+      "tool": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultCurrent": "当前默认：{account}",
+  "@accountDefaultCurrent": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultPrevious": "原默认账号：{account}",
+  "@accountDefaultPrevious": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultNext": "新默认账号：{account}",
+  "@accountDefaultNext": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "accountDefaultNone": "无",
+  "accountDefaultClear": "清除默认…",
+  "accountDefaultSelect": "使用此账号…",
+  "accountDefaultConfirm": "确认更改",
+  "accountDefaultConfirmHelp": "请核对上述工具、完整账号 ID 与 CLI 环境。环境或原默认账号发生变化时，CLI 会拒绝更改。",
+  "accountDefaultRefresh": "读取当前默认",
+  "accountDefaultWaiting": "正在保存默认选择…",
+  "accountDefaultStopWaiting": "停止等待",
+  "accountDefaultCancelHelp": "停止等待或退出无法撤销已完成的写入。再次更改前，请重新读取当前默认账号。",
+  "accountDefaultSaved": "默认选择已保存。",
+  "accountDefaultUnchanged": "默认选择已经匹配，无需更改。",
+  "accountDefaultStatus": "默认账号操作结果",
+  "accountDefaultSignIn": "选择账号需要登录并注册设备。读取与清除本地默认账号可离线使用。",
+  "accountDefaultUnknown": "保存结果未知。请重新读取当前默认账号，再确认新的更改。",
+  "accountDefaultChanged": "默认账号在核对后发生变化。请重新读取，再确认更改。",
+  "accountDefaultMismatch": "所选完整账号 ID 不再匹配此工具的账号。请刷新账号列表。",
+  "accountDefaultStateUnavailable": "CLI 无法读取或锁定本地默认选择。请检查 CLI 主目录的访问权限后刷新。",
+  "accountDefaultUnsupported": "此 CLI 版本不支持所需操作。请更新 CLI 后刷新。",
+  "accountDetailsTitle": "账号详情",
+  "accountActionTitle": "{action, select, create {创建账号} status {账号详情} bind {开始绑定} verify {验证登录} disable {停用账号} other {账号操作}}",
+  "@accountActionTitle": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "accountActionHelp": "{action, select, create {按上述完整字段创建远程账号。创建账号不代表已登录工具。} bind {为此完整账号启动新的绑定任务。任务被接受不代表工具已登录。} verify {请求节点验证此账号的登录状态。任务被接受不代表验证成功。} disable {停止此账号的后续调度，并撤销其端口转发授权。现有会话与已保存登录凭据保留，不会停止或删除。} other {确认前请核对完整账号与 CLI 环境。}}",
+  "@accountActionHelp": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "accountAccepted": "{action, select, create {账号创建已被接受。} bind {绑定任务已被接受；尚未确认登录成功。} verify {验证任务已被接受；尚未确认验证成功。} disable {账号已停用，后续不再调度。} other {账号请求已被接受。}}",
+  "@accountAccepted": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "accountState": "{state, select, binding_requested {已请求绑定} binding_session_starting {绑定会话启动中} binding_waiting_user_login {等待你登录工具} binding_verifying {正在验证登录} active {可用} expired {登录已过期} disabled {已停用} failed {失败} node_unavailable {节点不可用} migrating {迁移中} other {未知状态}}",
+  "@accountState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "accountWorking": "正在提交账号请求…",
+  "accountCancelHelp": "停止等待或退出无法撤销远程已接受的任务。再次请求前，请读取账号列表或状态。",
+  "accountRebindDisabledHelp": "重新绑定将使此已禁用账号进入绑定流程。完成登录并验证成功后，账号可能恢复参与调度。任务被接受不代表登录或验证已完成。",
+  "accountManualRefreshHelp": "状态为查询时的快照。请手动刷新查看进度；刷新不会重新提交任务。",
+  "accountStopWaiting": "停止等待",
+  "accountConfirm": "确认账号操作",
+  "accountReviewCreate": "核对账号创建",
+  "accountRefreshStatus": "刷新账号状态",
+  "accountDone": "返回账号列表",
+  "accountOperationStatus": "账号操作结果",
+  "accountCreateHelp": "以下字段与 CLI 的账号创建命令一致。工具区域设置与桌面界面语言相互独立。",
+  "accountFieldTool": "工具",
+  "accountFieldName": "账号名称",
+  "accountFieldRegion": "地区代码",
+  "accountFieldTimezone": "IANA 时区",
+  "accountFieldLocale": "工具区域设置",
+  "accountFieldTags": "首选节点标签",
+  "accountTagsHelp": "标签填写 JSON 数组，例如 [\"gpu\", \"east\"]。无偏好时填写 []。",
+  "accountNoTags": "无偏好",
+  "accountFieldValue": "{field}：{value}",
+  "@accountFieldValue": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "accountExactID": "账号 ID：{id}",
+  "@accountExactID": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountNode": "节点：{id}",
+  "@accountNode": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountCreatedAt": "创建时间：{date}",
+  "@accountCreatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountUpdatedAt": "更新时间：{date}",
+  "@accountUpdatedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingStatus": "绑定状态：{state}",
+  "@accountBindingStatus": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingSession": "绑定会话：{id}",
+  "@accountBindingSession": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingTmux": "终端会话：{name}",
+  "@accountBindingTmux": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "accountTask": "任务：{id}",
+  "@accountTask": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountBindingFailed": "绑定任务报告失败。请刷新状态，或通过 CLI 检查节点。",
+  "accountBindingConnect": "打开绑定终端",
+  "accountBindingConnectDetailsLabel": "从账号详情打开绑定终端",
+  "accountBindingConfirmLabel": "确认打开绑定终端",
+  "accountBindingConnectHelp": "通过本地 CLI 连接此完整绑定会话。所选项目提供本地工作目录。请在原生终端中完成工具登录，再手动请求验证。",
+  "accountOutcomeUnknown": "远程结果未知。再次确认请求前，请读取账号列表或状态；原任务可能仍在运行。",
+  "accountRejected": "服务器拒绝了此账号请求。再次请求前，请检查当前账号状态及权限。",
+  "accountResponseInvalid": "CLI 无法验证账号响应。请检查 CLI 与服务器的兼容性后刷新状态。",
+  "accountInputInvalid": "请检查账号字段：必填文本不能为空、含首尾空格或超出长度限制。标签必须是最多 64 个字符串的 JSON 数组。",
+  "accountListStale": "账号数据可能已改变。请选择其他账号前刷新列表。",
+  "accountNotFound": "此完整账号已不存在，或当前设备无权访问。请刷新账号列表。",
+  "accountBindingReconnectHelp": "绑定会话可能过期或变化。打开终端前请读取最新账号状态；不会自动恢复已保存的连接。",
+  "accountBindingReviewStatus": "查看当前绑定状态",
+  "syncTitle": "项目同步",
+  "syncOpen": "项目同步",
+  "syncOperationStatus": "同步操作状态",
+  "operationProgress": "当前阶段：{phase, select, started {正在启动} running {正在运行} awaiting_approval {等待审批} awaiting_input {等待输入} input_required {需要输入} awaiting_confirmation {等待确认} confirmation_required {需要确认} confirming {正在确认} retrying {正在重试} waiting {等待中} stage {正在处理阶段} other {处理中}}",
+  "syncChooseProject": "请先选择项目，再管理同步。",
+  "syncHelp": "同步状态与 Agent 会话状态相互独立。刷新后的状态仍可能变化。",
+  "syncRefresh": "刷新同步状态",
+  "syncDone": "结束本次操作",
+  "syncConfirm": "确认同步操作",
+  "syncSkipLocal": "跳过本地执行（CLI dry-run）",
+  "syncSkipLocalHelp": "此选项仍会修改 Server 和共享本地映射，仅跳过本地 Mutagen 动作，不是只读预览。",
+  "syncNormalExecution": "执行 Server 和本地 Mutagen 动作。",
+  "syncWorking": "正在执行同步操作…",
+  "syncStopWaiting": "停止等待同步操作",
+  "syncCancelHelp": "停止等待可能留下已执行的 Server 或本地阶段。开始新操作前，请查看回执并刷新状态。",
+  "syncReceiptHelp": "应用运行期间会保留此回执。刷新只查询状态，不会重复本次操作。",
+  "syncNoSession": "此项目尚未登记同步会话。",
+  "syncConflictHelp": "冲突观察不能证明所有文件均已同步。请明确处理冲突文件；界面不会自动选择覆盖方向。",
+  "syncUnknown": "同步结果未知。请勿自动重放；刷新状态并检查 Server 与本地 Mutagen 状态。",
+  "syncAction": "{action, select, ensure {建立同步} pause {暂停同步} resume {恢复同步} resolve {刷新已解决的冲突} reset {重建同步} other {同步操作}}",
+  "@syncAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "syncActionHelp": "{action, select, ensure {创建或复用远程工作区与同步会话，然后准备本地 Mutagen。文件可能双向同步。} pause {先暂停本地 Mutagen，再请求 Server 暂停同步。} resume {先在 Server 恢复，再恢复或创建本地 Mutagen。文件可能双向同步。} resolve {刷新本地 Mutagen，再请求 Server 清除冲突标记。请先处理冲突文件；此操作不会选择覆盖方向，也不保证所有冲突已消除。} reset {请求 Server 重置，然后终止并以安全双向模式重建本地 Mutagen 会话。重建基线可能重新发现冲突或恢复曾删除的文件，请先检查文件。} other {请核对准确目标后继续。}}",
+  "@syncActionHelp": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "syncOutcome": "{outcome, select, completed {请求的阶段已完成} partial {操作部分完成} unknown {操作结果不确定} other {操作结果}}",
+  "@syncOutcome": {
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      }
+    }
+  },
+  "syncMutagenState": "{state, select, missing {本地 Mutagen：未安装} session_missing {本地 Mutagen：会话缺失} available {本地 Mutagen：已获取观察} unavailable {本地 Mutagen：无法获取观察} other {本地 Mutagen：未知}}",
+  "@syncMutagenState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncConflicts": "{state, select, unknown {本地冲突：未知} detected {本地冲突：已发现} none_observed {本地冲突：未观察到} other {本地冲突：未知}}",
+  "@syncConflicts": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncField": "{field, select, project {项目} local_path {本地路径} project_key {项目标识} workspace_id {工作区 ID} sync_session_id {同步会话 ID} fingerprint {目标签名} node_id {节点 ID} remote_path {远程路径} remote_endpoint {远程端点} mutagen_session_id {Mutagen 会话} status {Server 同步状态} conflict_status {Server 冲突标记} sync_mode {同步模式} sync_git {同步 Git} exclude {排除路径} operation_id {操作 ID} namespace_fingerprint {Mutagen 环境指纹} configuration_fingerprint {Mutagen 配置指纹} mutagen_identifier {准确的 Mutagen 标识} other {目标}}：{value}",
+  "@syncField": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "syncStage": "{name, select, workspace {工作区} server {Server} mutagen {本地 Mutagen} persist {共享状态} other {阶段}}：{state, select, completed {已完成} skipped {已跳过} failed {失败} unknown {未知} other {未知}}",
+  "@syncStage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncResultCode": "{code, select, sync_recovery_not_required {已保存的服务端关系仍存在，或没有旧映射。未移除任何内容，请刷新当前状态。} sync_recovery_blocked {核实准确的本地 Mutagen 范围前，无法移除旧映射。} sync_recovery_metadata_incomplete {旧映射缺少准确识别 Mutagen 会话所需的信息。} sync_target_changed {项目映射或同步目标已改变，请刷新并重新核对。} sync_not_found {已保存的同步会话不存在。请先检查旧映射，再重新建立同步。} sync_local_failed {本地 Mutagen 动作失败，之前的 Server 动作可能已经完成。} sync_prepare_failed {远程同步会话准备失败。} sync_prepare_timeout {远程准备未及时完成，请先检查状态。} sync_rejected {Server 拒绝了同步请求。} sync_response_invalid {无法验证 Server 响应。} mutagen_unavailable {无法检查或执行本地 Mutagen，请检查配套依赖。} state_unavailable {无法读取或保存共享同步状态。} canceled {等待已取消，请先检查已完成阶段。} sync_conflicts_remaining {本地仍有冲突，请处理冲突文件后再刷新。} sync_conflicts_unknown {无法确认冲突状态，未清除 Server 冲突标记。} sync_git_locked {存在 Git 锁，请等待 Git 操作完成后再同步。} sync_mutagen_target_changed {本地 Mutagen 会话指向不同目标，请检查端点后再继续。} sync_mutagen_ambiguous {多个本地 Mutagen 会话匹配，请先检查。} sync_mutagen_environment_mismatch {Mutagen 使用了不同的托管 SSH 环境，请先修复 CLI 环境。} sync_mutagen_missing {缺少托管 Mutagen，请安装 CLI 配套依赖。} sync_mutagen_not_running {本地 Mutagen 守护进程未运行，请检查 CLI 环境。} sync_mutagen_timeout {本地 Mutagen 操作超时，影响可能不完整，请先刷新状态。} other {同步阶段未完成，请查看回执并刷新当前状态。}}",
+  "@syncResultCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "syncPaused": "本地 Mutagen 已暂停：{value}",
+  "syncConflictCount": "观察到的本地冲突：{count}",
+  "syncLocalStatus": "{state, select, watching {正在监听变化} scanning {正在扫描文件} disconnected {已断开} connecting_alpha {正在连接本地文件} connecting_beta {正在连接远程文件} reconciling {正在协调变化} staging_alpha {正在暂存本地文件} staging_beta {正在暂存远程文件} transitioning {正在应用文件变化} saving {正在保存同步状态} waiting_for_rescan {等待重新扫描} halted_on_root_deletion {已停止：根目录已删除} halted_on_root_emptied {已停止：根目录已清空} halted_on_root_type_change {已停止：根目录类型已改变} other {本地状态未知}}",
+  "@syncPaused": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "@syncConflictCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "@syncLocalStatus": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncBoolean": "{value, select, true {是} false {否} other {未知}}",
+  "@syncBoolean": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "syncReceiptScope": "已记录的操作上下文",
+  "syncObservationScope": "最近一次状态观察",
+  "syncReceiptObservation": "本次操作记录的观察（不是当前状态刷新）",
+  "syncServerState": "{state, select, starting {准备中} active {已激活} healthy {正常（旧版 Server 状态）} paused {已暂停} conflicted {存在冲突} failed {失败} stopped {已停止} other {未知}}",
+  "@syncServerState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncServerConflicts": "{state, select, none {Server 未标记冲突} has_conflicts {Server 已标记冲突} other {未知}}",
+  "@syncServerConflicts": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncMode": "{state, select, two_way {双向同步} other {未知}}",
+  "@syncMode": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncRecoveryInspect": "检查旧同步映射",
+  "syncRecoveryTitle": "恢复旧的本地映射",
+  "syncRecoveryHelp": "CLI 会检查已保存的服务端资源是否不存在。审阅并确认准确的旧映射及本地 Mutagen 会话前，不会修改任何内容。",
+  "syncRecoveryConfirm": "移除已审阅的旧映射",
+  "syncRecoveryEffects": "恢复只移除已审阅的 CLI 映射，并在存在时终止其准确的旧 Mutagen 会话。项目文件及远端资源会保留。建立新关系需要另行审阅确认。",
+  "syncRecoveryScope": "{state, select, sync_not_found {服务端同步会话不存在，将保留工作区映射。} workspace_not_found {服务端工作区不存在，将移除工作区与同步映射。} other {无法确认恢复范围。}}",
+  "@syncRecoveryScope": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncRecoveryBlocked": "当前证据不足以恢复此映射。请处理所报告的问题，再重新检查。",
+  "syncRecoveryFresh": "重新审阅当前关系",
+  "syncRecoveryFreshHelp": "旧操作结果会保留。此操作只读取当前关系；如需建立新关系，请选择“建立同步”并另行确认。",
+  "syncRecoveryReceipt": "映射恢复结果",
+  "syncRecoveryMapping": "CLI 已保存的映射",
+  "syncRecoveryMutagenState": "{state, select, available {准确的旧 Mutagen 会话：已核实，可终止} session_missing {准确的旧 Mutagen 会话：已不存在} missing {托管 Mutagen：未安装} unavailable {托管 Mutagen：无法检查} blocked {旧 Mutagen 会话：无法核实} other {旧 Mutagen 会话：未知}}",
+  "@syncRecoveryMutagenState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "syncRecoveryResultTarget": "本次操作后的本地映射",
+  "mutagenEnvironmentTitle": "同步运行环境",
+  "mutagenEnvironmentHelp": "检查共享的本地 Mutagen 服务及其同步、转发会话。此操作不需要选择项目或登录 Server。",
+  "mutagenEnvironmentInspect": "检查共享运行环境",
+  "mutagenEnvironmentReview": "审阅共享服务变更",
+  "mutagenEnvironmentImpact": "重启此共享服务会暂时中断下方列出的所有活动同步和转发会话，包括其他项目的会话。已暂停的会话应保持暂停。",
+  "mutagenEnvironmentConfirm": "确认重启共享服务",
+  "mutagenEnvironmentWorking": "正在更新共享同步运行环境…",
+  "mutagenEnvironmentCancelHelp": "停止等待或退出应用无法撤销服务重启或运行环境变更。再次操作前，请检查已记录阶段和当前状态。",
+  "mutagenEnvironmentOperation": "同步运行环境结果",
+  "mutagenEnvironmentReceiptScope": "本次操作已审阅的运行环境",
+  "mutagenEnvironmentSessions": "全部受影响会话",
+  "mutagenEnvironmentNoSessions": "在所检查的服务中未发现同步或转发会话。",
+  "mutagenEnvironmentNoReplay": "原操作结果会保留。如需新操作，请重新检查并审阅；不会自动重试。",
+  "mutagenEnvironmentUnavailable": "此 CLI 未在当前平台提供共享运行环境恢复流程。",
+  "mutagenEnvironmentInspecting": "正在检查完整的本地服务范围…",
+  "mutagenEnvironmentPrevious": "上次记录的运行环境",
+  "mutagenEnvironmentPreviousUnknown": "没有可验证的运行环境记录。这不代表已确定运行中服务实际继承的环境。",
+  "mutagenEnvironmentDesired": "重启后将使用的运行环境",
+  "mutagenEnvironmentReady": "共享服务环境已就绪，会话配置及暂停状态已验证。这不表示远端连接健康。",
+  "mutagenEnvironmentUnknown": "共享服务操作结果未知，服务可能已经停止或重启。请先检查当前状态，再提交经过新审阅的请求。",
+  "mutagenEnvironmentQueryCanceled": "运行环境检查已取消，未请求重启。",
+  "mutagenEnvironmentPreviousPage": "上一页会话",
+  "mutagenEnvironmentNextPage": "下一页会话",
+  "mutagenEnvironmentPage": "第 {page} / {pages} 页 · 确认范围包含全部页面",
+  "@mutagenEnvironmentPage": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentSessionCount": "完整清单包含 {count} 个受影响会话",
+  "@mutagenEnvironmentSessionCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentSession": "{kind, select, sync {同步} forward {转发} other {会话}} · {number}",
+  "@mutagenEnvironmentSession": {
+    "placeholders": {
+      "kind": {
+        "type": "String"
+      },
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentPaused": "{value, select, true {已暂停 · 将保持暂停} false {活动中 · 重启将暂时中断} other {暂停状态未知}}",
+  "@mutagenEnvironmentPaused": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentOutcome": "{outcome, select, completed {共享服务环境已更新} partial {运行环境更新部分完成} unknown {运行环境更新结果未知} other {运行环境操作结果}}",
+  "@mutagenEnvironmentOutcome": {
+    "placeholders": {
+      "outcome": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentState": "服务：{state, select, running {运行中} stopped {已停止} other {不可用}} · 注册方式：{registration, select, unmanaged {无外部注册} external {由其他服务管理} other {未知}}",
+  "@mutagenEnvironmentState": {
+    "placeholders": {
+      "state": {
+        "type": "String"
+      },
+      "registration": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentStage": "{name, select, stop {停止服务} start {启动服务} verify {验证运行环境与会话} persist {记录运行环境} other {阶段}}：{state, select, completed {已完成} skipped {已跳过} failed {失败} unknown {未知} other {未知}}",
+  "@mutagenEnvironmentStage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "state": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentTool": "{name}：{path}",
+  "@mutagenEnvironmentTool": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentField": "{field, select, home {CLI 数据目录} ssh_directory {SSH 工具目录} data_directory {共享 Mutagen 数据目录} fingerprint {审阅指纹} inventory_fingerprint {完整清单指纹} namespace_fingerprint {数据目录身份} running_fingerprint {运行中服务身份} marker_fingerprint {运行环境记录身份} binding_fingerprint {运行环境绑定指纹} tool_fingerprint {工具指纹} configuration_fingerprint {会话配置指纹} identifier {准确会话标识} name {会话名称} other {范围}}：{value}",
+  "@mutagenEnvironmentField": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentEndpoint": "{side, select, source {来源} destination {目标} other {端点}}：{protocol} · 用户={user} · 主机={host} · 端口={port} · 路径={path}",
+  "@mutagenEnvironmentEndpoint": {
+    "placeholders": {
+      "side": {
+        "type": "String"
+      },
+      "protocol": {
+        "type": "String"
+      },
+      "user": {
+        "type": "String"
+      },
+      "host": {
+        "type": "String"
+      },
+      "port": {
+        "type": "String"
+      },
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "mutagenEnvironmentResultCode": "{code, select, sync_mutagen_environment_changed {运行环境在审阅后发生变化，请重新检查完整服务范围。} sync_mutagen_inventory_changed {会话清单在审阅后发生变化，请重新检查全部会话。} sync_mutagen_registration_external {此服务由外部服务管理器管理，需要先处理对应服务集成，本应用才能重启。} sync_mutagen_registration_unknown {无法验证服务注册方式，不能据此重启。} sync_mutagen_inventory_invalid {无法验证完整的已保存会话清单，不能使用不完整清单进行确认。} sync_mutagen_inventory_limit {完整清单超过当前检查上限，未截断清单或据此授权重启。} sync_mutagen_missing {缺少托管 Mutagen，请安装 CLI 依赖后重新检查。} sync_mutagen_proxy_missing {无法验证托管 SSH 或 SCP 工具，请修复 CLI 依赖后重新检查。} sync_mutagen_daemon_busy {共享服务忙碌或进程状态发生变化，请在当前操作结束后重新检查。} operation_busy {其他操作正在使用共享配置，请等待完成后重新检查。} sync_mutagen_environment_unverified {操作后无法验证预期环境及完整会话状态。} sync_mutagen_environment_write_failed {服务可能已经重启，但无法保存新的运行环境记录。} sync_mutagen_timeout {操作超时，再次请求前请检查已记录阶段。} other {无法验证或更新共享运行环境，请检查已记录阶段及本地 CLI 依赖。}}",
+  "@mutagenEnvironmentResultCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportTitle": "导入本地 Claude 配置",
+  "accountImportRecoveryTitle": "配置导入记录",
+  "accountImportHelp": "上传到此远程账户前，请先审阅本地 Claude 配置。打开此页面不会读取本地配置文件。",
+  "accountImportPrivacy": "配置、规则、钩子、插件和技能可能包含私密文本、凭据或可执行指令。历史记录可能包含对话和项目数据。文件内容仅由 CLI 读取，明确确认后才会上传到此 Server。请审阅所有列出的路径。",
+  "accountImportHistory": "包含会话恢复历史",
+  "accountImportExcludeSkills": "排除顶层 skills 目录",
+  "accountImportSkillsHelp": "排除 skills 不会排除插件或插件内的技能。Server 拒绝后不会自动更改排除项。",
+  "accountImportDiscover": "发现本地文件范围",
+  "accountImportDiscoverHelp": "发现阶段只检查文件元数据，不读取文件内容，也不访问 Server。",
+  "accountImportPrepare": "读取文件并生成审阅清单",
+  "accountImportPrepareHelp": "此操作会读取所选本地文件的内容，并生成完整清单，不会上传。",
+  "accountImportInclude": "包含范围",
+  "accountImportExclude": "排除范围",
+  "accountImportEmpty": "此范围内未发现文件。",
+  "accountImportValidate": "审阅 Server 策略校验",
+  "accountImportValidateConfirm": "确认向 Server 校验策略",
+  "accountImportValidateHelp": "此操作向 Server 发送所选路径范围，并产生审计记录，不发送文件内容。结果只代表当前策略；上传时还会再次校验。",
+  "accountImportApply": "审阅上传",
+  "accountImportApplyConfirm": "确认上传到此账户",
+  "accountImportApplyHelp": "上传涵盖审阅清单的全部文件，包括所有分页。CLI 会重新读取文件，发现变化即拒绝提交。Server 接受后会创建远程任务，不代表配置已应用完成。",
+  "accountImportWorking": "正在处理配置导入…",
+  "accountImportStopWaiting": "停止等待",
+  "accountImportCancelHelp": "停止等待不会取消 Server 已接受的任务。请保留原请求并查询其状态。",
+  "accountImportUnknown": "结果尚不明确。请查询此原请求，不要使用新请求编号重复提交。",
+  "accountImportPending": "读取已保存的导入请求",
+  "accountImportPendingHelp": "CLI 仅保存用于恢复的公开请求上下文、标识符和摘要。打开记录页面不会发送请求。读取已保存请求后，可明确查询原请求。",
+  "accountImportStatus": "查询原请求",
+  "accountImportNoPending": "没有已保存的导入请求。",
+  "accountImportNew": "结束本次审阅",
+  "accountImportNoReplay": "此请求会保留用于恢复，绝不会自动重新提交。",
+  "accountImportUnavailable": "当前 CLI 不支持所需的配置导入操作。",
+  "accountImportResultUnavailable": "无法验证导入响应。请保留原请求并查询状态。",
+  "accountImportManifest": "完整文件清单",
+  "accountImportSource": "本地来源：{path}",
+  "@accountImportSource": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportDigest": "审阅摘要：{digest}",
+  "@accountImportDigest": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportCount": "{count} 个文件 · {bytes} 字节 · 确认涵盖所有分页",
+  "@accountImportCount": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      },
+      "bytes": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportFile": "{path} · {bytes} 字节",
+  "@accountImportFile": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      },
+      "bytes": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportRequest": "请求：{id}",
+  "@accountImportRequest": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportTask": "远程任务：{id}",
+  "@accountImportTask": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportCode": "结果代码：{code}",
+  "@accountImportCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportPhase": "{phase, select, pending {等待确认是否已接受} accepted {已接受，远程任务尚未完成} leased {已分配到节点} running {远程任务运行中} succeeded {配置导入已完成} failed {远程任务失败} cancelled {远程任务已取消} expired {远程任务已过期} rejected {提交已拒绝} other {状态未知，请查询原请求}}",
+  "@accountImportPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportErrorCode": "{code, select, account_import_source_invalid {本地来源不受支持或不安全，请检查路径和文件类型。} account_import_source_changed {本地文件在审阅后发生变化，请重新发现并审阅清单。} account_import_source_limit {所选文件超出支持的限制，请缩小范围后重新审阅。} account_import_empty {所选范围没有可导入的文件。} account_import_journal_unavailable {CLI 无法保存恢复记录。请先检查已保存请求，再继续操作。} account_import_recovery_required {已有请求需要恢复。请先查询原请求，再开始新的导入。} account_import_request_not_recorded {CLI 中没有此原请求的记录，不能据此判断上传已回滚。} account_import_request_mismatch {请求上下文或摘要与已保存记录不一致。} account_import_not_settled {尚未确认此请求已结束，请保留恢复记录。} account_import_response_invalid {无法验证响应，请保留并查询原请求。} account_import_rejected {Server 拒绝了此次提交。选择范围未改变，请先检查已保存请求。} account_import_outcome_unknown {结果尚不明确，请保留原请求，不要使用新编号重新提交。} account_import_status_unknown {暂时无法观察原请求，它可能仍在提交中。请保留原编号，稍后再次查询。} invalid_params {审阅的导入参数无效。} confirmation_required {此步骤需要明确确认。} configuration_changed {CLI 配置已变化，请回到预期环境后继续。} configuration_unavailable {CLI 配置不可用。} authentication_required {请先登录原 Server 和设备，再继续操作。} credential_unavailable {所需的设备凭据不可用。} permission_denied {当前设备无权执行此操作。} canceled {已停止等待。如果已开始提交，请查询原请求。} timeout {等待超时，请保留并查询原请求。} account_import_validation_unknown {Server 策略校验结果尚不明确，可能已产生审计记录；未请求上传配置。} account_import_skills_managed {所选技能由 Server 管理。当前选择保持不变，请读取被拒绝的请求并明确移除其本地记录。随后可自行选择排除顶层 skills 目录，再审阅新的清单。} other {无法验证导入操作，请保留已有原请求用于恢复。}}",
+  "@accountImportErrorCode": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportWarning": "{code, select, CONFIG_IMPORT_EXECUTABLE_REVIEW_REQUIRED {所选范围包含可执行指令，上传前请检查钩子、插件和技能。} CONFIG_IMPORT_CUSTOM_MARKDOWN_REVIEW_REQUIRED {所选范围包含自定义 Markdown 指令，上传前请检查其内容。} other {响应包含无法识别的提示，请重新审阅导入。}}",
+  "@accountImportWarning": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportValidationCounts": "接受 {accepted} 个路径 · 拒绝 {rejected} 个路径",
+  "accountImportForget": "审阅移除此本地记录",
+  "accountImportForgetConfirm": "确认移除本地记录",
+  "accountImportForgetHelp": "此操作仅移除本地恢复记录。明确拒绝的提交可在本地移除；其他请求必须按原编号和准确任务再次查询并确认已结束。不会删除远程任务或配置。",
+  "accountImportShowReview": "返回当前审阅",
+  "@accountImportValidationCounts": {
+    "placeholders": {
+      "accepted": {
+        "type": "String"
+      },
+      "rejected": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportPreviousPage": "上一页文件",
+  "accountImportNextPage": "下一页文件",
+  "accountImportPage": "第 {page} / {pages} 页 · 审阅涵盖所有分页",
+  "@accountImportPage": {
+    "placeholders": {
+      "page": {
+        "type": "String"
+      },
+      "pages": {
+        "type": "String"
+      }
+    }
+  },
+  "accountImportRetainedHelp": "此账户有已保留的请求，请查询原编号。只有明确拒绝或任务已结束后，才能移除本地记录并准备新的上传。",
+  "accountImportNotSubmitted": "本次上传未提交，CLI 中也没有保存此编号的请求。请结束本次审阅，然后重新准备并确认上传。",
+  "runtimeRecoveryTitle": "管理员运行时恢复",
+  "runtimeRecoveryHelp": "针对准确的失败运行时迁移进行恢复。先检查用户管理员身份、查看原任务，再单独确认恢复操作。",
+  "runtimeRecoveryWorking": "正在处理运行时恢复…",
+  "runtimeRecoveryCancelHelp": "停止等待或离开页面不会取消已提交的服务端任务。请保留原请求编号并查询，不会自动重新提交。",
+  "runtimeRecoveryAuthorityUnknown": "尚未检查管理员身份；设备连接不代表具备管理员权限。",
+  "runtimeRecoveryAuthorityAdmin": "当前用户是管理员；每次操作都会重新检查该身份和角色。",
+  "runtimeRecoveryAuthorityDenied": "当前用户不是管理员。请使用有权限的用户登录后管理运行时恢复。",
+  "runtimeRecoveryAccount": "准确的账户 UUID",
+  "runtimeRecoveryOriginalTask": "准确的原迁移任务 ID",
+  "runtimeRecoveryAction": "{action, select, verify_target {验证目标端完成状态} verify_source {验证源端恢复状态} repair_source {修复源端权限} other {未知恢复操作}}",
+  "@runtimeRecoveryAction": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryRetained": "此账户有已保留的请求。请查询原编号，并在明确拒绝或任务结束后显式移除本地记录，再准备其他恢复操作。",
+  "runtimeRecoveryConfirmHelp": "{action, select, verify_target {创建恢复任务以验证目标端完成状态。这会写入服务端状态，并可能将账户切换为目标运行时。} verify_source {创建恢复任务以验证源端恢复状态。这会写入服务端状态，并可能将账户恢复为源运行时。} repair_source {创建恢复任务，可能利用保留的备份修复源端权限，并将账户恢复为源运行时。} other {继续前请核对恢复操作。}}原迁移失败记录将保留。",
+  "@runtimeRecoveryConfirmHelp": {
+    "placeholders": {
+      "action": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryNoPending": "没有已保留的运行时恢复请求。",
+  "runtimeRecoveryActor": "当前管理员：{actor}",
+  "@runtimeRecoveryActor": {
+    "placeholders": {
+      "actor": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryOwner": "账户所有者：{owner}",
+  "@runtimeRecoveryOwner": {
+    "placeholders": {
+      "owner": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryOriginal": "原任务：{task}\n原记录：{record}",
+  "@runtimeRecoveryOriginal": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "record": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryBackends": "节点：{node}\n源运行时：{source} → 目标运行时：{target}",
+  "@runtimeRecoveryBackends": {
+    "placeholders": {
+      "node": {
+        "type": "String"
+      },
+      "source": {
+        "type": "String"
+      },
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryObservation": "原任务与账户状态观察；不代表恢复操作一定可以受理。",
+  "runtimeRecoveryObservedStatuses": "原任务状态：{original}\n账户状态：{account}",
+  "@runtimeRecoveryObservedStatuses": {
+    "placeholders": {
+      "original": {
+        "type": "String"
+      },
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryDigest": "审阅摘要：{digest}",
+  "@runtimeRecoveryDigest": {
+    "placeholders": {
+      "digest": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryTask": "恢复任务：{task}\n恢复记录：{record}",
+  "@runtimeRecoveryTask": {
+    "placeholders": {
+      "task": {
+        "type": "String"
+      },
+      "record": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryStatus": "{status, select, pending {等待执行} leased {已分配给执行器} running {正在执行} succeeded {已成功} failed {已失败} cancelled {已取消} expired {已过期} other {未知任务状态}}",
+  "@runtimeRecoveryStatus": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryTargetConfirmed": "恢复任务成功，已确认目标端完成。",
+  "runtimeRecoverySourceConfirmed": "恢复任务成功，已确认源端恢复。",
+  "runtimeRecoveryUnconfirmed": "尚未确认恢复完成；受理不代表成功。",
+  "runtimeRecoveryRequest": "恢复请求：{request}",
+  "@runtimeRecoveryRequest": {
+    "placeholders": {
+      "request": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryNotSubmitted": "本次恢复未提交，CLI 中也没有保存此编号的请求。请结束本次审阅后重新查看并确认恢复操作。",
+  "runtimeRecoverySubmission": "{phase, select, unknown {提交结果未知；已保留原编号。} accepted {提交已受理；请查询任务是否完成。} rejected {提交已明确拒绝。} other {提交证据未知。}}",
+  "@runtimeRecoverySubmission": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "runtimeRecoveryNoReplay": "此编号用于准确查询恢复结果；不会自动重试或生成新编号。",
+  "runtimeRecoveryQuery": "查询原恢复请求",
+  "runtimeRecoveryForget": "移除已结束的本地记录",
+  "runtimeRecoveryForgetHelp": "仅移除此本地恢复记录。明确拒绝的提交可以离线移除；其他请求必须重新授权查询并证明任务已结束。此操作不会撤销服务端任务。",
+  "runtimeRecoveryForgetConfirm": "确认移除本地记录",
+  "runtimeRecoveryManualTitle": "查询已有请求编号",
+  "runtimeRecoveryManualHelp": "用于没有本地记录的旧请求。仅查询准确编号，不会生成恢复计划、新任务或本地持久记录。账户所有者不一定是原提交管理员。",
+  "runtimeRecoveryManualAccount": "已有请求对应的账户 UUID",
+  "runtimeRecoveryManualKey": "已有恢复请求 UUID",
+  "runtimeRecoveryManualQuery": "仅查询已有编号",
+  "runtimeRecoveryStopWaiting": "停止等待恢复结果",
+  "runtimeRecoveryFinish": "结束本次恢复审阅",
+  "runtimeRecoveryPending": "读取已保留的恢复请求",
+  "runtimeRecoveryAuthority": "检查用户管理员身份",
+  "runtimeRecoveryInspect": "查看原迁移任务",
+  "runtimeRecoveryApply": "审阅恢复提交",
+  "runtimeRecoveryApplyConfirm": "确认创建恢复任务",
+  "runtimeRecoveryError": "{code, select, unsupported_method {此 CLI 不支持所需的运行时恢复操作。} authentication_required {请重新使用用户账户登录；恢复查询不会刷新凭据。} credential_unavailable {用户凭据不可用；设备凭据不能用于管理员恢复。} permission_denied {当前用户没有管理员权限。} runtime_recovery_status_unknown {未找到原请求。请保留编号；这不能证明提交失败。} runtime_recovery_outcome_unknown {提交结果未知。请保留原编号并查询，不要重新提交。} runtime_recovery_review_changed {原迁移信息已变化，本次提交已拒绝。请移除本地记录后重新审阅。} runtime_recovery_rejected {服务端已明确拒绝本次提交。} runtime_recovery_pending {有已保留的请求，需要先处理才能再次提交。} runtime_recovery_not_terminal {尚未确认原恢复任务已结束，已保留其本地记录。} runtime_recovery_receipt_changed {恢复回执与审阅请求不一致。请保留原编号以供核查。} runtime_recovery_context_changed {用户或服务端上下文已变化，请重新检查管理员身份。} invalid_params {请检查准确的账户、迁移任务、操作及请求编号。} other {无法完成运行时恢复（{code}）。请保留已有请求编号并查询状态。}}",
+  "@runtimeRecoveryError": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachUnsupported": "此 CLI 不支持绑定已审阅服务器和设备的连接。请更新 CLI 后连接。",
+  "remoteAttachContextInvalid": "CLI 返回了无效的连接身份。请刷新列表后再连接。",
+  "remoteAttachDevice": "设备：{id}",
+  "@remoteAttachDevice": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachAccount": "账户：{id}",
+  "@remoteAttachAccount": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachNode": "节点：{id}",
+  "@remoteAttachNode": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteAttachLocalProject": "本地项目：{id}。此目录是终端工作目录，不代表远程工作区。",
+  "@remoteAttachLocalProject": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteHistoryReviewHelp": "先刷新当前服务器和会话列表，再审阅此连接。确认后可能接管其他终端客户端。",
+  "remoteHistorySelectAgain": "此旧历史没有保存服务器和设备。请从刷新后的列表重新选择已有会话并确认其身份。",
+  "remoteHistoryContextChanged": "当前连接上下文与此次审阅不再一致。结束审阅后可选择其他会话；已保存的历史未更改。",
+  "remoteHistoryUnavailable": "已保存的远程会话不存在或未运行。未创建替代会话。",
+  "remoteHistoryReviewAction": "审阅远程历史",
+  "remoteHistoryResumeTitle": "审阅远程会话",
+  "remoteHistoryContinue": "审阅并继续",
+  "remoteHistoryEndReview": "结束历史审阅",
+  "remoteAttachClipboardHelp": "支持文字复制和粘贴。此连接暂不支持图片和文件粘贴。",
+  "createRemoteSession": "新建远程会话",
+  "createRemoteSessionHelp": "CLI 会生成并保留调用方请求编号。本次审阅只包含项目、账户、工作区和同步证据，不保存命令参数或凭据。",
+  "sessionCreateTool": "Agent 工具",
+  "sessionCreateAccount": "工具账户 UUID",
+  "sessionCreateWorkspace": "工作区 UUID",
+  "sessionCreateProject": "项目键",
+  "sessionCreateArgvDigest": "参数摘要（sha256）",
+  "sessionCreateSyncTarget": "同步目标证据（JSON）",
+  "sessionCreateReplacement": "替换已中断会话（可选）",
+  "sessionCreateReplacementContext": "替换上下文必须与已中断会话完全一致",
+  "sessionCreateReplacementAccount": "替换账户 UUID",
+  "sessionCreateReplacementWorkspace": "替换工作区 UUID",
+  "sessionCreateReplacementProject": "替换项目键",
+  "sessionCreateReplacementNode": "替换节点 UUID",
+  "sessionCreateReplacementBackend": "替换运行时后端",
+  "sessionCreateQueryKey": "原请求 UUID",
+  "sessionCreateRecovery": "恢复远程创建请求",
+  "sessionCreateSubmit": "使用原键创建",
+  "sessionCreateQuery": "查询原请求",
+  "sessionCreateCancel": "结束审阅",
+  "sessionCreateUnsupported": "当前 CLI 不支持使用调用方原键创建会话。请先更新 agent-remote。",
+  "sessionCreateReviewHelp": "确认前请审阅每一项准确目标。确认后由 CLI 生成并持久化请求编号。",
+  "sessionCreateRecoveryHelp": "这是 CLI 保存的准确请求的只读恢复流程。请确认当前服务端和设备上下文，然后查询原请求编号；此处不能提交新会话请求。",
+  "sessionCreateRecoveryContext": "冻结上下文：{server} · 设备 {device}",
+  "sessionCreatePhase": "{phase, select, prepared {已准备} admission_pending {正在受理} accepted {已受理；任务尚未完成} running {运行中} failed {失败} unknown {结果未知；请保留原编号} deleted {会话已删除；回执仍保留} other {未知创建阶段}}",
+  "sessionCreateRequest": "原请求：{id}",
+  "sessionCreateTask": "会话：{session}\n任务：{task}",
+  "sessionCreatePending": "原请求仍在受理。请稍后再次查询，不要提交新请求。",
+  "sessionCreateUnknown": "提交结果未知。请保留原请求编号并查询；未创建替代请求。",
+  "sessionCreateConflict": "原请求编号对应的意图不同。请开始一次新的审阅请求。",
+  "sessionCreateDeleted": "会话已删除，但不可变创建回执仍可查询。未创建替代会话。",
+  "sessionCreateTargetChanged": "审阅过的同步目标已变化。请重新检查项目并准备请求。",
+  "sessionCreateNodeMismatch": "服务端选择的节点与审阅过的同步目标不一致。请重新审阅同步关系。",
+  "sessionCreatePrepareUnproven": "CLI 无法证明已审阅的同步准备证据。未创建会话。",
+  "sessionCreateInputInvalid": "会话创建审阅不完整或无效，请检查每一项准确字段。",
+  "sessionCreateNoReceipt": "尚未加载创建回执，请查询原请求 UUID。",
+  "sessionCreateReceiptHelp": "受理只证明服务端记录了请求。会话启动、同步和终端连接分别有独立状态。",
+  "sessionCreateNoSession": "回执暂时没有会话 UUID。",
+  "sessionCreateToolPlaceholder": "claude",
+  "sessionCreateAccountPlaceholder": "账户 UUID",
+  "sessionCreateWorkspacePlaceholder": "工作区 UUID",
+  "sessionCreateProjectPlaceholder": "项目键",
+  "sessionCreateDigestPlaceholder": "sha256:…",
+  "sessionCreateReplacementPlaceholder": "会话 UUID",
+  "sessionCreateNodePlaceholder": "节点 UUID",
+  "sessionCreateBackendPlaceholder": "native 或 docker_sandbox",
+  "sessionCreateQueryPlaceholder": "请求 UUID",
+  "sessionCreateTargetPlaceholder": "JSON object",
+  "deleteRemoteSession": "删除远程会话",
+  "remoteDeleteQuestion": "删除已审阅的远程会话？",
+  "remoteDeleteHelp": "确认前会冻结准确会话编号、选择摘要和服务端上下文。停止和 Skill 保留阻塞会单独显示；集合不会自动扩大。",
+  "remoteDeleteCollection": "已审阅集合：{count, plural, other {# 个会话}}",
+  "remoteDeletePending": "删除请求正在处理中。请保留原请求编号以恢复状态。",
+  "remoteDeleteConfirm": "删除已审阅会话",
+  "remoteDeleteQuery": "查询原删除请求",
+  "remoteDeleteRecovery": "恢复远程删除请求",
+  "remoteDeleteRecoveryHelp": "这是对原请求和冻结集合的只读查询恢复，不会增加集合，也不会再次删除会话。",
+  "remoteDeletePhase": "删除阶段：{phase}",
+  "remoteDeleteRequest": "原删除请求：{id}",
+  "remoteDeleteDeleted": "已删除 {deleted, number, integer} / {total, number, integer} 个已审阅会话",
+  "remoteDeleteCollectionMismatch": "已审阅集合发生变化，未额外选择其他会话。",
+  "remoteDeleteRetentionBlocker": "保留阻塞：{reason}",
+  "@remoteDeleteCollection": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "@remoteDeletePhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String"
+      }
+    }
+  },
+  "@remoteDeleteRequest": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@remoteDeleteDeleted": {
+    "placeholders": {
+      "deleted": {
+        "type": "num"
+      },
+      "total": {
+        "type": "num"
+      }
+    }
+  },
+  "@remoteDeleteRetentionBlocker": {
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteDeleteSelect": "选择删除",
+  "remoteDeleteReviewSelection": "审阅已选会话集合",
+  "remoteDeleteWorkspace": "工作区：{id}",
+  "remoteDeleteProject": "项目：{id}",
+  "@remoteDeleteWorkspace": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "@remoteDeleteProject": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "remoteDeleteUnknown": "删除结果未知。请先查询原请求编号，再决定下一步。",
+  "remoteDeleteFailed": "远程删除失败或仍未解决。请检查保留约束和任务状态。",
+  "remoteDeleteConflict": "原删除请求与已审阅集合不再匹配。",
+  "remoteDeleteUnsupported": "当前 CLI 未提供准确的远程删除流程。请更新 agent-remote 后再删除会话。",
+  "portForwardTitle": "端口转发",
+  "portForwardHelp": "为远程 Agent 会话创建和管理本机回环转发。监听器、隧道、TTL 和重连由 Rust CLI 负责；桌面端显示已观察状态。",
+  "portForwardSetupRequired": "请先登录并选择设备，再管理端口转发。",
+  "portForwardCreateTitle": "创建端口转发",
+  "portForwardSession": "远程会话 ID",
+  "portForwardSessionPlaceholder": "完整会话 UUID",
+  "portForwardRemotePort": "远程端口",
+  "portForwardLocalPort": "本地端口",
+  "portForwardTTL": "租约（秒）",
+  "portForwardRemotePortPlaceholder": "5173",
+  "portForwardLocalPortPlaceholder": "3000 或 auto（留空也会自动选择空闲端口）",
+  "portForwardTTLPlaceholder": "3600",
+  "portForwardCreate": "创建转发",
+  "portForwardActionPending": "正在执行端口转发操作…",
+  "portForwardActionComplete": "转发 {id} 当前为{status}。",
+  "portForwardLoading": "正在加载端口转发…",
+  "portForwardStale": "列表已过期。请刷新后再做新的操作。",
+  "portForwardEmpty": "没有可用的端口转发。",
+  "portForwardUnsupported": "当前 CLI 尚未提供端口转发 desktop-control 能力。",
+  "portForwardCreateUnsupported": "当前 CLI 未提供创建端口转发的能力。仍可只读查看列表。",
+  "portForwardStopUnsupported": "当前 CLI 未提供停止已有端口转发的能力。",
+  "portForwardReconnectUnsupported": "当前 CLI 未提供重连已有端口转发的能力。",
+  "portForwardStatus": "状态：{status}",
+  "portForwardSessionValue": "会话：{id}",
+  "portForwardConnections": "连接 {count, number, integer} · ↑ {up, number, integer} · ↓ {down, number, integer}",
+  "portForwardExpires": "过期时间：{value}",
+  "portForwardStop": "停止",
+  "portForwardReconnect": "重新连接",
+  "portForwardRefresh": "刷新转发",
+  "portForwardListenerBound": "本地监听：127.0.0.1:{port, number, integer}",
+  "portForwardListenerExited": "本地监听进程已退出",
+  "cliFormTitle": "运行 CLI 命令",
+  "cliFormHelp": "根据已发现的 schema 生成命令。提交时冻结 argv，并在受管终端中执行。",
+  "cliFormHomeManaged": "桌面端会将命令固定到当前选定的 agent-remote 配置目录。",
+  "cliFclaudeTerminalLifecycleHelp": "远程账户、Server 授权以及 run/new 会话复用和新建语义由 fclaude 负责。桌面端只保存本地终端 pane、项目、cwd 和生命周期摘要；CLI 未返回准确会话上下文时，历史不会自动重新连接。",
+  "cliFormExecutable": "可执行文件",
+  "cliFormCommand": "命令",
+  "cliFormPlatform": "{state, select, supported {客户端平台：CLI 声明支持。} unsupported {客户端平台：CLI 不支持。} other {客户端平台：CLI 未声明支持。}}",
+  "cliFormCapability": "{state, select, available {已知能力：可用。} ready {已知能力：本地条件已就绪。} unverified {已知能力：权限尚未验证。} observed_allowed {已知能力：最近一次权限检查通过。} unsupported {已知能力：不支持。} unavailable {已知能力：不可用。} context_unavailable {已知能力：配置上下文不可用。} setup_required {已知能力：需要先完成配置。} device_required {已知能力：需要设备。} denied {已知能力：已拒绝。} sign_in_required {已知能力：需要登录。} cli_unsupported {已知能力：CLI 未提供。} other {已知能力：{state}。}}",
+  "cliFormUnknownCapability": "没有对应的能力映射；授权仍由 CLI 负责。",
+  "cliFormArgument": "参数",
+  "cliFormRequired": "必填",
+  "cliFormChoices": "可选值",
+  "cliFormValues": "值",
+  "cliFormValuesHelp": "可重复参数每行输入一个值。",
+  "cliFormReview": "审阅 argv",
+  "cliFormStart": "启动命令",
+  "cliFormFrozen": "已冻结 argv",
+  "cliFormProjectRequired": "请先打开一个项目，再运行命令。",
+  "cliFormPlatformUnsupported": "当前命令未声明支持此客户端平台。",
+  "cliFormCapabilityUnavailable": "此命令依赖的已知能力在当前客户端不可用。",
+  "cliFormCommandInvalid": "命令值无效：{reason}",
+  "cliFormRemoteWorkflow": "此生命周期命令由远程管理页负责，页面会冻结会话上下文并保留恢复请求编号。",
+  "cliFormPortForwardWorkflow": "此转发命令由网络 → 端口转发页负责，页面会核对会话和转发编号。",
+  "cliFormOpenRemote": "打开远程管理",
+  "cliFormOpenPortForward": "打开端口转发",
+  "cliFormOpen": "打开表单",
+  "cliFormNoProject": "选择一个项目后才能运行此命令。",
+  "cliFormNoArguments": "此命令没有额外参数。",
+  "cliFormAddValue": "添加值",
+  "cliFormRemoveValue": "移除值",
+  "cliFormArgumentMissing": "缺少必填参数。",
+  "cliFormArgumentCount": "参数值数量无效。",
+  "cliFormArgumentChoice": "请从列出的值中选择。",
+  "cliFormArgumentUnknown": "此表单已过期，请重新打开命令。",
+  "cliFormArgumentFlag": "标志参数值无效。",
+  "cliFormArgumentManaged": "此值由桌面端配置控制。",
+  "cliDedicatedUnsafePath": "导出目标路径不安全，请选择不包含父目录穿越的目录。",
+  "cliFormSecureWorkflow": "此命令包含可能的凭据参数，请使用专用安全流程；通用 argv 表单不会传递这些值。",
+  "cliDedicatedConfirmationRequired": "启动此专用工作流前，请先审阅冻结后的精确请求。",
+  "cliDedicatedArgvChanged": "专用工作流请求已变化，请重新打开并再次审阅。",
+  "cliDedicatedYesRequired": "此变更必须包含 CLI 的非交互确认参数。",
+  "credentialsCreateTitle": "创建配置档案",
+  "credentialsBindTitle": "绑定配置档案",
+  "credentialsUnbindTitle": "解除配置档案绑定",
+  "credentialsDisplayName": "显示名称",
+  "credentialsGitUserName": "Git 用户名",
+  "credentialsGitUserEmail": "Git 邮箱",
+  "credentialsGitHubMode": "GitHub CLI 模式",
+  "credentialsGitHubModeDefault": "remote_login",
+  "credentialsSSHMode": "SSH 模式",
+  "credentialsSSHModeDefault": "agent_forwarding",
+  "credentialsAccountID": "工具账户 ID",
+  "credentialsProfileID": "配置档案 ID",
+  "credentialsReview": "审阅凭据变更",
+  "credentialsConfirm": "确认凭据变更",
+  "credentialsReviewHelp": "请审阅精确的账户、配置档案和元数据。设备凭据留在 CLI 安全存储中，不会进入 argv 或桌面状态。",
+  "credentialsReviewAccount": "账户 ID：{id}",
+  "credentialsReviewProfile": "配置档案 ID：{id}",
+  "credentialsMutationAccepted": "凭据变更已接受：{action}",
+  "credentialsMutationWorking": "正在通过 CLI 安全流程应用凭据变更…",
+  "skillsRetryOperation": "失败部署操作 ID",
+  "skillsRetryOperationPlaceholder": "粘贴原始操作 UUID",
+  "skillsRetryPlan": "检查可重试目标",
+  "skillsRetryReview": "重试已结束且失败的 Skill 目标？",
+  "skillsRetryTargets": "将为 {count, plural, other {# 个目标}} 创建新的部署尝试。",
+  "skillsRetryConfirm": "重试选定目标",
+  "skillsRetryWorking": "正在检查原始操作…",
+  "skillsRetryAccepted": "已接受 {count, plural, other {# 个目标}} 的重试。请保留原始操作 ID 查询状态。",
+  "skillsRetryUnknown": "重试结果未知。请保留原始操作 ID 并检查状态；未自动再次提交。",
+  "skillsTitle": "Skills",
+  "skillsHelp": "查看远端 Skill 目录和账户本地 Skill 状态。内容与凭据不会经过 desktop-control。",
+  "skillsLoading": "正在加载 Skills…",
+  "skillsUnsupported": "当前 CLI 尚未提供 Skills desktop 工作流。",
+  "skillsEmpty": "当前范围没有可用 Skill。",
+  "skillsGeneration": "目录代次：{generation, number, integer}",
+  "skillsRefresh": "刷新 Skills",
+  "skillsEnabled": "已启用",
+  "skillsDisabled": "已停用",
+  "skillsIncluded": "已包含",
+  "skillsExcluded": "未包含",
+  "skillsRevision": "版本：{id}",
+  "skillsDiscovery": "项目发现：{value}",
+  "skillsModelLoaded": "模型已加载",
+  "skillsModelPending": "模型未加载",
+  "skillsLocal": "账户本地 Skills",
+  "skillsFilterPlaceholder": "按 Skill 名称或 ID 筛选",
+  "skillsNoMatch": "没有匹配筛选条件的 Skill",
+  "skillsAccount": "账户：{id}",
+  "skillsStatus": "状态：{value}",
+  "skillsEnable": "启用 Skill",
+  "skillsDisable": "停用 Skill",
+  "skillsChangeReview": "审阅 Skill 变更",
+  "skillsChangeTarget": "目标：{name}",
+  "skillsChangeAction": "操作：{action}",
+  "skillsChangeConfirm": "确认 Skill 变更",
+  "skillsChangeWorking": "正在应用 Skill 变更…",
+  "skillsChangeAccepted": "Skill 变更已受理：{action}",
+  "skillsChangeReceipt": "操作编号：{id}",
+  "skillsConflictAccountPlaceholder": "用于状态冲突的账户 UUID",
+  "skillsConflictAccountHelp": "请输入精确的账户 UUID。状态冲突读取只返回元数据；路径和保存内容留在 CLI 中。",
+  "skillsConflictsRefresh": "检查状态冲突",
+  "skillsConflictsLoading": "正在加载状态冲突…",
+  "skillsConflictsUnsupported": "当前 CLI 尚未提供 Skill 状态冲突读取。",
+  "skillsConflictsEmpty": "当前范围没有冲突。",
+  "skillsConflictPublication": "发布冲突",
+  "skillsConflictMigration": "迁移冲突",
+  "skillsConflictStatus": "状态：{value}",
+  "skillsConflictReason": "原因：{value}",
+  "skillsConflictTarget": "{name} · {status}",
+  "skillsConflictResolve": "审阅冲突解析",
+  "skillsConflictMigrate": "审阅迁移",
+  "skillsConflictRestore": "审阅恢复",
+  "skillsConflictWorkflow": "冲突 {id}：提交前请审阅{action}命令。路径、分支输入和内容保留在 CLI 内。",
+  "operationsTitle": "操作中心",
+  "operationsHelp": "在一个页面查看桌面操作的进行中和近期结果。详细内容与凭据仍留在所属页面或 CLI 中。",
+  "operationsEmpty": "当前没有进行中或近期操作。",
+  "operationsSummary": "{active, plural, =0 {没有进行中的操作} other {# 个操作进行中}} · {total, plural, =0 {没有记录的操作} other {# 个操作}}",
+  "operationsOpen": "打开详情",
+  "operationsClear": "移除保存的摘要",
+  "operationRunning": "进行中",
+  "operationCompleted": "已完成",
+  "operationFailed": "失败",
+  "operationAttention": "需要处理",
+  "operationLogin": "登录",
+  "operationLogout": "退出登录",
+  "operationAccount": "账户变更",
+  "operationDefaultAccount": "默认账户",
+  "operationCredentials": "开发者凭据",
+  "operationAccountImport": "配置导入",
+  "operationRuntimeRecovery": "运行时恢复",
+  "operationSync": "项目同步",
+  "operationMutagen": "同步运行环境",
+  "operationSetup": "本地初始化",
+  "operationWireGuard": "WireGuard 配置",
+  "operationTunnel": "WireGuard 隧道",
+  "operationPortForward": "端口转发",
+  "operationRemoteCreate": "远程会话创建",
+  "operationRemoteStop": "远程会话停止",
+  "operationRemoteDelete": "远程会话删除",
+  "operationQuery": "后台查询",
+  "operationDetailsHelp": "打开所属页面查看精确上下文和操作回执。",
+  "dedicatedOperationTitle": "CLI 终端 · {command}",
+  "dedicatedOperationDetailsHelp": "桌面只保存这项生命周期摘要。请在受管终端或 CLI journal 中查看精确结果；重启后不会重放操作。",
+  "operationsSidebar": "操作中心",
+  "initWizardTitle": "完成初始化",
+  "initWizardOperation": "初始化向导",
+  "initWizardHelp": "依次准备本地数据、登录，可选登记设备并发布 WireGuard 配置，最后检查网络和会话就绪状态。",
+  "initWizardProgress": "正在完成初始化…",
+  "initWizardApproval": "请在浏览器中批准登录",
+  "initWizardStage": "当前步骤：{stage}",
+  "initWizardCancelHelp": "停止等待不会撤销已经完成的本地、登录或登记步骤。请刷新上下文后再决定下一步。",
+  "initWizardRetry": "重新开始",
+  "initWizardConfigureWireGuard": "登录后配置 WireGuard",
+  "initWizardWireGuardOutput": "WireGuard 输出路径（可选）",
+  "initWizardDefaultOutput": "使用 CLI 默认路径",
+  "initWizardReview": "审阅完整初始化范围",
+  "initWizardScope": "本地初始化、凭据和诊断都使用选定的 agent-remote 配置目录。",
+  "initWizardDeviceScope": "设备登记：{skip, select, true {跳过，保持仅用户登录} other {使用提供的公钥登记设备}}",
+  "initWizardWireGuardScope": "WireGuard 将在登录后生成计划，并在确认后写入：{path}",
+  "initWizardConfirm": "确认初始化",
+  "initWizardWireGuardReview": "审阅 WireGuard 发布",
+  "initWizardWireGuardReviewHelp": "CLI 已在登录后生成只读计划。写入前请确认准确的路径和动作。",
+  "initWizardWireGuardAction": "动作：{action}",
+  "initWizardWireGuardDirectories": "将创建的缺失目录：{count}",
+  "initWizardConfirmWireGuard": "确认发布 WireGuard",
+  "initWizardComplete": "初始化完成",
+  "initWizardLocalReady": "本地初始化完成：{complete}",
+  "initWizardLoginReady": "已登录：{server}",
+  "initWizardWireGuardReady": "WireGuard 发布完成：{complete} · {path}",
+  "initWizardWireGuardSkipped": "已跳过 WireGuard 发布。",
+  "initWizardDiagnosticsReady": "诊断已检查 {checks} 项检查和 {dependencies} 个依赖。",
+  "initWizardReadiness": "就绪状态：{ready, select, true {已就绪} other {需要处理}} · {accounts} 个账户 · {sessions} 个会话",
+  "deviceTitle": "设备",
+  "deviceHelp": "查看当前设备，并执行经过审阅的凭据操作。",
+  "deviceLocalTitle": "本地 Device 应用",
+  "deviceLocalInstallation": "安装状态：{status}",
+  "deviceLocalPath": "路径：{path}",
+  "deviceLocalVersion": "版本：{version}",
+  "deviceLocalChecks": "Bundle ID：{bundle} · 签名：{signature} · 签名身份：{identity} · Gatekeeper：{gatekeeper}",
+  "deviceLocalXPC": "网络 broker XPC：{network} · GUI executor XPC：{gui}",
+  "deviceLocalRunning": "进程：{running}",
+  "deviceLocalPlanTitle": "生命周期计划：{action}",
+  "deviceLocalPlanHelp": "经过审阅的 {method} 终端流程将执行以下有界阶段。",
+  "deviceLocalPlanStage": "阶段 {stage}：{state}",
+  "deviceLocalPlanUnavailable": "生命周期计划不可用：{error}",
+  "deviceLocalStatusUnavailable": "本地 Device 状态不可用：{error}",
+  "deviceLoading": "正在读取设备状态…",
+  "deviceID": "设备：{id}",
+  "devicePlatform": "平台：{platform}",
+  "deviceStatus": "状态：{status}",
+  "deviceServer": "服务器：{server}",
+  "deviceContext": "配置目录：{home}",
+  "deviceRotate": "轮换令牌",
+  "deviceRevoke": "撤销设备",
+  "deviceReview": "审阅设备操作",
+  "deviceAction": "操作：{action}",
+  "deviceConfirmHelp": "将冻结准确的目录、服务器、当前设备和操作。请确认它们与意图一致。",
+  "deviceConfirm": "确认设备操作",
+  "deviceReceipt": "设备操作回执",
+  "deviceRemoteStatus": "远端结果：{status}",
+  "deviceLocalCleanup": "本地清理完成：{complete}",
+  "deviceLocalCredential": "本地凭据已保存：{complete}",
+  "deviceRefresh": "刷新",
+  "deviceStopWaiting": "停止等待",
+  "deviceNotConfigured": "未配置",
+  "deviceYes": "是",
+  "deviceNo": "否",
+  "egoBrowserTitle": "Ego Browser",
+  "egoBrowserHelp": "查看本地 Bridge 安装状态及远程浏览器绑定。",
+  "egoBrowserLoading": "正在加载 Ego Browser 状态…",
+  "egoBrowserRefresh": "刷新",
+  "egoBrowserLocalState": "本地 Bridge：{installation} · 存储：{store}",
+  "egoBrowserPolicy": "注册：{enrollment} · 执行：{execution}",
+  "egoBrowserServer": "服务器：{server}",
+  "egoBrowserDeviceCount": "已注册 Bridge 设备：{count}",
+  "egoBrowserDevice": "设备 {id} · {status}",
+  "egoBrowserVersion": "Bridge：{bridge} · 运行时：{runtime}",
+  "egoBrowserBindingCount": "浏览器绑定：{count}",
+  "egoBrowserBinding": "绑定 {id} · {status} · 租约：{lease}",
+  "egoBrowserUnknown": "未知",
+  "egoBrowserRequestsOpen": "查看请求",
+  "egoBrowserRequestsTitle": "绑定 {id} 的活动请求",
+  "egoBrowserRequestsLoading": "正在加载浏览器请求…",
+  "egoBrowserRequestsEmpty": "没有活动浏览器请求。",
+  "egoBrowserRequest": "请求 {id} · {status} · {type} · {bytes} 字节",
+  "egoBrowserRequestCancel": "取消",
+  "nodesTitle": "受管节点",
+  "nodesHelp": "选择一个受管节点，审阅准确的上下文和意图，然后在原生终端中运行受管 CLI 安装器。",
+  "nodesLoading": "正在加载受管节点…",
+  "nodesFilter": "筛选节点",
+  "nodesEmpty": "没有匹配筛选条件的受管节点。",
+  "nodesRefresh": "刷新节点",
+  "nodeSummary": "{name} · {status}",
+  "nodeID": "节点：{id}",
+  "nodeVersion": "版本：{version}",
+  "nodeSSH": "SSH：{user}@{host}:{port}",
+  "nodeAdmission": "注册：{enrollment, select, true {允许} false {拒绝} other {未知}} · 执行：{execution, select, true {允许} false {拒绝} other {未知}}",
+  "nodeSelect": "选择节点",
+  "nodeReview": "审阅节点安装",
+  "nodeContext": "配置目录：{home}",
+  "nodeServer": "服务器：{server}",
+  "nodeDevice": "设备：{id}",
+  "nodeEnableEgoBrowser": "在此节点启用 ego-browser",
+  "nodeInstallManaged": "安装和 SSH 注册将在受管 agent-remote 终端中执行。桌面端不会保存 join code 或凭据。",
+  "nodeArgv": "冻结命令：{argv}",
+  "nodeConfirm": "运行节点安装",
+  "@nodeAdmission": {
+    "placeholders": {
+      "enrollment": {
+        "type": "String"
+      },
+      "execution": {
+        "type": "String"
+      }
+    }
+  },
+  "operationDevice": "设备操作",
+  "fileDropInserted": "已将 {count, plural, other {# 个拖入路径}} 插入当前终端。",
+  "fileDropNeedsLocal": "文件拖放只能插入本地 Agent 终端。",
+  "fileDropNoSession": "请先聚焦一个正在运行的本地 Agent 终端，再拖入文件。",
+  "fileDropExited": "当前 Agent 终端已退出，请启动或聚焦仍在运行的本地会话。",
+  "fileDropInvalid": "拖入的文件路径无法安全插入终端。",
+  "remoteAttachmentDropUnsupported": "精确远程会话仍为仅文字，因为当前会话未声明 CLI 精确附件传输 v1。",
+  "remoteAttachAttachmentStatus": "附件通道：仅文字（v{version}）。在传输协议验证此精确会话身份前，文件和图片保持禁用。",
+  "@dependenciesPlatform": {
+    "placeholders": {
+      "platform": {
+        "type": "String"
+      }
+    }
+  },
+  "cliDoctorHelp": "Doctor 会检查本地安装、配置、凭据、依赖和服务器可达性。运行前请审阅精确命令。",
+  "cliDoctorFixHelp": "--fix 可能在检查前创建或刷新本地元数据。请审阅冻结后的 argv 后再继续。",
+  "commandDiagnosticsStatus": "检查状态",
+  "commandDiagnosticsDoctor": "检查 Doctor",
+  "commandDiagnosticsSSH": "检查 SSH",
+  "commandDiagnosticsDependencies": "检查依赖",
+  "commandDiagnosticsMethod": "控制方法：{method}",
+  "commandDiagnosticsSSHVersion": "OpenSSH 版本：{version}",
+  "commandDiagnosticsAuthorization": "授权状态：{status}",
+  "commandDiagnosticsRepairDoctor": "修复本地设置",
+  "commandDiagnosticsRepairDependencies": "修复依赖",
+  "commandDiagnosticsRepairReview": "审阅修复：{command}",
+  "commandDiagnosticsRepairHelp": "此操作可能修改本地元数据或受管依赖。请先确认准确命令和配置目录，再继续。",
+  "commandDiagnosticsRepairHome": "受管配置目录：{home}",
+  "commandDiagnosticsRepairConfirm": "确认修复",
+  "remoteAttachAttachmentStatusText": "附件通道：仅文字（v{version}）。当前未声明 CLI 精确传输 v1，文件和图片保持禁用。",
+  "remoteAttachAttachmentStatusTransfer": "附件通道：精确传输（v{version}）。文件和图片通过绑定身份的 CLI 通道传输；Server 与 Node 会校验每个租约。",
+  "skillsStateTitle": "状态历史",
+  "skillsStateHelp": "查看指定账户范围的有界检查点和待完成回执元数据。内容和路径保留在 CLI 内。",
+  "skillsStateAccountPlaceholder": "状态历史账户 UUID",
+  "skillsStateScopeAccount": "账户目录",
+  "skillsStateScopeItem": "单个 Skill",
+  "skillsStateSkillPlaceholder": "Skill UUID",
+  "skillsStateRefresh": "加载状态历史",
+  "skillsStateLoading": "正在加载状态历史…",
+  "skillsStateUnsupported": "当前 CLI 未提供 Skill 状态历史查询。",
+  "skillsStateEmpty": "此范围没有记录。",
+  "skillsStateCheckpoints": "检查点",
+  "skillsStatePending": "待完成回执",
+  "skillsStateCheckpoint": "检查点：{id}",
+  "skillsStateCheckpointStatus": "存储：{storage}；保留：{retained}；当前头：{head}",
+  "skillsStateCheckpointCreated": "创建时间：{value}",
+  "skillsStatePendingItem": "{id} · Node {node} · {status}",
+  "skillsStateCheckpointStorage": "存储：{value}",
+  "skillsStateCheckpointRetained": "已保留",
+  "skillsStateCheckpointUnretained": "未保留",
+  "skillsStateCheckpointHead": "当前头",
+  "skillsStateCheckpointNotHead": "非当前头",
+  "skillsStateExport": "导出检查点",
+  "skillsStateExportReview": "审阅检查点导出",
+  "skillsStateNextCheckpoints": "加载下一页检查点",
+  "skillsStateNextPending": "加载下一页待完成记录",
+  "skillsStateInfo": "查看检查点详情",
+  "skillsStateInfoTitle": "检查点详情",
+  "skillsStateInfoLoading": "正在加载检查点详情…",
+  "skillsStateInfoUnsupported": "当前 CLI 未提供检查点详情查询。",
+  "skillsStateInfoStatus": "检查点状态：{value}",
+  "skillsStateInfoDigest": "内容摘要：{value}",
+  "skillsStateDiff": "查看变更路径",
+  "skillsStateCurrentDiff": "比较当前状态",
+  "skillsStateDiffTitle": "状态差异",
+  "skillsStateDiffLoading": "正在加载状态差异…",
+  "skillsStateDiffUnsupported": "此 CLI 未提供状态差异查询。",
+  "skillsStateDiffSummary": "{mode} · {count} 个变更路径",
+  "skillsStateDiffPath": "{path} · {kind} · {size} 字节",
+  "skillsStateDiffDigest": "摘要 {value}",
+  "skillsStateDiffNext": "加载下一页差异",
+  "skillsInfo": "查看 Skill 详情",
+  "skillsInfoLoading": "正在加载 Skill 详情…",
+  "skillsInfoUnsupported": "当前 CLI 未提供 Skill 详情查询。",
+  "skillsInfoKind": "类型：{value}",
+  "skillsInfoStatus": "状态：{value}",
+  "skillsInfoEpoch": "安装代次：{value}",
+  "skillsInfoRevisions": "保留修订：{count}",
+  "skillsInfoRevision": "修订 {number}：{id}（{retained}）",
+  "skillsInfoRetained": "已保留",
+  "skillsInfoUnretained": "未保留",
+  "skillsInfoAccount": "账户：{id}",
+  "skillsInfoSourceCheckpoint": "来源检查点：{id}",
+  "skillsInfoEffective": "生效规则：{enabled} · 修订 {revision} · {included}",
+  "skillsInfoIncluded": "已包含",
+  "skillsInfoExcluded": "已排除",
+  "egoBrowserBindingAction": "{action, select, pause {暂停} resume {恢复} stop {停止} revoke {撤销} other {管理}}",
+  "egoBrowserBindingWorking": "正在应用绑定生命周期操作…",
+  "egoBrowserBindingReview": "审阅浏览器绑定操作",
+  "egoBrowserBindingReviewTarget": "绑定 {id} · 操作：{action}",
+  "egoBrowserBindingReviewAllowed": "当前代次有效，允许执行此操作。",
+  "egoBrowserBindingReviewDenied": "当前绑定状态不允许此操作。",
+  "egoBrowserBindingConfirm": "应用操作",
+  "egoBrowserBindingAccepted": "绑定操作 {action} 已完成 · 状态：{status}",
+  "egoBrowserDeleteDevice": "删除已撤销设备",
+  "egoBrowserDeleteBinding": "删除终态绑定",
+  "egoBrowserDeleteWorking": "正在准备删除审阅…",
+  "egoBrowserDeleteReview": "审阅永久删除",
+  "egoBrowserDeleteReviewTarget": "{target} {id} · 观察到的代次 {generation}",
+  "egoBrowserDeleteReviewAllowed": "目标处于可删除的终态。此操作无法撤销。",
+  "egoBrowserDeleteReviewDenied": "目标尚未处于可删除的终态。",
+  "egoBrowserDeleteConfirm": "永久删除",
+  "egoBrowserDeleteAccepted": "已删除 {target} {id}。",
+  "egoBrowserCandidatesTitle": "可用 Claude 会话",
+  "egoBrowserCandidatesLoading": "正在加载可认领会话…",
+  "egoBrowserCandidatesEmpty": "当前没有符合浏览器控制条件的 Claude 会话。",
+  "egoBrowserCandidate": "{name} · {status} · Node {node}",
+  "egoBrowserCandidateClaim": "审阅全信任认领",
+  "egoBrowserClaimWorking": "正在准备全信任认领审阅…",
+  "egoBrowserClaimReview": "审阅全信任浏览器认领",
+  "egoBrowserClaimReviewTarget": "Claude 会话 {id} · {name}",
+  "egoBrowserClaimReviewWarning": "这会授予远程 Agent 以当前用户身份进行全信任浏览器控制的权限。请先确认精确会话。",
+  "egoBrowserClaimConfirm": "授权全信任认领",
+  "egoBrowserClaimAccepted": "已提交浏览器认领：{id}。本地准入已打开。",
+  "egoBrowserClaimUnsupported": "当前 CLI 未提供结构化浏览器认领控制。",
+  "remoteSessionServerFilter": "服务器会话筛选",
+  "remoteSessionServerFilterHelp": "这些筛选会查询远程会话库存；下面的文本搜索只筛选已加载的会话。",
+  "remoteSessionFilterActive": "已启用服务器筛选",
+  "remoteSessionHideFilter": "收起筛选",
+  "remoteSessionToolFilter": "Agent",
+  "remoteSessionStatusFilter": "状态",
+  "remoteSessionFilterAll": "全部",
+  "remoteSessionApplyFilter": "应用筛选",
+  "remoteSessionClearFilter": "清除筛选"
+}

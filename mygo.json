@@ -1,0 +1,17 @@
+{
+  "name": "Agent Remote Desktop",
+  "identifier": "dev.agent-remote.desktop",
+  "version": "0.1.0-dev",
+  "macos": {
+    "minimumSystemVersion": "13.0"
+  },
+  "linux": {
+    "depends": [
+      "libayatana-appindicator3-1 | libappindicator3-1"
+    ]
+  },
+  "i18n": {
+    "dir": "locales",
+    "source": "en"
+  }
+}
