@@ -106,10 +106,20 @@ func (a *App) chordFallback(c *ui.Context) {
 
 // gpuProbe learns whether the window paints on a GPU (Painter.Accelerated
 // is only known while painting): full-window blur is cheap there and over
-// 16 ms on the CPU (R0), where a scrim replaces it.
+// 16 ms on the CPU (R0), where a scrim replaces it. While blur shows it
+// also times the paints, and a GPU too slow for it (a VM, an old iGPU)
+// gets the scrim as well (redesign §7.1).
 func (a *App) gpuProbe(c *ui.Context) {
+	l := &a.layers
 	ui.Box(c.Key("gpu-probe")).Absolute().Top(0).Left(0).Size(1, 1).PassThrough().Draw(func(p *ui.Painter, _ ui.Rect) {
-		if on := p.Accelerated(); a.layers.gpu.Swap(on) != on {
+		if on := p.Accelerated(); l.gpu.Swap(on) != on {
+			a.invalidate()
+		}
+		if !l.blurring.Load() {
+			l.budget.Idle()
+			return
+		}
+		if l.budget.Paint(time.Now()); l.budget.Exceeded() {
 			a.invalidate()
 		}
 	})
@@ -172,7 +182,7 @@ func (a *App) workspaceDepth(env chrome.Env) (ui.Pose, float32) {
 	if a.dialogOpen() && pose.Scale == 0 {
 		pose, blur = ui.Pose{Scale: 0.98, Fade: 0.1}, 0
 	}
-	if env.S.ReduceTransparency || !a.layers.gpu.Load() {
+	if env.S.ReduceTransparency || !a.layers.gpu.Load() || a.layers.budget.Exceeded() {
 		// Without blur the scrim and a deeper dim keep the layer readable.
 		blur = 0
 		if pose.Fade > 0 {
@@ -187,9 +197,11 @@ func (a *App) workspace(c *ui.Context, env chrome.Env) {
 	ws := ui.Column(c.Key("workspace")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Padding(14, 14, 0).
 		FocusBind(&a.focusValue, focusZen).HandleInput(a.rootKey)
 	ws = ws.AnimatePose(pose, env.Move(theme.Smooth))
-	if sigma := ws.AnimateTo("blur", blur, env.Fade(theme.Smooth)); sigma > 0.2 {
+	sigma := ws.AnimateTo("blur", blur, env.Fade(theme.Smooth))
+	if sigma > 0.2 {
 		ws = ws.Blur(sigma)
 	}
+	a.layers.blurring.Store(sigma > 0.2)
 	ws.Children(func() {
 		ui.Column(c).Grow(1).MinHeight(0).FillWidth().Children(func() { a.content(c, env) })
 		a.breathingBar(c, env)
@@ -363,7 +375,7 @@ func (a *App) projectEmpty(c *ui.Context, env chrome.Env, project workspace.Proj
 		if env.Button(c, locales.NewProjectSession(), chrome.Primary).Padding(9, 20).Clicked() {
 			a.showLayer(layerCreate)
 		}
-		env.Text(c, locales.HiddenSessionsHelp(), theme.Caption, p.TextTer)
+		env.Text(c, locales.HiddenSessionsHelp(chordLabel("A")), theme.Caption, p.TextTer)
 	})
 }
 

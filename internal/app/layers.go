@@ -8,6 +8,7 @@ import (
 	"github.com/Agent-Remote/agent-remote-desktop/internal/chord"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/chrome"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/session"
+	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/workspace"
 	"github.com/egoist/mygo/ui"
 )
@@ -50,12 +51,17 @@ type layerState struct {
 	query     string
 	searchHot int
 
-	control        chrome.SheetState // only its Offset: the sheet is built while open
-	controlClosing bool              // released past half: keep building until at rest
+	control        chrome.SheetState // only its Offset: 0 open, controlH closed
+	controlClosing bool              // closed, still moving down: keep building until at rest
+	controlRise    bool              // opened from rest: place it closed, then spring up
+	controlH       float32           // the sheet's height last built
 	hosted         string            // the page the sheet shows ("" its grid)
 	ccQuery        string            // the Control Center's search
 	dock           ui.Point          // the dock's drag offset: 0 open, −height pushed away
-	dockClosing    bool              // pushed past half: keep building until at rest
+	dockClosing    bool              // closed, still moving up: keep building until at rest
+	dockRise       bool              // opened from rest: place it closed, then spring down
+	dockH          float32           // the dock's height last built
+	cardHeight     float32           // the dock's card height in this window
 	pull           float32           // how far a press on the bar has pulled the sheet up
 	pulling        bool              // the sheet follows that press 1:1
 	pulled         bool              // the press pulled: its release is no click
@@ -67,6 +73,8 @@ type layerState struct {
 	previews map[string]preview
 	probes   *workspace.ProbeCache
 	gpu      atomic.Bool // the window paints on a GPU: blur is affordable
+	blurring atomic.Bool // the workspace shows blurred this frame
+	budget   theme.BlurBudget
 }
 
 type preview struct {
@@ -144,11 +152,13 @@ func (a *App) enterLayer(layer, was string) {
 	switch layer {
 	case layerAgents:
 		l.sel = a.defaultAgent()
-		l.dock, l.dockClosing = ui.Point{}, false
+		// Reopened on its way out: the spring turns back from where it is.
+		l.dockRise, l.dockClosing = !l.dockClosing, false
+		l.dock = ui.Point{}
 	case layerProjects:
 		a.ensureSlots()
 	case layerControl:
-		l.controlClosing = false
+		l.controlRise, l.controlClosing = !l.controlClosing, false
 		l.control.Offset = ui.Point{}
 		l.ccQuery = ""
 	}
@@ -159,8 +169,18 @@ func (a *App) enterLayer(layer, was string) {
 // Control Center leaves its page; the sheet keeps drawing it on the way out.
 func (a *App) closeLayer() {
 	l := &a.layers
-	if a.openLayer() == layerControl {
+	// The sheets go back the way they came, moved by their offset spring
+	// and built until at rest, so reopening on the way turns them round:
+	// a leaving copy handed over to a new sheet would miss a frame
+	// (redesign §10.2).
+	switch a.openLayer() {
+	case layerControl:
 		a.page, a.pendingPage = "", ""
+		l.controlClosing, l.controlRise = true, false
+		l.control.Offset.Y = l.controlH
+	case layerAgents:
+		l.dockClosing, l.dockRise = true, false
+		l.dock.Y = -l.dockH
 	}
 	l.rec.Cancel()
 	l.search = false

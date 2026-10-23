@@ -764,14 +764,18 @@ func (msgs Messages) NewProjectSession() string {
 	return Catalog.Format(msgs.locale, "newProjectSession", nil)
 }
 
-// HiddenSessionsHelp says "Hidden sessions remain in the sidebar. Select one to return to its terminal."
+// HiddenSessionsHelp says "Hidden sessions stay in the Agents dock ({chord}). Choose one to return to its terminal."
 // in the language the app shows.
-func HiddenSessionsHelp() string { return In(i18n.Locale()).HiddenSessionsHelp() }
+//
+// hiddenSessionsHelp
+func HiddenSessionsHelp(chord string) string { return In(i18n.Locale()).HiddenSessionsHelp(chord) }
 
-// HiddenSessionsHelp says "Hidden sessions remain in the sidebar. Select one to return to its terminal."
+// HiddenSessionsHelp says "Hidden sessions stay in the Agents dock ({chord}). Choose one to return to its terminal."
 // in the language of msgs.
-func (msgs Messages) HiddenSessionsHelp() string {
-	return Catalog.Format(msgs.locale, "hiddenSessionsHelp", nil)
+//
+// hiddenSessionsHelp
+func (msgs Messages) HiddenSessionsHelp(chord string) string {
+	return Catalog.Format(msgs.locale, "hiddenSessionsHelp", map[string]any{"chord": chord})
 }
 
 // Hide says "Hide"

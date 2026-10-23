@@ -164,8 +164,11 @@ var kawaii = Palette{
 	Decorations: true,
 
 	Accent: ui.Hex("#EC4899"), AccentFill: ui.Hex("#C81E6F"), AccentInk: ui.Hex("#C81E6F"), AccentText: ui.Hex("#FFFFFF"),
-	Danger: ui.Hex("#E11D48"), DangerFill: ui.Hex("#E11D48"), Warning: ui.Hex("#C2410C"), Success: ui.Hex("#10B981"),
-	Solid: ui.Hex("#FFF4F8"), SolidRaised: ui.Hex("#FFFFFF"),
+	// Success is emerald 600, not v3's 500: a done-stage mark keeps 3:1 on
+	// the light pink sheet. Solid is whiter than v3's tint so secondary
+	// text stays at the kawaii floor under reduced transparency.
+	Danger: ui.Hex("#E11D48"), DangerFill: ui.Hex("#E11D48"), Warning: ui.Hex("#C2410C"), Success: ui.Hex("#059669"),
+	Solid: ui.Hex("#FFF8FB"), SolidRaised: ui.Hex("#FFFFFF"),
 	Scrim: ui.RGBA(120, 40, 90, 0.14), TerminalBG: ui.Hex("#FFFDFE"),
 }
 
@@ -200,6 +203,13 @@ const SelectedTintAlpha = 0.08
 
 // Selected is the background of a selected row, tab or segment.
 func (p Palette) Selected() ui.Color { return p.AccentFill.Alpha(SelectedTintAlpha) }
+
+// PillText is the label colour of a capsule (status, context, account).
+// The v3 capsule tint over a sheet costs secondary text up to 0.5:1, so
+// labels move a quarter of the way to primary text: 4.5:1 everywhere
+// (tests/theme TestControlCenterSurfaceContrast) without changing either
+// v3 value.
+func (p Palette) PillText() ui.Color { return p.TextSecondary.Mix(p.TextPrimary, 0.25) }
 
 // ToolAccent maps a session tool to its v3 accent (doc §5.2).
 func (p Palette) ToolAccent(tool string) ui.Color {

@@ -73,7 +73,15 @@
   "viewEnvironment": "View environment",
   "chooseAgent": "Choose an Agent for this project",
   "newProjectSession": "New project session",
-  "hiddenSessionsHelp": "Hidden sessions remain in the sidebar. Select one to return to its terminal.",
+  "hiddenSessionsHelp": "Hidden sessions stay in the Agents dock ({chord}). Choose one to return to its terminal.",
+  "@hiddenSessionsHelp": {
+    "description": "hiddenSessionsHelp",
+    "placeholders": {
+      "chord": {
+        "type": "String"
+      }
+    }
+  },
   "hide": "Hide",
   "projectDetails": "Project details",
   "projectDetailsHelp": "Sessions use the project directory. Split panes show several Agents at once; hiding a terminal keeps its process running.",

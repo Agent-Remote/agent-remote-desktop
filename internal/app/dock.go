@@ -187,8 +187,18 @@ func shiftLabel() string {
 	return "Shift"
 }
 
-// dockHeight is the dock's height; pushing it up by as much closes it.
-const dockHeight = 332
+// compactHeight is the window height below which the dock's cards and the
+// wheels shrink (redesign §9: 900×600 must not crowd).
+const compactHeight = 700
+
+// dockMetrics are the dock's height (pushing it up by as much closes it)
+// and its cards' height: 188 DIP cards, 160 in a short window.
+func dockMetrics(windowHeight float32) (dock, card float32) {
+	if windowHeight < compactHeight {
+		return 304, 160
+	}
+	return 332, 188
+}
 
 // dockLayer is Layer 1.1: a glass drawer from the top edge with a card per
 // session; the workspace behind is pushed back (workspaceDepth). Pushing
@@ -200,7 +210,9 @@ func (a *App) dockLayer(c *ui.Context, env chrome.Env, open bool) {
 		return
 	}
 	items := a.dockItems()
-	width, _ := c.Size()
+	width, height := c.Size()
+	dockHeight, cardHeight := dockMetrics(height)
+	l.cardHeight = cardHeight
 	if open {
 		// The transparent stage takes the keyboard and closes on an outside click.
 		stage := ui.Box(c.Key("dock-stage")).Absolute().Top(0).Right(0).Bottom(0).Left(0).
@@ -212,18 +224,26 @@ func (a *App) dockLayer(c *ui.Context, env chrome.Env, open bool) {
 			}
 		}
 	}
+	l.dockH = dockHeight
+	rising := l.dockRise
+	if rising {
+		// Opened from rest: placed above the window this frame, sprung
+		// down from there in the next.
+		l.dockRise, l.dock.Y = false, -dockHeight
+		c.AnimationFrame()
+		defer func() { l.dock.Y = 0 }()
+	}
 	dock := ui.Column(c.Key("dock")).Absolute().Top(0).Left(0).Right(0).Height(dockHeight).Padding(26, max(24, width*0.07), 18).Gap(18)
-	dock = env.Glass(dock, chrome.Dock, 28, false).Radius(0, 0, 28, 28).BorderWidth(0, 0, 1, 0).
-		Transition(ui.ElementTransition{Animation: ptr(env.Move(theme.Sheet)), Position: true, Enter: &ui.Motion{Y: -340, Opacity: 1}, Exit: &ui.Motion{Y: -340, Opacity: 1}})
+	dock = env.Glass(dock, chrome.Dock, 28, false).Radius(0, 0, 28, 28).BorderWidth(0, 0, 1, 0)
 	dock = dock.Draggable(&l.dock, ui.DraggableOptions{
 		Axis: ui.Vertical, Bounds: &ui.Rect{Y: -dockHeight, H: dockHeight},
 		Snap:      ui.Nearest(ui.Point{}, ui.Point{Y: -dockHeight}),
 		Animation: env.Move(theme.Sheet),
 	})
 	switch {
-	case open && l.dock.Y <= -dockHeight/2 && !dock.Dragging():
+	case open && !rising && l.dock.Y <= -dockHeight/2 && !dock.Dragging():
+		// Pushed or thrown past half: closed at once, built until at rest.
 		a.closeLayer()
-		l.dockClosing = true
 	case !open && l.dockClosing && dock.DragOffset().Y <= 1-dockHeight && !dock.Transitioning():
 		l.dockClosing = false
 	}
@@ -241,7 +261,7 @@ func (a *App) dockLayer(c *ui.Context, env chrome.Env, open bool) {
 			}
 			env.Text(c, hint, theme.Caption, env.P.TextSecondary)
 		})
-		ui.ScrollHorizontal(c).FillWidth().Height(220).Gap(22).Padding(6, 2).Children(func() {
+		ui.ScrollHorizontal(c).FillWidth().Height(cardHeight+32).Gap(22).Padding(6, 2).Children(func() {
 			for i, it := range items {
 				a.dockCard(c.Key(it.id), env, i, it)
 			}
@@ -256,7 +276,7 @@ func (a *App) dockCard(c *ui.Context, env chrome.Env, i int, it dockItem) {
 	l := &a.layers
 	selected := l.sel == i
 	accent := env.P.ToolAccent(it.saved.Tool)
-	card := ui.ButtonBase(c).Width(280).Height(188).Padding(16, 18).Gap(10).Label(sessionName(it.saved))
+	card := ui.ButtonBase(c).Width(280).Height(l.cardHeight).Padding(16, 18).Gap(10).Label(sessionName(it.saved))
 	card = env.Glass(card, chrome.Card, 22, selected)
 	if selected {
 		card = card.Border(1, env.P.SectorStrokeHover)
@@ -291,9 +311,11 @@ func (a *App) dockCardContent(c *ui.Context, env chrome.Env, it dockItem, accent
 		ui.Row(c).FillWidth().Gap(8).Children(func() {
 			env.Text(c, "✦ "+sessionName(it.saved), theme.BodyStrong, accent).SingleLine().Ellipsis("…").Grow(1).Shrink(1).MinWidth(0)
 			status := it.status()
-			env.Pill(c, &status, statusText(it))
+			// Name and state share the row; neither pushes the other out.
+			env.Pill(c, &status, statusText(it)).MaxWidth(132)
 		})
-		ui.Column(c).FillWidth().Height(92).Padding(10, 12).Radius(14).Background(env.P.CodePreviewBG).Border(1, env.P.Hairline).Clip().Children(func() {
+		// The preview gives up the height a short window takes from the card.
+		ui.Column(c).FillWidth().Height(92-(188-a.layers.cardHeight)).Padding(10, 12).Radius(14).Background(env.P.CodePreviewBG).Border(1, env.P.Hairline).Clip().Children(func() {
 			env.Text(c, a.previewOf(it), theme.MonoSmall, env.P.TextSecondary).FontSize(10.5 * c.Theme().FontSize / 14)
 		})
 		ui.Row(c).FillWidth().Gap(8).Children(func() {
@@ -309,7 +331,7 @@ func (a *App) dockCardContent(c *ui.Context, env chrome.Env, it dockItem, accent
 
 func (a *App) dockGhost(c *ui.Context, env chrome.Env, i int) {
 	l := &a.layers
-	ghost := ui.ButtonBase(c.Key("dock-new")).Width(150).Height(188).Radius(22).Gap(6).Center().
+	ghost := ui.ButtonBase(c.Key("dock-new")).Width(150).Height(a.layers.cardHeight).Radius(22).Gap(6).Center().
 		Border(1.5, env.P.Hairline).BorderStyle(ui.BorderDashed).Label(locales.NewAgent())
 	if l.sel == i {
 		ghost = ghost.Background(env.P.Selected()).Border(1.5, env.P.SectorStrokeHover)

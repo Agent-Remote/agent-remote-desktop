@@ -16,7 +16,9 @@ import (
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/app"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/storage"
+	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/workspace"
+	"github.com/Agent-Remote/agent-remote-desktop/locales"
 	"github.com/egoist/mygo/i18n"
 	"github.com/egoist/mygo/ui"
 )
@@ -42,6 +44,17 @@ type report struct {
 	MeasurementScope   string   `json:"measurement_scope"`
 	InputFeedbackP95   *float64 `json:"input_feedback_p95_ms"`
 	TerminalRenderTest bool     `json:"terminal_rendering_measured"`
+	// States are the workbench states frames were built in: Zen, each
+	// layer and a Control Center page (redesign §10.7). The top-level P95
+	// is the worst state's; the max is over the whole run.
+	States []stateReport `json:"states"`
+}
+
+// stateReport is one state's P95; the observer's max is over the whole run,
+// so it is reported once, at the top level.
+type stateReport struct {
+	Name           string  `json:"name"`
+	ViewBuildP95MS float64 `json:"view_build_p95_ms"`
 }
 
 func main() {
@@ -75,7 +88,37 @@ func main() {
 		fail(err.Error())
 	}
 	tester := ui.NewTester(desktop.View, 1366, 768)
-	for i := 0; i < *frames; i++ {
+	// The same number of frames in Zen, each layer (opened sticky, as a
+	// tap does) and a Control Center page, so a layer's view cost counts.
+	states := []struct {
+		name string
+		open func()
+	}{
+		{"zen", func() {}},
+		{"agents", func() { tap(tester, ui.KeyA) }},
+		{"create", func() { tap(tester, ui.KeyC) }},
+		{"projects", func() { tap(tester, ui.KeyX) }},
+		{"control", func() { tap(tester, ui.KeyS) }},
+		{"control-page", func() {
+			tap(tester, ui.KeyS)
+			_ = tester.Click(locales.OperationsSidebar())
+		}},
+	}
+	// The observer keeps the last FrameSampleWindow builds, so each state
+	// builds at least that many before its reading is taken.
+	perState := max(*frames, int(theme.FrameSampleWindow))
+	var measured []stateReport
+	var worst time.Duration
+	for _, state := range states {
+		state.open()
+		for i := 0; i < perState; i++ {
+			tester.Frame()
+		}
+		snap := desktop.MotionStats()
+		measured = append(measured, stateReport{state.name, ms(snap.P95)})
+		worst = max(worst, snap.P95)
+		tester.Key(0, ui.KeyEscape)
+		tester.Key(0, ui.KeyEscape)
 		tester.Frame()
 	}
 	stats := desktop.MotionStats()
@@ -86,7 +129,7 @@ func main() {
 
 	result := report{
 		Probe:              "agent-remote-desktop.performance",
-		SchemaVersion:      1,
+		SchemaVersion:      2,
 		HostRuntime:        true,
 		CrossCompilation:   false,
 		GOOS:               runtime.GOOS,
@@ -98,11 +141,12 @@ func main() {
 		Frames:             stats.Frames,
 		SampleCount:        stats.SampleCount,
 		SlowFrames:         stats.SlowFrames,
-		ViewBuildP95MS:     float64(stats.P95) / float64(time.Millisecond),
-		ViewBuildMaxMS:     float64(stats.Max) / float64(time.Millisecond),
+		ViewBuildP95MS:     ms(worst),
+		ViewBuildMaxMS:     ms(stats.Max),
 		FrameBudgetMS:      float64(16*time.Millisecond) / float64(time.Millisecond),
 		MeasurementScope:   "go-mygo-view-build",
 		TerminalRenderTest: false,
+		States:             measured,
 	}
 	if result.ViewBuildP95MS <= float64(*maxP95)/float64(time.Millisecond) {
 		result.Status = "passed"
@@ -142,6 +186,16 @@ func seed(home, projectPath string) error {
 		return err
 	}
 	return store.Close()
+}
+
+func ms(d time.Duration) float64 { return float64(d) / float64(time.Millisecond) }
+
+// tap opens a layer sticky: ⌥ + letter released at once.
+func tap(t *ui.Tester, key ui.Key) {
+	t.HoldModifiers(ui.Alt)
+	t.Key(ui.Alt, key)
+	t.HoldModifiers(0)
+	t.Frame()
 }
 
 func fail(message string) {

@@ -1,5 +1,19 @@
 # 本轮生命周期增量
 
+2026-10-23 UI 重构 R4（收敛，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §9–§10）：
+
+- 小窗口（§9）：窗口高度不足 700 时，⌥C/⌥X 圆环整体最大缩放 .85，抽屉卡片高度 160（预览区按同样高度收缩），抽屉高度 304；推起关闭的阈值随抽屉高度变化。抽屉卡片的状态胶囊最大宽度为 132，过长时省略，名称不再被挤掉。
+- 长文本与最小窗口（§10.1、R4）：`TestLayersFitTheMinimumWindowInEveryLanguage` 在 900×600 下分别用 en、zh-Hans、en-XA 打开 Zen、四个层、项目搜索以及诊断、设置、项目详情、操作中心页，确认每段可见文字都在窗口内。该测试先断言语言已生效、各层确实打开，避免空跑。en-XA 截图已人工检视：圆环标签省略，HUD 换行，控制中心头部折为两行。
+- 纯键盘（§10.1、§6.3）：`TestEveryLayerWorksFromTheKeyboard` 只用键盘完成四项操作：⌥A 方向键加 Enter 切换 Agent；⌥C 按 4 再 Enter 打开高级对话框；⌥X 按 1 再 Enter 进入搜索，输入后 Enter 切换项目；⌥S 用 Tab 到宫格，Enter 推入页面，Esc 返回。
+- 中途反向（§10.2）：控制中心 Sheet 和抽屉的打开、关闭都改由 Draggable 偏移弹簧驱动，Sheet 一直构建到静止为止；Esc 之后再打开时，同一个弹簧从当前位置折返。R3 的做法是交给离场副本再新建 Sheet，交接时会**整整一帧不绘制 Sheet**。`TestSheetsReverseMidFlightWithoutJumping` 在完整动效下逐帧（16 ms）读取已绘制边缘：要求每一帧都有 Sheet、单帧位移不超过 90 DIP，并回到原静止位置。该用例在 R3 提交上失败，在当前代码上通过。代码中不存在 scale(0)：所有出场与入场路径一致，圆环为 .92→1，对话框为 .96→1。
+- 性能回退（§7.1）：新增 `theme.BlurBudget`。GPU 绘制且显示模糊时记录相邻两帧的间隔，排除重复绘制（<2 ms）和空闲（>100 ms），至少 30 个样本后若 P95 > 24 ms（60 Hz 下超过 1/20 的帧丢掉一个刷新周期），本窗口此后一律改用 scrim。判定只做一次，不会来回切换。`tests/theme` 覆盖 60 Hz、短动画加长空闲、单次卡顿、30 Hz 四种情况。R0 已在 CPU 渲染下回退；本项补的是「GPU 但太慢」（虚拟机、旧核显）。真实主机上的触发尚未观察。
+- 性能探针：`tests/performance-probe` 改为 schema 2，分别在 Zen、⌥A、⌥C、⌥X、⌥S 和控制中心页面各构建至少 512 帧，按状态报告视图构建 P95，顶层取最差值。本机（macOS arm64，10 个持久会话，4 个可见面板）各状态 P95 为 0.022–0.070 ms，最差为控制中心页面，最大 3.13 ms，预算 16 ms。仍只覆盖视图构建；终端绘制、输入反馈 P95 < 50 ms 须在原生主机采集。
+- 对比度：`TestControlCenterSurfaceContrast` 覆盖 R3 新增的表面：Sheet、Well、恢复横幅、胶囊，以及降低透明度时的实色表面，三套主题各 13 组。修正三处未达标：胶囊文字改用新 token `PillText`（次级文字向主文字混合 25%，v3 的 TextSecondary 和 PillBG 原值不变），次元 Success 改为 emerald 600（v3 的 500 在粉色 Sheet 上只有 2.39:1），次元 Solid 调白一档。R1 截图基线按此重新录制。
+- 三平台截图基线：`tests/chrome/testdata/` 新增 `linux/` 和 `windows/` 各 9 张（3 主题 × 默认、降低透明度、高对比），均已人工检视。Linux 在 Debian 12 arm64 Docker 中渲染（Pango 加 DejaVu、Noto CJK；没有字体的容器渲染不出文字，第一次录制已丢弃）；Windows 在 Windows 11 arm64 Parallels VM 中由交叉编译的测试程序渲染。两者都不是正式的 amd64 主机。
+- 文案：`hiddenSessionsHelp` 原来说会话「仍在侧栏中」，改为「仍在 Agent 抽屉（⌥A/Alt+A）中」，按键名称按平台显示。
+- 验证：`bash scripts/check.sh` 通过；`tests/app` 全量 322 s 通过。
+- 未完成（需要原生主机或人工）：三平台原生窗口中真实键盘的组合键与 Alt 菜单行为、输入法组字中按组合键、真实 GPU/VM 上 BlurBudget 是否触发、终端输入反馈 P95 与 10 个活跃会话流式输出下的帧率、读屏器（VoiceOver/Narrator/Orca）实际朗读、amd64 与真实 X11/Wayland。此外还有：⌃⌥ 修饰键设置、命令面板 HUD 材质、景深随拖拽插值。
+
 2026-10-23 UI 重构 R3（控制中心，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §4.5–§4.6）：
 
 - 页面注册表（`internal/app/pages.go`）：取代 `content()` 里的页面分支。25 个原页面加新增的「项目详情」，每页登记标题、视图，以及可选的离开钩子（向导先取消正在运行的步骤，节点页、通用 CLI 表单清空草稿，与原页头按钮一致）。`a.page` 仍是 key，路由、操作日志与 `pendingPage` 交接都不变。`syncPageHost` 让 `a.page` 与 Sheet 保持一致：无论页面从宫格、命令面板、菜单、页内链接还是 CLI 读取后的交接打开，都显示在控制中心内；代码离开页面（启动会话、切换项目、聚焦会话）时 Sheet 随之关闭；页面自身打开的对话框（远程 attach、删除审阅）叠在 Sheet 之上。

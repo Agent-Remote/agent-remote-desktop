@@ -2,6 +2,7 @@ package theme
 
 import (
 	"slices"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -193,3 +194,62 @@ func Transition(reduced bool) *ui.ElementTransition {
 	a := Animation(false)
 	return &ui.ElementTransition{Animation: &a, Enter: &ui.Motion{X: 8}}
 }
+
+// BlurBudget decides whether workspace blur is affordable on this window
+// (redesign §7.1: frame-time P95 over budget → scrim instead of blur). It
+// sees the intervals between paints while blur shows: at 60 Hz a frame
+// that misses its vsync arrives ~33 ms after the last, so a P95 interval
+// over BlurFrameLimit means more than one frame in twenty was dropped.
+// Once over, it stays over for the window's life: switching back and
+// forth would be worse than either.
+type BlurBudget struct {
+	mu       sync.Mutex
+	last     time.Time
+	samples  [64]time.Duration
+	n        int
+	exceeded atomic.Bool
+}
+
+const (
+	// BlurFrameLimit is between one refresh (16.7 ms) and two (33 ms).
+	BlurFrameLimit = 24 * time.Millisecond
+	// blurMinSamples is enough intervals to judge an animation, not a hitch.
+	blurMinSamples = 30
+)
+
+// Paint records a paint at now while blur is on screen. Paints within
+// 2 ms are one frame painted twice; gaps over 100 ms are idle, not slow.
+func (b *BlurBudget) Paint(now time.Time) {
+	if b.exceeded.Load() {
+		return
+	}
+	b.mu.Lock()
+	defer b.mu.Unlock()
+	d := now.Sub(b.last)
+	b.last = now
+	if d < 2*time.Millisecond || d > 100*time.Millisecond {
+		return
+	}
+	b.samples[b.n%len(b.samples)] = d
+	b.n++
+	if b.n < blurMinSamples {
+		return
+	}
+	sorted := b.samples // a copy on the stack: Paint allocates nothing
+	window := sorted[:min(b.n, len(sorted))]
+	slices.Sort(window)
+	if window[(len(window)*95+99)/100-1] > BlurFrameLimit {
+		b.exceeded.Store(true)
+	}
+}
+
+// Idle forgets the last paint, so the gap to the next blurred frame is not
+// counted as one interval.
+func (b *BlurBudget) Idle() {
+	b.mu.Lock()
+	b.last = time.Time{}
+	b.mu.Unlock()
+}
+
+// Exceeded reports whether blur has proved too slow here.
+func (b *BlurBudget) Exceeded() bool { return b.exceeded.Load() }

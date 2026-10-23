@@ -89,6 +89,48 @@ func TestPaletteTextContrast(t *testing.T) {
 	}
 }
 
+// R3/R4: the Control Center's own surfaces. The sheet is the dock glass
+// over the canvas (the scrim behind only darkens a dark theme and lightens
+// nothing), a well is the card tint over the sheet, and the recovery
+// banner is a warning tint over the sheet; reduced transparency swaps in
+// the solid fallbacks.
+func TestControlCenterSurfaceContrast(t *testing.T) {
+	for _, id := range theme.ThemeNames {
+		p := theme.PaletteFor(id)
+		sheet := theme.Over(p.GlassDock.Average(), p.Canvas)
+		well := theme.Over(p.GlassCard, sheet)
+		banner := theme.Over(p.Warning.Alpha(0.12), sheet)
+		solidWell := theme.Over(p.GlassCard, p.SolidRaised)
+		pill := theme.Over(p.PillBG, sheet)
+		secondaryMin := 4.5
+		if id == "sakura" {
+			secondaryMin = 4.3 // the documented v3 secondary value
+		}
+		for name, c := range map[string]struct {
+			fg, bg ui.Color
+			min    float64
+		}{
+			"text/sheet":            {p.TextPrimary, sheet, 4.5},
+			"secondary/sheet":       {p.TextSecondary, sheet, secondaryMin},
+			"ink/sheet (back)":      {p.AccentInk, sheet, 4.5},
+			"text/well":             {p.TextPrimary, well, 4.5},
+			"secondary/well":        {p.TextSecondary, well, secondaryMin},
+			"danger/well":           {p.Danger, well, 4.5},
+			"text/banner":           {p.TextPrimary, banner, 4.5},
+			"text/solid well":       {p.TextPrimary, solidWell, 4.5},
+			"pill label/pill":       {p.PillText(), pill, 4.5},
+			"stage warning/sheet":   {p.Warning, sheet, 3},
+			"stage success/sheet":   {p.Success, sheet, 3},
+			"hairline-free accent":  {p.Accent, sheet, 3},
+			"secondary/solid sheet": {p.TextSecondary, p.Solid, secondaryMin},
+		} {
+			if r := contrast(c.fg, c.bg); r < c.min {
+				t.Errorf("%s %s: %.2f:1 < %.1f", id, name, r, c.min)
+			}
+		}
+	}
+}
+
 func TestResolveFollowsSystemButKeepsKawaiiExplicit(t *testing.T) {
 	for _, tc := range []struct {
 		stored             string

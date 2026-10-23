@@ -73,7 +73,7 @@
   "viewEnvironment": "查看运行环境",
   "chooseAgent": "为这个项目选择一位 Agent",
   "newProjectSession": "新建项目会话",
-  "hiddenSessionsHelp": "已隐藏的会话仍在侧栏中，点击即可回到终端。",
+  "hiddenSessionsHelp": "已隐藏的会话仍在 Agent 抽屉（{chord}）中，选中即可回到终端。",
   "hide": "隐藏",
   "projectDetails": "项目详情",
   "projectDetailsHelp": "会话属于项目目录。分屏可同时查看多个 Agent；隐藏终端不会结束进程。",

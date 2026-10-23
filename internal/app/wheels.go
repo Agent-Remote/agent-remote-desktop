@@ -27,6 +27,11 @@ func (a *App) wheelStage(c *ui.Context, env chrome.Env, key string, w chrome.Whe
 	l := &a.layers
 	_, height := c.Size()
 	scale := min(1, max(0.6, (height-110)/chrome.WheelSize))
+	if height < compactHeight {
+		// Short windows (900×600 minimum): the whole wheel at .85, so the
+		// HUD and labels keep their room (redesign §9).
+		scale = min(scale, 0.85)
+	}
 	scrim := env.P.VignetteEdge
 	if env.S.ReduceTransparency {
 		scrim = scrim.Alpha(1.25)

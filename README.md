@@ -37,10 +37,14 @@ contrast-checked cursor and selection colours; ANSI colours are not re-tinted.
 Settings → Appearance also offers Reduce transparency (solid surfaces, no blur;
 the system's increase-contrast setting implies it). Reduce motion makes
 movement instant and keeps short cross-fades, alongside mygo's native Reduce
-Motion preference. The earlier Sakura portrait has been removed.
+Motion preference. The earlier Sakura portrait has been removed. The
+workspace behind a layer is blurred only when the window paints on a GPU fast
+enough for it: CPU rendering, or a GPU whose blurred frames run late (P95
+interval over 24 ms), gets a deeper dim instead for the rest of the session.
 `App.MotionStats` retains a bounded 512-frame view-build sample window and
 reports nearest-rank P95; `go run ./tests/performance-probe -frames 120`
-prints a host-only JSON reading for a ten-session, four-pane persisted layout.
+prints a host-only JSON reading for a ten-session, four-pane persisted layout,
+with a P95 per state (Zen, each layer, a Control Center page).
 This probe covers Go/mygo view construction only. Native GPU, PTY rendering
 and input-feedback measurements still require platform host evidence.
 

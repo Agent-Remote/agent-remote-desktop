@@ -149,26 +149,34 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 	}
 	sheet := ui.Column(c.Key("control-sheet")).Absolute().Bottom(0).Left((width - w) / 2).Width(w)
 	h := sheet.AnimateTo("height", target, env.Move(theme.Page))
+	rising := l.controlRise
+	if rising {
+		// Opened from rest: this frame places it below the window, the
+		// next springs it up from there.
+		h = target
+		l.controlRise, l.control.Offset.Y = false, h
+		c.AnimationFrame()
+		defer func() { l.control.Offset.Y = 0 }()
+	}
+	l.controlH = h
 	sheet = sheet.Height(h)
-	slide := ui.ElementTransition{Animation: ptr(env.Move(theme.Sheet)), Position: true, Enter: &ui.Motion{Y: h + 40, Opacity: 1}, Exit: &ui.Motion{Y: h + 40, Opacity: 1}}
 	follow := env.Move(theme.Sheet)
 	if l.pulling {
-		// Pulled up from the bar: no entrance of its own, the pointer moves it.
+		// Pulled up from the bar, the pointer moves it.
 		l.control.Offset.Y = max(0, h-l.pull)
-		slide.Enter, follow = nil, theme.Instant
+		follow = theme.Instant
 	}
-	sheet = env.Glass(sheet, chrome.Dock, 28, false).Radius(28, 28, 0, 0).BorderWidth(1, 1, 0, 1).Clip().Transition(slide)
+	sheet = env.Glass(sheet, chrome.Dock, 28, false).Radius(28, 28, 0, 0).BorderWidth(1, 1, 0, 1).Clip()
 	sheet = sheet.Draggable(&l.control.Offset, ui.DraggableOptions{
 		Axis: ui.Vertical, Bounds: &ui.Rect{H: h},
 		Snap:      ui.Nearest(ui.Point{}, ui.Point{Y: h}),
 		Animation: follow,
 	})
 	switch {
-	case open && !l.pulling && l.control.Offset.Y >= h/2 && !sheet.Dragging():
-		// Thrown or dragged past half: the layer closes at once, while the
-		// sheet keeps building until its spring brings it to rest below.
+	case open && !rising && !l.pulling && l.control.Offset.Y >= h/2 && !sheet.Dragging():
+		// Thrown or dragged past half: the layer closes at once and the
+		// sheet goes on to rest below.
 		a.closeLayer()
-		l.controlClosing = true
 	case !open && l.controlClosing && sheet.DragOffset().Y >= h-1 && !sheet.Transitioning():
 		l.controlClosing = false
 	}

@@ -113,3 +113,47 @@ func TestReducedMotionJumpsMovesAndCrossFadesFades(t *testing.T) {
 		t.Fatal("tokens must pass through unchanged without reduced motion")
 	}
 }
+
+// Redesign §7.1: blur gives way to the scrim when paints run late.
+func TestBlurBudget(t *testing.T) {
+	paint := func(b *theme.BlurBudget, start time.Time, n int, every time.Duration) time.Time {
+		for i := 0; i < n; i++ {
+			start = start.Add(every)
+			b.Paint(start)
+		}
+		return start
+	}
+	now := time.Unix(1000, 0)
+
+	var smooth theme.BlurBudget
+	paint(&smooth, now, 200, 16700*time.Microsecond)
+	if smooth.Exceeded() {
+		t.Fatal("60 Hz frames exceeded the blur budget")
+	}
+
+	var idle theme.BlurBudget
+	at := now
+	for i := 0; i < 40; i++ {
+		at = paint(&idle, at, 3, 16*time.Millisecond).Add(2 * time.Second) // short bursts, long rests
+	}
+	if idle.Exceeded() {
+		t.Fatal("idle gaps between animations counted as slow frames")
+	}
+
+	var hitch theme.BlurBudget
+	at = paint(&hitch, now, 60, 16*time.Millisecond)
+	paint(&hitch, at, 2, 40*time.Millisecond) // one hitch is no trend
+	if hitch.Exceeded() {
+		t.Fatal("a single hitch disabled blur")
+	}
+
+	var slow theme.BlurBudget
+	paint(&slow, now, 40, 33*time.Millisecond)
+	if !slow.Exceeded() {
+		t.Fatal("30 Hz frames did not exceed the blur budget")
+	}
+	paint(&slow, now.Add(time.Hour), 200, 16*time.Millisecond)
+	if !slow.Exceeded() {
+		t.Fatal("the decision flapped back to blur")
+	}
+}

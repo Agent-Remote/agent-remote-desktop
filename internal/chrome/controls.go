@@ -48,7 +48,7 @@ func (e Env) Pill(c *ui.Context, dot *Status, label string) ui.Element {
 			if dot != nil {
 				e.Dot(c, *dot)
 			}
-			e.Text(c, label, theme.Caption, e.P.TextSecondary).FontWeight(600)
+			e.Text(c, label, theme.Caption, e.P.PillText()).FontWeight(600).SingleLine().Ellipsis("…").Shrink(1).MinWidth(0)
 		})
 }
 
@@ -58,8 +58,8 @@ func (e Env) ContextPill(c *ui.Context, label, value string) ui.Element {
 	return ui.Row(c).Gap(5).Padding(3, 10).Radius(999).Background(e.pillBG()).Border(1, e.P.Hairline).
 		Children(func() {
 			// The label names the value, so it is secondary text, not tertiary.
-			e.Text(c, label, theme.Caption, e.P.TextSecondary).FontWeight(600)
-			e.Text(c, value, theme.MonoSmall, e.P.TextSecondary).SingleLine().Ellipsis("…").Shrink(1).MinWidth(0)
+			e.Text(c, label, theme.Caption, e.P.PillText()).FontWeight(600)
+			e.Text(c, value, theme.MonoSmall, e.P.PillText()).SingleLine().Ellipsis("…").Shrink(1).MinWidth(0)
 		})
 }
 
