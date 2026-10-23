@@ -2610,5 +2610,34 @@
   "languageCpp": "C/C++",
   "toolNameClaude": "Claude",
   "toolNameCodex": "Codex",
-  "toolNameFclaude": "fclaude"
+  "toolNameFclaude": "fclaude",
+  "backToControlCenter": "Back to Control Center",
+  "controlCenterSearch": "Search pages, commands, projects and sessions",
+  "controlCenterResults": "Results",
+  "contextHome": "Home",
+  "contextServer": "Server",
+  "contextDevice": "Device",
+  "contextProject": "Project",
+  "tileNotChecked": "Not checked",
+  "tileChecking": "Checking…",
+  "tileReadFailed": "Last read failed",
+  "tileRemoteSessions": "{count, plural, =0 {No remote sessions} one {# remote session} other {# remote sessions}}",
+  "@tileRemoteSessions": {
+    "description": "tileRemoteSessions",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "tileStatusRead": "Status read",
+  "tileNothingRunning": "Nothing running",
+  "accountSignedOut": "Not signed in",
+  "accountUnchecked": "Account not checked",
+  "projectDetailsEmpty": "Open a project to see its directory, branch and Agents.",
+  "projectFieldPath": "Directory",
+  "projectFieldBranch": "Branch",
+  "projectFieldLanguage": "Language",
+  "projectFieldAgents": "Agents",
+  "projectReading": "Reading…"
 }

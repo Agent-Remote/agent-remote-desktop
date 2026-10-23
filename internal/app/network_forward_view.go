@@ -28,7 +28,7 @@ func (a *App) portForwardView(c *ui.Context) {
 	if !remote.PortForwardReconnectSupported(a.remote.snapshot.Capabilities) {
 		ui.Text(c, locales.PortForwardReconnectUnsupported()).TextColor(c.Theme().TextMuted)
 	}
-	ui.Column(c).FillWidth().Gap(10).Padding(12).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Gap(10).Padding(12)).Children(func() {
 		ui.Text(c, locales.PortForwardCreateTitle()).Bold()
 		ui.TextInput(c, &a.network.forwardSession).Label(locales.PortForwardSession()).Placeholder(locales.PortForwardSessionPlaceholder()).FillWidth()
 		ui.Row(c).Gap(10).Wrap().Children(func() {
@@ -42,14 +42,14 @@ func (a *App) portForwardView(c *ui.Context) {
 		ui.Text(c, locales.PortForwardActionPending()).TextColor(c.Theme().TextMuted)
 	}
 	if a.network.forwardActionErr != nil {
-		ui.Text(c, presentation.Error(a.network.forwardActionErr)).TextColor(c.Theme().Danger)
+		a.errorText(c, a.network.forwardActionErr, presentation.Error(a.network.forwardActionErr))
 	}
 	if receipt := a.network.forwardActionReceipt; receipt != nil {
 		ui.Text(c, locales.PortForwardActionComplete(receipt.Forward.ID, receipt.Forward.Status)).TextColor(c.Theme().TextMuted)
 	}
 	query := &a.network.forwards
 	if query.err != nil {
-		ui.Text(c, presentation.Error(query.err)).TextColor(c.Theme().Danger)
+		a.errorText(c, query.err, presentation.Error(query.err))
 		if query.err.Error() == "incompatible_cli_protocol" {
 			ui.Text(c, locales.PortForwardUnsupported()).TextColor(c.Theme().TextMuted)
 		}
@@ -76,7 +76,7 @@ func (a *App) portForwardView(c *ui.Context) {
 }
 
 func portForwardRow(c *ui.Context, item remote.PortForward, a *App) {
-	ui.Column(c.Key("port-forward-" + item.ID)).FillWidth().Gap(5).Padding(12).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c.Key("port-forward-"+item.ID)).FillWidth().Gap(5).Padding(12)).Children(func() {
 		ui.Row(c).Gap(12).Wrap().Children(func() {
 			ui.Text(c, locales.PortForwardPorts(int(item.RequestedLocalPort), int(item.RemotePort))).Bold()
 			ui.Text(c, locales.PortForwardStatus(item.Status)).TextColor(c.Theme().TextMuted)

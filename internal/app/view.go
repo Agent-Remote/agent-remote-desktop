@@ -56,11 +56,13 @@ func (a *App) View(c *ui.Context) {
 	t := theme.UI(a.shownTheme)
 	c.SetTheme(&t)
 	env := a.chromeEnv(c)
-	if a.dialogOpen() && a.openLayer() != "" {
+	if a.dialogOpen() && a.openLayer() != "" && (a.openLayer() != layerControl || a.page == "") {
 		// A dialog opened over a layer (the new-session dialog from ⌥C) owns
-		// the keyboard; the layer has already committed.
+		// the keyboard; the layer has already committed. A page's own dialog
+		// (a remote attach, a delete review) sits over its sheet instead.
 		a.closeLayer()
 	}
+	a.syncPageHost()
 	a.watchChordRelease(c)
 	ui.Box(c).Fill().Background(t.Background).Children(func() {
 		a.backgroundDecoration(c, env)
@@ -75,8 +77,9 @@ func (a *App) View(c *ui.Context) {
 	a.chordFallback(c)
 	if a.openLayer() != "" && !a.dialogOpen() {
 		// Esc leaves a layer wherever its keyboard focus went (a tile, the
-		// appearance switch): never trap the user (apple-design §16).
-		c.OnShortcut(0, ui.KeyEscape, a.closeLayer)
+		// appearance switch, a page's field): never trap the user
+		// (apple-design §16). A page goes back to the grid first.
+		c.OnShortcut(0, ui.KeyEscape, a.escapeLayer)
 	}
 	a.dialogs(c)
 	a.recoveryDialog(c)
@@ -88,9 +91,10 @@ func (a *App) View(c *ui.Context) {
 }
 
 // chordFallback registers ⌥A/C/X/S as window shortcuts only while nothing
-// that handles keys has the focus (a button, say). A window shortcut does
-// not stop the text the key types, so it must never cover a terminal, a
-// text field or the root, which take chords themselves (R0).
+// that handles keys has the focus (a button, say, also on a Control Center
+// page). A window shortcut does not stop the text the key types, so it
+// must never cover a terminal or the root, which take chords themselves
+// (R0); a text field keeps ⌥ + letter as the text it types.
 func (a *App) chordFallback(c *ui.Context) {
 	if a.dialogOpen() || ui.FocusedValue(c, &a.focusValue) != "" || a.layers.search {
 		return
@@ -153,6 +157,10 @@ func (a *App) backgroundDecoration(c *ui.Context, env chrome.Env) {
 func (a *App) workspaceDepth(env chrome.Env) (ui.Pose, float32) {
 	var pose ui.Pose
 	blur := float32(0)
+	if a.layers.pulling {
+		// The bar under the pointer stays put while it pulls the sheet.
+		return pose, blur
+	}
 	switch a.openLayer() {
 	case layerAgents:
 		pose, blur = ui.Pose{Y: 36, Scale: 0.935, Fade: 0.25}, 18
@@ -197,9 +205,9 @@ func (a *App) overlays(c *ui.Context, env chrome.Env) {
 			switch {
 			case layer == layerControl:
 				a.controlLayer(c, env, open == layerControl)
-			case open != layer:
 			case layer == layerAgents:
-				a.dockLayer(c, env)
+				a.dockLayer(c, env, open == layerAgents)
+			case open != layer:
 			case layer == layerCreate:
 				a.createLayer(c, env)
 			case layer == layerProjects:
@@ -214,10 +222,45 @@ func (a *App) overlays(c *ui.Context, env chrome.Env) {
 // failure, a launch error) take its line while present.
 func (a *App) breathingBar(c *ui.Context, env chrome.Env) {
 	bar := ui.ButtonBase(c.Key("breathing-bar")).FillWidth().Height(44).Gap(7).Center().Label(locales.OpenControlCenter())
-	if bar.Clicked() {
+	a.pullSheet(c, bar)
+	if bar.Clicked() && !a.layers.pulled {
 		a.showLayer(layerControl)
 	}
 	bar.Children(func() { ui.Column(c).Gap(7).Center().Children(func() { a.barContent(c, env) }) })
+}
+
+// pullSheet raises the Control Center from the bar 1:1 with the pointer
+// (redesign §4.5); letting go settles it open or closed by where the
+// flick would carry it (apple-design §5, §9).
+func (a *App) pullSheet(c *ui.Context, bar ui.Element) {
+	l := &a.layers
+	if bar.Pressed() && !l.pulling && l.pull == 0 {
+		l.pulled = false
+	}
+	_, dy, dragging := bar.Dragged()
+	if dragging && (l.pulling || a.openLayer() == "") {
+		l.pull = max(0, l.pull-dy)
+		if !l.pulling && l.pull > 6 {
+			l.pulling, l.pulled = true, true
+			a.showLayer(layerControl)
+		}
+	}
+	_, vy, ended := bar.DragEnded()
+	if !ended || !l.pulling {
+		if !dragging && !l.pulling {
+			l.pull = 0
+		}
+		return
+	}
+	_, height := c.Size()
+	h := min(max(height*0.74, height-130), 760)
+	l.pulling = false
+	if l.pull+ui.Project(0, -vy) >= h/2 {
+		l.control.Offset.Y = 0
+	} else {
+		l.control.Offset.Y = h
+	}
+	l.pull = 0
 }
 
 func (a *App) barContent(c *ui.Context, env chrome.Env) {
@@ -278,14 +321,9 @@ func (a *App) runningOperations() int {
 	return n
 }
 
-// content is the workspace: a management page, the welcome, a project's
-// empty state, or the selected tab's panes.
+// content is the workspace: the welcome, a project's empty state, or the
+// selected tab's panes. Management pages live in the Control Center.
 func (a *App) content(c *ui.Context, env chrome.Env) {
-	// While the Control Center covers the window its tiles are the only
-	// destinations; the page behind is rebuilt as soon as it closes.
-	if a.page != "" && a.openLayer() != layerControl && a.pageView(c) {
-		return
-	}
 	project := a.project()
 	if project == nil {
 		a.welcome(c, env)
@@ -297,24 +335,6 @@ func (a *App) content(c *ui.Context, env chrome.Env) {
 		return
 	}
 	ui.Column(c).Fill().MinWidth(0).MinHeight(0).Children(func() { a.pane(c, env, tab.Root) })
-}
-
-// pageView builds the page named by a.page and reports whether one exists.
-func (a *App) pageView(c *ui.Context) bool {
-	views := map[string]func(*ui.Context){
-		"operations": a.operationsView, "runtime-recovery": a.runtimeRecoveryView, "mutagen-environment": a.mutagenEnvironmentView,
-		"sync": a.syncView, "account-import": a.accountImportView, "account": a.accountView, "account-default": a.accountDefaultView,
-		"network": a.networkView, "wireguard": a.wireguardView, "setup": a.localSetupView, "init": a.initWizardView,
-		"capabilities": a.capabilitiesView, "device": a.deviceView, "ego-browser": a.egoBrowserView, "nodes": a.nodesView,
-		"credentials": a.credentialsView, "skills": a.skillsView, "generic-cli": a.genericCLIView, "login": a.loginView,
-		"logout": a.logoutView, "remote": a.remoteView, "diagnostics": a.diagnosticsView,
-		"command-diagnostics": a.commandDiagnosticsView, "dependencies": a.dependenciesView, "settings": a.settingsView,
-	}
-	view, ok := views[a.page]
-	if ok {
-		ui.Column(c).Fill().MinWidth(0).Children(func() { view(c) })
-	}
-	return ok
 }
 
 func (a *App) welcome(c *ui.Context, env chrome.Env) {

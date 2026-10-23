@@ -144,11 +144,7 @@ func (a *App) startNodeInstall() {
 
 func (a *App) nodesView(c *ui.Context) {
 	p := &a.nodes
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.NodesTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = ""; a.nodes = nodePage{} })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Text(c, locales.NodesHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		if p.loaded {
 			ui.TextInput(c, &p.filter).Label(locales.NodesFilter()).Placeholder(locales.NodesFilter())
@@ -158,7 +154,7 @@ func (a *App) nodesView(c *ui.Context) {
 			case p.loading:
 				ui.Text(c, locales.NodesLoading())
 			case p.err != nil:
-				ui.Text(c, presentation.Error(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, presentation.Error(p.err))
 			case p.review && p.selected != nil:
 				a.nodeReviewView(c, p.selected)
 			case p.loaded:
@@ -170,7 +166,7 @@ func (a *App) nodesView(c *ui.Context) {
 					}
 					count++
 					n := node
-					ui.Column(c.Key("node-" + node.ID)).FillWidth().Padding(12).Gap(4).Background(c.Theme().Surface).Radius(8).Children(func() {
+					a.card(c, ui.Column(c.Key("node-"+node.ID)).FillWidth().Padding(12).Gap(4)).Children(func() {
 						ui.Text(c, locales.NodeSummary(n.Name, n.Status)).Bold()
 						ui.Text(c, locales.NodeID(n.ID)).FontSize(12)
 						if n.Version != nil {
@@ -207,7 +203,7 @@ func (a *App) nodesView(c *ui.Context) {
 
 func (a *App) nodeReviewView(c *ui.Context, n *cliadapter.NodeRecord) {
 	p := &a.nodes
-	ui.Column(c).FillWidth().Padding(14).Gap(8).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(14).Gap(8)).Children(func() {
 		ui.Text(c, locales.NodeReview()).Bold()
 		ui.Text(c, locales.NodeSummary(n.Name, n.Status))
 		ui.Text(c, locales.NodeID(n.ID)).FontSize(12)

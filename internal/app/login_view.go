@@ -10,9 +10,7 @@ import (
 )
 
 func (a *App) loginView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(16).Children(func() {
-		ui.Text(c, locales.SignInRemote()).FontSize(24).Bold()
-		ui.Text(c, a.home).FontSize(12).TextColor(c.Theme().TextMuted)
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(16).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(14).Children(func() {
 			if a.login.busy {
 				if a.login.approval != nil {
@@ -25,7 +23,7 @@ func (a *App) loginView(c *ui.Context) {
 				return
 			}
 			if a.login.err != nil {
-				ui.Text(c, presentation.Error(a.login.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, a.login.err, presentation.Error(a.login.err))
 				ui.Button(c, locales.ReturnRemoteManagement()).OnClick(a.leaveLogin)
 				return
 			}

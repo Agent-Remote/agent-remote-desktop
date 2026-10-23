@@ -11,11 +11,9 @@ import (
 )
 
 func (a *App) dependenciesView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(14).Children(func() {
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(14).Children(func() {
 		ui.Row(c).Gap(12).Wrap().Children(func() {
-			ui.Text(c, locales.DependenciesTitle()).FontSize(24).Bold().Grow(1)
 			ui.Button(c, locales.ReturnDiagnostics()).OnClick(a.openDiagnostics)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
 		})
 		ui.Text(c, locales.DependenciesHelp()).TextColor(c.Theme().TextMuted)
 		ui.Text(c, locales.DependenciesReadOnly()).FontSize(12).TextColor(c.Theme().TextMuted)
@@ -58,7 +56,7 @@ func (a *App) dependenciesView(c *ui.Context) {
 			}
 			for index, dependency := range report.Dependencies {
 				dependency := dependency
-				ui.Column(c.Key(index)).FillWidth().Gap(5).Padding(12).Background(c.Theme().Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key(index)).FillWidth().Gap(5).Padding(12)).Children(func() {
 					ui.Row(c).Gap(12).Wrap().Children(func() {
 						ui.Text(c, dependency.Name).Bold()
 						ui.Text(c, locales.DiagnosticsStatus(dependency.Status)).TextColor(c.Theme().TextMuted)

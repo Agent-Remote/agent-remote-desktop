@@ -324,7 +324,7 @@ func (a *App) remoteDeleteDialog(c *ui.Context) {
 				ui.Text(c, locales.RemoteDeletePending()).TextColor(c.Theme().TextMuted)
 			}
 			if a.remote.deleteErr != nil {
-				ui.Text(c, presentation.Error(a.remote.deleteErr)).TextColor(c.Theme().Danger)
+				a.errorText(c, a.remote.deleteErr, presentation.Error(a.remote.deleteErr))
 			}
 			if a.remote.deleteReceipt != nil {
 				a.remoteDeleteReceiptView(c, *a.remote.deleteReceipt)
@@ -341,7 +341,7 @@ func (a *App) remoteDeleteDialog(c *ui.Context) {
 }
 
 func (a *App) remoteDeleteReceiptView(c *ui.Context, receipt remote.SessionDeleteReceipt) {
-	ui.Column(c).FillWidth().Padding(12).Gap(5).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(5)).Children(func() {
 		ui.Text(c, locales.RemoteDeletePhase(remoteDeletePhaseText(receipt.Phase))).Bold()
 		ui.Text(c, locales.RemoteDeleteRequest(receipt.RequestID)).FontSize(12)
 		ui.Text(c, locales.RemoteDeleteDeleted(float64(len(receipt.DeletedSessionIDs)), float64(len(receipt.SessionIDs)))).FontSize(12)

@@ -852,10 +852,8 @@ func setSkillWorkflowArgument(page *genericCLIPage, name, value string) {
 func (a *App) skillsView(c *ui.Context) {
 	p := &a.skills
 	t := c.Theme()
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Row(c).Gap(12).Children(func() {
-			ui.Text(c, locales.SkillsTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
 			ui.Button(c, locales.SkillsRefresh()).Disabled(p.busy).OnClick(a.refreshSkills)
 		})
 		ui.Text(c, locales.SkillsHelp()).TextColor(t.TextMuted)
@@ -868,7 +866,7 @@ func (a *App) skillsView(c *ui.Context) {
 			ui.Text(c, locales.SkillsRetryWorking()).TextColor(t.TextMuted)
 		}
 		if p.retryPlan != nil {
-			ui.Column(c).FillWidth().Padding(12).Gap(5).Background(t.Surface).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(5)).Children(func() {
 				ui.Text(c, locales.SkillsRetryReview()).Bold()
 				ui.Text(c, locales.SkillsRetryTargets(p.retryPlan.TargetCount)).TextColor(t.TextMuted)
 				ui.Text(c, locales.SkillsGeneration(int(p.retryPlan.Generation))).FontSize(12).TextColor(t.TextMuted)
@@ -898,7 +896,7 @@ func (a *App) skillsView(c *ui.Context) {
 			}
 		} else if p.info != nil {
 			info := p.info
-			ui.Column(c).FillWidth().Padding(12).Gap(5).Background(t.Surface).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(5)).Children(func() {
 				ui.Row(c).Gap(8).Children(func() {
 					ui.Text(c, info.Name).Bold().Grow(1)
 					ui.Button(c, locales.Cancel()).OnClick(func() { p.info = nil; p.infoErr = nil; p.infoSelector = "" })
@@ -947,7 +945,7 @@ func (a *App) skillsView(c *ui.Context) {
 				ui.Text(c, locales.ErrorUnknown(p.stateInfoErr.Error())).TextColor(t.Danger)
 			}
 		} else if p.stateInfo != nil {
-			ui.Column(c).FillWidth().Padding(12).Gap(5).Background(t.Surface).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(5)).Children(func() {
 				ui.Row(c).Gap(8).Children(func() {
 					ui.Text(c, locales.SkillsStateInfoTitle()).Bold().Grow(1)
 					ui.Button(c, locales.Cancel()).OnClick(func() { p.stateInfo = nil; p.stateInfoErr = nil; p.stateInfoSelector = "" })
@@ -971,7 +969,7 @@ func (a *App) skillsView(c *ui.Context) {
 			}
 		} else if p.diff != nil {
 			diff := p.diff
-			ui.Column(c).FillWidth().Padding(12).Gap(5).Background(t.Surface).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(5)).Children(func() {
 				ui.Row(c).Gap(8).Children(func() {
 					ui.Text(c, locales.SkillsStateDiffTitle()).Bold().Grow(1)
 					ui.Button(c, locales.Cancel()).Disabled(p.diffBusy).OnClick(func() { p.diff = nil; p.diffErr = nil; p.diffCheckpoint = "" })
@@ -991,7 +989,7 @@ func (a *App) skillsView(c *ui.Context) {
 					if entry == nil {
 						continue
 					}
-					ui.Column(c.Key("skill-diff-" + item.Path)).FillWidth().Padding(8).Background(t.Surface.Alpha(.65)).Radius(6).Children(func() {
+					a.card(c, ui.Column(c.Key("skill-diff-"+item.Path)).FillWidth().Padding(8)).Children(func() {
 						ui.Text(c, locales.SkillsStateDiffPath(item.Path, entry.Kind, strconv.FormatUint(entry.Size, 10))).Bold()
 						if item.Base != nil {
 							ui.Text(c, locales.SkillsStateDiffDigest(item.Base.SHA256)).FontSize(12).TextColor(t.TextMuted)
@@ -1012,7 +1010,7 @@ func (a *App) skillsView(c *ui.Context) {
 			ui.Button(c, locales.SkillsConflictsRefresh()).Disabled(p.conflictsBusy || !canonicalSkillUUID(strings.TrimSpace(p.conflictAccount))).OnClick(a.refreshSkillConflicts)
 		})
 		ui.Text(c, locales.SkillsConflictAccountHelp()).FontSize(12).TextColor(t.TextMuted)
-		ui.Column(c).FillWidth().Padding(12).Gap(8).Background(t.Surface.Alpha(.65)).Radius(8).Children(func() {
+		a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(8)).Children(func() {
 			ui.Text(c, locales.SkillsStateTitle()).Bold()
 			ui.Text(c, locales.SkillsStateHelp()).FontSize(12).TextColor(t.TextMuted)
 			ui.Row(c).Gap(8).Children(func() {
@@ -1042,7 +1040,7 @@ func (a *App) skillsView(c *ui.Context) {
 				} else {
 					for _, item := range p.history.Checkpoints.Items {
 						item := item
-						ui.Column(c.Key("skill-checkpoint-" + item.ID)).FillWidth().Padding(8).Background(t.Surface).Radius(6).Children(func() {
+						a.card(c, ui.Column(c.Key("skill-checkpoint-"+item.ID)).FillWidth().Padding(8)).Children(func() {
 							ui.Text(c, locales.SkillsStateCheckpoint(item.ID)).Bold()
 							retained := locales.SkillsStateCheckpointUnretained()
 							if item.Retained {
@@ -1132,7 +1130,7 @@ func (a *App) skillsView(c *ui.Context) {
 			ui.Text(c, locales.SkillsChangeReceipt(p.receipt.OperationID)).FontSize(12).TextColor(t.TextMuted)
 		}
 		if p.review != nil {
-			ui.Column(c).FillWidth().Padding(12).Gap(5).Background(t.Surface).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(5)).Children(func() {
 				ui.Text(c, locales.SkillsChangeReview()).Bold()
 				ui.Text(c, locales.SkillsChangeTarget(p.review.Name))
 				actionLabel := locales.SkillsEnable()
@@ -1178,7 +1176,7 @@ func (a *App) skillsView(c *ui.Context) {
 					continue
 				}
 				shown++
-				ui.Column(c.Key("skill-" + item.ID)).FillWidth().Padding(14).Gap(5).Background(t.Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key("skill-"+item.ID)).FillWidth().Padding(14).Gap(5)).Children(func() {
 					ui.Row(c).Gap(10).Children(func() {
 						ui.Text(c, item.Name).Bold().Grow(1)
 						if item.Removed {
@@ -1228,7 +1226,7 @@ func (a *App) skillsView(c *ui.Context) {
 			if len(p.snapshot.LocalItems) > 0 {
 				ui.Text(c, locales.SkillsLocal()).Bold().Margin(12, 0, 0)
 				for _, item := range p.snapshot.LocalItems {
-					ui.Column(c.Key("local-skill-" + item.ID)).FillWidth().Padding(12).Background(t.Surface.Alpha(.65)).Radius(8).Children(func() {
+					a.card(c, ui.Column(c.Key("local-skill-"+item.ID)).FillWidth().Padding(12)).Children(func() {
 						ui.Row(c).Gap(8).Children(func() {
 							ui.Text(c, item.Name).Bold().Grow(1)
 							if canonicalSkillUUID(item.ID) && canonicalSkillUUID(item.AccountID) {

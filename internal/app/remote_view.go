@@ -10,10 +10,8 @@ import (
 )
 
 func (a *App) remoteView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(16).Children(func() {
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(16).Children(func() {
 		ui.Row(c).Gap(12).Wrap().Children(func() {
-			ui.Text(c, locales.RemoteManagement()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
 			ui.Button(c, locales.AccountImportRecoveryTitle()).OnClick(a.openAccountImportHistory)
 			ui.Button(c, locales.AccountDefaultTitle()).OnClick(a.openAccountDefault)
 			if a.remoteWorkflowAvailable(remote.CredentialsListMethod) {
@@ -21,7 +19,6 @@ func (a *App) remoteView(c *ui.Context) {
 			}
 			ui.Button(c, locales.RefreshRemote()).Disabled(a.remote.busy).OnClick(a.refreshRemote)
 		})
-		ui.Text(c, a.home).FontSize(12).TextColor(c.Theme().TextMuted)
 		if a.remote.loaded && a.remote.err == nil {
 			ui.Row(c).Gap(10).Wrap().Children(func() {
 				if a.remoteWorkflowAvailable("login.password") || a.remoteWorkflowAvailable("login.device_code") {
@@ -38,7 +35,7 @@ func (a *App) remoteView(c *ui.Context) {
 			return
 		}
 		if a.remote.err != nil {
-			ui.Text(c, presentation.Error(a.remote.err)).TextColor(c.Theme().Danger)
+			a.errorText(c, a.remote.err, presentation.Error(a.remote.err))
 			return
 		}
 		if !a.remote.loaded {
@@ -106,7 +103,7 @@ func (a *App) remoteSessionFiltersView(c *ui.Context) {
 	if !a.remote.sessionFiltersOpen {
 		return
 	}
-	ui.Column(c).FillWidth().Padding(10).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(10).Gap(6)).Children(func() {
 		ui.Text(c, locales.RemoteSessionServerFilter()).Bold()
 		ui.Text(c, locales.RemoteSessionServerFilterHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Row(c).Gap(8).Wrap().Children(func() {
@@ -144,7 +141,7 @@ func (a *App) remoteSessionFiltersView(c *ui.Context) {
 
 func (a *App) remoteAccounts(c *ui.Context) {
 	if err := a.remote.snapshot.AccountsError; err != nil {
-		ui.Text(c, presentation.Error(err)).TextColor(c.Theme().Danger)
+		a.errorText(c, err, presentation.Error(err))
 		return
 	}
 	count := 0
@@ -153,7 +150,7 @@ func (a *App) remoteAccounts(c *ui.Context) {
 			continue
 		}
 		count++
-		ui.Column(c.Key(account.ID)).FillWidth().Padding(14).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+		a.card(c, ui.Column(c.Key(account.ID)).FillWidth().Padding(14).Gap(6)).Children(func() {
 			ui.Text(c, account.Name).Bold()
 			ui.Text(c, account.ID).FontSize(12).TextColor(c.Theme().TextMuted)
 			ui.Text(c, locales.RemoteAccountSummary(account.Tool, presentation.RemoteStatus(account.Status), account.Region))
@@ -175,7 +172,7 @@ func (a *App) remoteSessions(c *ui.Context) {
 		ui.Text(c, a.message()).TextColor(c.Theme().Danger)
 	}
 	if err := a.remote.snapshot.SessionsError; err != nil {
-		ui.Text(c, presentation.Error(err)).TextColor(c.Theme().Danger)
+		a.errorText(c, err, presentation.Error(err))
 		return
 	}
 	if !a.remote.snapshot.Capabilities.SupportsTerminal("sessions.attach") {
@@ -216,7 +213,7 @@ func (a *App) remoteSessions(c *ui.Context) {
 			continue
 		}
 		count++
-		ui.Column(c.Key(s.ID)).FillWidth().Padding(14).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+		a.card(c, ui.Column(c.Key(s.ID)).FillWidth().Padding(14).Gap(6)).Children(func() {
 			if remote.SessionDeleteSupported(a.remote.snapshot.Capabilities) && remoteSessionCanDelete(s) {
 				selected := a.remote.deleteSelected[s.ID]
 				if ui.Checkbox(c.Key("delete-select-"+s.ID), &selected, locales.RemoteDeleteSelect()).Changed() {

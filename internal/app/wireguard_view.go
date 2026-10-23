@@ -9,8 +9,7 @@ import (
 )
 
 func (a *App) wireguardView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Text(c, locales.WireGuardConfigTitle()).FontSize(24).Bold()
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(12).Children(func() {
 			if receipt := a.wireguard.receipt; receipt != nil {
 				if receipt.Complete {
@@ -32,8 +31,6 @@ func (a *App) wireguardView(c *ui.Context) {
 			}
 			if a.wireguard.plan != nil {
 				a.wireguardScope(c)
-			} else {
-				ui.Text(c, a.home).FontSize(12).TextColor(c.Theme().TextMuted)
 			}
 			if a.wireguard.planning {
 				ui.Text(c, locales.WireGuardPlanning())

@@ -17,10 +17,13 @@ const (
 	StageRunning
 	StageDone
 	StageUnknown // receipt lost or interrupted: query the original, never replay
+	StageFailed
 )
 
 // Stage is one row of the stage list; Note is its localized state text,
-// which always accompanies the mark so state is not colour alone.
+// which always accompanies the mark so state is not colour alone. A Name
+// that already says its state (a CLI receipt's "Server: completed") leaves
+// Note empty.
 type Stage struct {
 	Name, Note string
 	State      StageState
@@ -39,6 +42,25 @@ func (e Env) Panel(c *ui.Context, title string, review bool, content func()) ui.
 	})
 }
 
+// Well is a record card inside a sheet (an account, a check, a peer): the
+// sheet's glass already frosts what is behind, so a well is a hairline
+// tint over it, not a second backdrop blur (apple-design §6: one material
+// per depth). Lists of dozens stay cheap to draw.
+func (e Env) Well(el ui.Element) ui.Element {
+	el = el.Radius(14).Background(e.wellBG())
+	if e.S.HighContrast {
+		return el.Border(1, e.P.TextSecondary)
+	}
+	return el.Border(1, e.P.Hairline)
+}
+
+func (e Env) wellBG() ui.Color {
+	if e.S.ReduceTransparency {
+		return theme.Over(e.P.GlassCard, e.P.SolidRaised)
+	}
+	return e.P.GlassCard
+}
+
 // Stages lists an operation's stages with their observed state.
 func (e Env) Stages(c *ui.Context, stages []Stage) ui.Element {
 	return ui.Column(c).Gap(10).FillWidth().Children(func() {
@@ -54,11 +76,16 @@ func (e Env) Stages(c *ui.Context, stages []Stage) ui.Element {
 				case StageUnknown:
 					mark.Border(1.5, e.P.Warning).BorderStyle(ui.BorderDashed)
 					text = e.P.Warning
+				case StageFailed:
+					mark.Background(e.P.Danger)
+					text = e.P.Danger
 				default:
 					mark.Border(1.5, e.P.TextTer)
 				}
-				e.Text(c, s.Name, theme.Body, text).Grow(1)
-				e.Text(c, s.Note, theme.Caption, e.P.TextTer)
+				e.Text(c, s.Name, theme.Body, text).Grow(1).Shrink(1).MinWidth(0)
+				if s.Note != "" {
+					e.Text(c, s.Note, theme.Caption, e.P.TextTer)
+				}
 			})
 		}
 	})

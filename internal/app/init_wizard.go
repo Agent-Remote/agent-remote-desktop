@@ -286,11 +286,7 @@ func (a *App) cancelInitWizard() {
 
 func (a *App) initWizardView(c *ui.Context) {
 	w := &a.initWizard
-	ui.Column(c).Fill().Padding(24).Gap(14).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.InitWizardTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(a.cancelInitWizard)
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(14).Children(func() {
 		ui.Text(c, locales.InitWizardHelp()).TextColor(c.Theme().TextMuted)
 		if w.busy || w.stage == initApprovalStage || w.stage == initFinalizing {
 			a.initWizardProgressView(c)
@@ -305,7 +301,7 @@ func (a *App) initWizardView(c *ui.Context) {
 			return
 		}
 		if w.stage == initFailed && w.err != nil {
-			ui.Text(c, presentation.Error(w.err)).TextColor(c.Theme().Danger)
+			a.errorText(c, w.err, presentation.Error(w.err))
 			ui.Button(c, locales.InitWizardRetry()).OnClick(func() { w.stage, w.err, w.review = initForm, nil, false })
 			return
 		}
@@ -372,7 +368,7 @@ func (a *App) initWizardFormView(c *ui.Context) {
 			ui.TextInput(c, &w.output).Label(locales.InitWizardWireGuardOutput()).Placeholder(locales.InitWizardDefaultOutput())
 		}
 		if w.review {
-			ui.Column(c).FillWidth().Padding(12).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(6)).Children(func() {
 				ui.Text(c, locales.InitWizardReview()).Bold()
 				ui.Text(c, w.server)
 				ui.Text(c, locales.InitWizardScope()).TextColor(c.Theme().TextMuted)

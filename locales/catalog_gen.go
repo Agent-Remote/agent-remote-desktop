@@ -12927,3 +12927,217 @@ func ToolNameFclaude() string { return In(i18n.Locale()).ToolNameFclaude() }
 func (msgs Messages) ToolNameFclaude() string {
 	return Catalog.Format(msgs.locale, "toolNameFclaude", nil)
 }
+
+// BackToControlCenter says "Back to Control Center"
+// in the language the app shows.
+func BackToControlCenter() string { return In(i18n.Locale()).BackToControlCenter() }
+
+// BackToControlCenter says "Back to Control Center"
+// in the language of msgs.
+func (msgs Messages) BackToControlCenter() string {
+	return Catalog.Format(msgs.locale, "backToControlCenter", nil)
+}
+
+// ControlCenterSearch says "Search pages, commands, projects and sessions"
+// in the language the app shows.
+func ControlCenterSearch() string { return In(i18n.Locale()).ControlCenterSearch() }
+
+// ControlCenterSearch says "Search pages, commands, projects and sessions"
+// in the language of msgs.
+func (msgs Messages) ControlCenterSearch() string {
+	return Catalog.Format(msgs.locale, "controlCenterSearch", nil)
+}
+
+// ControlCenterResults says "Results"
+// in the language the app shows.
+func ControlCenterResults() string { return In(i18n.Locale()).ControlCenterResults() }
+
+// ControlCenterResults says "Results"
+// in the language of msgs.
+func (msgs Messages) ControlCenterResults() string {
+	return Catalog.Format(msgs.locale, "controlCenterResults", nil)
+}
+
+// ContextHome says "Home"
+// in the language the app shows.
+func ContextHome() string { return In(i18n.Locale()).ContextHome() }
+
+// ContextHome says "Home"
+// in the language of msgs.
+func (msgs Messages) ContextHome() string {
+	return Catalog.Format(msgs.locale, "contextHome", nil)
+}
+
+// ContextServer says "Server"
+// in the language the app shows.
+func ContextServer() string { return In(i18n.Locale()).ContextServer() }
+
+// ContextServer says "Server"
+// in the language of msgs.
+func (msgs Messages) ContextServer() string {
+	return Catalog.Format(msgs.locale, "contextServer", nil)
+}
+
+// ContextDevice says "Device"
+// in the language the app shows.
+func ContextDevice() string { return In(i18n.Locale()).ContextDevice() }
+
+// ContextDevice says "Device"
+// in the language of msgs.
+func (msgs Messages) ContextDevice() string {
+	return Catalog.Format(msgs.locale, "contextDevice", nil)
+}
+
+// ContextProject says "Project"
+// in the language the app shows.
+func ContextProject() string { return In(i18n.Locale()).ContextProject() }
+
+// ContextProject says "Project"
+// in the language of msgs.
+func (msgs Messages) ContextProject() string {
+	return Catalog.Format(msgs.locale, "contextProject", nil)
+}
+
+// TileNotChecked says "Not checked"
+// in the language the app shows.
+func TileNotChecked() string { return In(i18n.Locale()).TileNotChecked() }
+
+// TileNotChecked says "Not checked"
+// in the language of msgs.
+func (msgs Messages) TileNotChecked() string {
+	return Catalog.Format(msgs.locale, "tileNotChecked", nil)
+}
+
+// TileChecking says "Checking…"
+// in the language the app shows.
+func TileChecking() string { return In(i18n.Locale()).TileChecking() }
+
+// TileChecking says "Checking…"
+// in the language of msgs.
+func (msgs Messages) TileChecking() string {
+	return Catalog.Format(msgs.locale, "tileChecking", nil)
+}
+
+// TileReadFailed says "Last read failed"
+// in the language the app shows.
+func TileReadFailed() string { return In(i18n.Locale()).TileReadFailed() }
+
+// TileReadFailed says "Last read failed"
+// in the language of msgs.
+func (msgs Messages) TileReadFailed() string {
+	return Catalog.Format(msgs.locale, "tileReadFailed", nil)
+}
+
+// TileRemoteSessions says "{count, plural, =0 {No remote sessions} one {# remote session} other {# remote sessions}}"
+// in the language the app shows.
+//
+// tileRemoteSessions
+func TileRemoteSessions(count int) string { return In(i18n.Locale()).TileRemoteSessions(count) }
+
+// TileRemoteSessions says "{count, plural, =0 {No remote sessions} one {# remote session} other {# remote sessions}}"
+// in the language of msgs.
+//
+// tileRemoteSessions
+func (msgs Messages) TileRemoteSessions(count int) string {
+	return Catalog.Format(msgs.locale, "tileRemoteSessions", map[string]any{"count": count})
+}
+
+// TileStatusRead says "Status read"
+// in the language the app shows.
+func TileStatusRead() string { return In(i18n.Locale()).TileStatusRead() }
+
+// TileStatusRead says "Status read"
+// in the language of msgs.
+func (msgs Messages) TileStatusRead() string {
+	return Catalog.Format(msgs.locale, "tileStatusRead", nil)
+}
+
+// TileNothingRunning says "Nothing running"
+// in the language the app shows.
+func TileNothingRunning() string { return In(i18n.Locale()).TileNothingRunning() }
+
+// TileNothingRunning says "Nothing running"
+// in the language of msgs.
+func (msgs Messages) TileNothingRunning() string {
+	return Catalog.Format(msgs.locale, "tileNothingRunning", nil)
+}
+
+// AccountSignedOut says "Not signed in"
+// in the language the app shows.
+func AccountSignedOut() string { return In(i18n.Locale()).AccountSignedOut() }
+
+// AccountSignedOut says "Not signed in"
+// in the language of msgs.
+func (msgs Messages) AccountSignedOut() string {
+	return Catalog.Format(msgs.locale, "accountSignedOut", nil)
+}
+
+// AccountUnchecked says "Account not checked"
+// in the language the app shows.
+func AccountUnchecked() string { return In(i18n.Locale()).AccountUnchecked() }
+
+// AccountUnchecked says "Account not checked"
+// in the language of msgs.
+func (msgs Messages) AccountUnchecked() string {
+	return Catalog.Format(msgs.locale, "accountUnchecked", nil)
+}
+
+// ProjectDetailsEmpty says "Open a project to see its directory, branch and Agents."
+// in the language the app shows.
+func ProjectDetailsEmpty() string { return In(i18n.Locale()).ProjectDetailsEmpty() }
+
+// ProjectDetailsEmpty says "Open a project to see its directory, branch and Agents."
+// in the language of msgs.
+func (msgs Messages) ProjectDetailsEmpty() string {
+	return Catalog.Format(msgs.locale, "projectDetailsEmpty", nil)
+}
+
+// ProjectFieldPath says "Directory"
+// in the language the app shows.
+func ProjectFieldPath() string { return In(i18n.Locale()).ProjectFieldPath() }
+
+// ProjectFieldPath says "Directory"
+// in the language of msgs.
+func (msgs Messages) ProjectFieldPath() string {
+	return Catalog.Format(msgs.locale, "projectFieldPath", nil)
+}
+
+// ProjectFieldBranch says "Branch"
+// in the language the app shows.
+func ProjectFieldBranch() string { return In(i18n.Locale()).ProjectFieldBranch() }
+
+// ProjectFieldBranch says "Branch"
+// in the language of msgs.
+func (msgs Messages) ProjectFieldBranch() string {
+	return Catalog.Format(msgs.locale, "projectFieldBranch", nil)
+}
+
+// ProjectFieldLanguage says "Language"
+// in the language the app shows.
+func ProjectFieldLanguage() string { return In(i18n.Locale()).ProjectFieldLanguage() }
+
+// ProjectFieldLanguage says "Language"
+// in the language of msgs.
+func (msgs Messages) ProjectFieldLanguage() string {
+	return Catalog.Format(msgs.locale, "projectFieldLanguage", nil)
+}
+
+// ProjectFieldAgents says "Agents"
+// in the language the app shows.
+func ProjectFieldAgents() string { return In(i18n.Locale()).ProjectFieldAgents() }
+
+// ProjectFieldAgents says "Agents"
+// in the language of msgs.
+func (msgs Messages) ProjectFieldAgents() string {
+	return Catalog.Format(msgs.locale, "projectFieldAgents", nil)
+}
+
+// ProjectReading says "Reading…"
+// in the language the app shows.
+func ProjectReading() string { return In(i18n.Locale()).ProjectReading() }
+
+// ProjectReading says "Reading…"
+// in the language of msgs.
+func (msgs Messages) ProjectReading() string {
+	return Catalog.Format(msgs.locale, "projectReading", nil)
+}

@@ -7,10 +7,8 @@ import (
 )
 
 func (a *App) logoutView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(16).Children(func() {
-		ui.Text(c, locales.SignOutRemote()).FontSize(24).Bold()
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(16).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(14).Children(func() {
-			ui.Text(c, a.home).FontSize(12).TextColor(c.Theme().TextMuted)
 			if a.logout.expected.ServerURL != nil {
 				ui.Text(c, *a.logout.expected.ServerURL).Bold()
 			}
@@ -23,7 +21,7 @@ func (a *App) logoutView(c *ui.Context) {
 				return
 			}
 			if a.logout.err != nil {
-				ui.Text(c, presentation.Error(a.logout.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, a.logout.err, presentation.Error(a.logout.err))
 				return
 			}
 			if receipt := a.logout.receipt; receipt != nil {

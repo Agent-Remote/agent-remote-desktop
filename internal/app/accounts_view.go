@@ -8,11 +8,7 @@ import (
 
 func (a *App) accountView(c *ui.Context) {
 	p := &a.account
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.AccountActionTitle(p.action)).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(12).Children(func() {
 			a.accountContextView(c)
 			if p.bindingReview {
@@ -31,7 +27,7 @@ func (a *App) accountView(c *ui.Context) {
 				return
 			}
 			if p.err != nil {
-				ui.Text(c, presentation.Error(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, presentation.Error(p.err))
 			}
 			if p.receipt != nil {
 				a.accountReceiptView(c)
@@ -41,7 +37,7 @@ func (a *App) accountView(c *ui.Context) {
 				return
 			}
 			if p.queryErr != nil {
-				ui.Text(c, presentation.Error(p.queryErr)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.queryErr, presentation.Error(p.queryErr))
 			}
 			if p.status != nil {
 				a.accountDetailsView(c, p.status.Account)
@@ -61,7 +57,6 @@ func (a *App) accountView(c *ui.Context) {
 }
 func (a *App) accountContextView(c *ui.Context) {
 	p := &a.account
-	ui.Text(c, a.home).FontSize(12).TextColor(c.Theme().TextMuted)
 	if p.expected.ServerURL != nil {
 		ui.Text(c, *p.expected.ServerURL).FontSize(12)
 	}

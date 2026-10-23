@@ -55,7 +55,7 @@ func (a *App) remoteCreateDialog(c *ui.Context) {
 					ui.Text(c, locales.SessionCreateInputInvalid()).TextColor(c.Theme().Danger)
 				}
 				if a.remote.createErr != nil {
-					ui.Text(c, presentation.Error(a.remote.createErr)).TextColor(c.Theme().Danger)
+					a.errorText(c, a.remote.createErr, presentation.Error(a.remote.createErr))
 				}
 				if a.remote.createReceipt != nil {
 					a.remoteCreateReceiptView(c, *a.remote.createReceipt)
@@ -71,7 +71,7 @@ func (a *App) remoteCreateDialog(c *ui.Context) {
 }
 
 func (a *App) remoteCreateReceiptView(c *ui.Context, receipt remote.SessionCreateReceipt) {
-	ui.Column(c).FillWidth().Padding(12).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(6)).Children(func() {
 		ui.Text(c, locales.SessionCreatePhase(receipt.Phase)).Bold()
 		ui.Text(c, locales.SessionCreateRequest(receipt.RequestID)).FontSize(12)
 		if receipt.SessionID != nil && receipt.TaskID != nil {

@@ -181,9 +181,16 @@ else is a layer over it (redesign doc §3):
   stable slots: a project keeps its sector until it is the least recently
   opened when an eighth arrives. The HUD shows path, Git branch (read from
   `.git/HEAD`, never by running git) and language.
-- **⌥S, or click the breathing bar — Control Center.** Every management page,
-  grouped by project, remote, connections and system, with in-progress
-  operations first, the appearance switch and search.
+- **⌥S, click the breathing bar, or pull it up — Control Center.** Every
+  management page, grouped by project, remote, connections and system, with
+  in-progress operations first. Wide tiles show only observed state ("Not
+  checked" until read). The header holds the sign-in state as last read, a
+  search over pages, commands, projects and sessions (the palette's index),
+  and the appearance switch. A page pushes into the sheet from the right with
+  Back, its title, Return to workbench and a context strip (CLI home; server
+  and device on Remote management); Esc goes back, then closes. Pages opened
+  from anywhere else (palette, menu, links) open there too. Drag the sheet
+  down, or push the dock up, to close either.
 
 Chords are taken by the focused terminal before it encodes the key, so the
 Agent receives nothing (R0 evidence: a window shortcut alone leaks `å` on macOS

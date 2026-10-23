@@ -57,7 +57,7 @@ func (a *App) networkInterface(c *ui.Context, iface remote.WireGuardInterface) {
 	})
 	start := a.network.peerPage * networkPeersPerPage
 	for _, peer := range iface.Peers[start:min(start+networkPeersPerPage, len(iface.Peers))] {
-		ui.Column(c.Key(peer.PublicKey)).FillWidth().Gap(8).Padding(12).Background(c.Theme().Surface).Radius(8).Children(func() { networkPeer(c, peer) })
+		a.card(c, ui.Column(c.Key(peer.PublicKey)).FillWidth().Gap(8).Padding(12)).Children(func() { networkPeer(c, peer) })
 	}
 }
 

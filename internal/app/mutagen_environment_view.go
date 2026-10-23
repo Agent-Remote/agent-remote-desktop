@@ -14,14 +14,9 @@ import (
 
 func (a *App) mutagenEnvironmentView(c *ui.Context) {
 	p := &a.mutagenEnvironment
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.MutagenEnvironmentTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(10).Children(func() {
 			ui.Text(c, locales.MutagenEnvironmentHelp())
-			ui.Text(c, a.home).FontSize(12)
 			if p.loading {
 				ui.Text(c, locales.MutagenEnvironmentInspecting())
 			}
@@ -30,7 +25,7 @@ func (a *App) mutagenEnvironmentView(c *ui.Context) {
 				ui.Text(c, locales.MutagenEnvironmentCancelHelp())
 			}
 			if p.err != nil {
-				ui.Text(c, mutagenEnvironmentError(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, mutagenEnvironmentError(p.err))
 			}
 			if p.plan != nil {
 				ui.Text(c, locales.MutagenEnvironmentReview()).Bold()
@@ -41,14 +36,14 @@ func (a *App) mutagenEnvironmentView(c *ui.Context) {
 				ui.Column(c.Key(index)).FillWidth().Gap(8).Children(func() {
 					ui.Text(c, locales.MutagenEnvironmentOperation()).Bold()
 					if record.err != nil {
-						ui.Text(c, mutagenEnvironmentError(record.err)).TextColor(c.Theme().Danger)
+						a.errorText(c, record.err, mutagenEnvironmentError(record.err))
 					}
 					if receipt := record.receipt; receipt != nil {
 						ui.Text(c, locales.MutagenEnvironmentOutcome(receipt.Outcome)).Bold()
 						ui.Text(c, locales.SyncField("operation_id", receipt.OperationID)).FontSize(12)
-						for _, stage := range receipt.Stages {
-							ui.Text(c, locales.MutagenEnvironmentStage(stage.Name, stage.State))
-						}
+						a.receiptStages(c, len(receipt.Stages), func(i int) (string, string) {
+							return locales.MutagenEnvironmentStage(receipt.Stages[i].Name, receipt.Stages[i].State), receipt.Stages[i].State
+						})
 						if receipt.ErrorCode != nil {
 							ui.Text(c, mutagenEnvironmentError(&cliadapter.OperationError{Code: *receipt.ErrorCode})).TextColor(c.Theme().Danger)
 						}

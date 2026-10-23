@@ -14,22 +14,14 @@ import (
 
 func (a *App) accountImportView(c *ui.Context) {
 	p := &a.accountImport
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			title := locales.AccountImportTitle()
-			if p.history {
-				title = locales.AccountImportRecoveryTitle()
-			}
-			ui.Text(c, title).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(10).Children(func() {
 			if p.loading || p.busy {
 				ui.Text(c, locales.AccountImportWorking())
 				ui.Text(c, locales.AccountImportCancelHelp())
 			}
 			if p.err != nil {
-				ui.Text(c, accountImportError(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, accountImportError(p.err))
 			}
 			if p.review == "forget" {
 				ui.Text(c, locales.AccountImportForgetHelp()).Bold()
@@ -154,7 +146,7 @@ func (a *App) accountImportRecordView(c *ui.Context, record accountImportRecord)
 			ui.Text(c, locales.AccountImportTask(*ref.TaskID)).FontSize(12)
 		}
 		if record.err != nil {
-			ui.Text(c, accountImportError(record.err)).TextColor(c.Theme().Danger)
+			a.errorText(c, record.err, accountImportError(record.err))
 		}
 		if record.notSubmitted {
 			ui.Text(c, locales.AccountImportNotSubmitted())

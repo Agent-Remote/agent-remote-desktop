@@ -7,10 +7,8 @@ import (
 )
 
 func (a *App) localSetupView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(14).Children(func() {
-		ui.Text(c, locales.LocalSetupTitle()).FontSize(24).Bold()
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(14).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(12).Children(func() {
-			ui.Text(c, a.home).FontSize(12).TextColor(c.Theme().TextMuted)
 			if a.setup.checking {
 				ui.Text(c, locales.LocalSetupChecking())
 				return
@@ -25,7 +23,7 @@ func (a *App) localSetupView(c *ui.Context) {
 				return
 			}
 			if a.setup.err != nil {
-				ui.Text(c, presentation.Error(a.setup.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, a.setup.err, presentation.Error(a.setup.err))
 				return
 			}
 			if receipt := a.setup.receipt; receipt != nil {
@@ -35,7 +33,7 @@ func (a *App) localSetupView(c *ui.Context) {
 					ui.Text(c, locales.LocalSetupIncomplete()).TextColor(c.Theme().Danger)
 				}
 				for _, step := range receipt.Steps {
-					ui.Column(c.Key(step.ID)).FillWidth().Gap(4).Padding(10).Background(c.Theme().Surface).Radius(8).Children(func() {
+					a.card(c, ui.Column(c.Key(step.ID)).FillWidth().Gap(4).Padding(10)).Children(func() {
 						ui.Row(c).Gap(10).Wrap().Children(func() {
 							ui.Text(c, locales.LocalSetupStep(step.ID)).Bold()
 							ui.Text(c, locales.LocalSetupStatus(step.Status)).TextColor(c.Theme().TextMuted)

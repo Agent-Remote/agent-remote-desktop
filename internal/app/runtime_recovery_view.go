@@ -13,20 +13,15 @@ import (
 
 func (a *App) runtimeRecoveryView(c *ui.Context) {
 	p := &a.runtimeRecovery
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.RuntimeRecoveryTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(12).Children(func() {
 			ui.Text(c, locales.RuntimeRecoveryHelp())
-			ui.Text(c, a.home).FontSize(12)
 			if p.loading || p.busy {
 				ui.Text(c, locales.RuntimeRecoveryWorking())
 				ui.Text(c, locales.RuntimeRecoveryCancelHelp())
 			}
 			if p.err != nil {
-				ui.Text(c, runtimeRecoveryError(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, runtimeRecoveryError(p.err))
 			}
 			if !p.submitted {
 				ui.Button(c, locales.RuntimeRecoveryAuthority()).Disabled(p.loading || p.busy || p.review != "" || a.runtimeRecoveryBlocked()).OnClick(a.checkRuntimeAuthority)
@@ -128,7 +123,7 @@ func (a *App) runtimeRecordView(c *ui.Context, record runtimeRecoveryRecord) {
 		runtimeOriginalView(c, ref.Original)
 		ui.Text(c, locales.RuntimeRecoveryAction(ref.Action))
 		if record.err != nil {
-			ui.Text(c, runtimeRecoveryError(record.err)).TextColor(c.Theme().Danger)
+			a.errorText(c, record.err, runtimeRecoveryError(record.err))
 		}
 		if record.notSubmitted {
 			ui.Text(c, locales.RuntimeRecoveryNotSubmitted())

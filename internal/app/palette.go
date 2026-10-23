@@ -16,7 +16,11 @@ type paletteItem struct {
 
 func (a *App) openPalette() { a.paletteQuery = ""; a.paletteOpen = true }
 
-func (a *App) paletteItems() []paletteItem {
+func (a *App) paletteItems() []paletteItem { return a.searchIndex(a.paletteQuery) }
+
+// searchIndex is the one index of the palette and the Control Center's
+// search (redesign §4.5, §4.7): pages, commands, projects and sessions.
+func (a *App) searchIndex(q string) []paletteItem {
 	items := []paletteItem{{"control-center", locales.ControlCenter(), "", func() { a.showLayer(layerControl) }},
 		{"sync", locales.SyncTitle(), "", a.openSync}, {"diagnostics", locales.DiagnosticsTitle(), "", a.openDiagnostics},
 		{"theme", locales.Theme(), "", func() { a.setTheme(theme.Next(a.shownTheme), false) }},
@@ -61,7 +65,8 @@ func (a *App) paletteItems() []paletteItem {
 		}
 		items = append(items, paletteItem{"session-" + session.ID, name, session.Directory, func() { a.focusSession(session.ID) }})
 	}
-	query := strings.ToLower(strings.TrimSpace(a.paletteQuery))
+	items = append(items, paletteItem{"project-details", locales.ProjectDetails(), "", func() { a.page = "project" }})
+	query := strings.ToLower(strings.TrimSpace(q))
 	if query == "" {
 		return items
 	}

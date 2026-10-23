@@ -15,10 +15,8 @@ func (a *App) credentialsView(c *ui.Context) {
 	createAvailable := a.credentialsMutationAvailable(remote.CredentialsCreateMethod)
 	bindAvailable := a.credentialsMutationAvailable(remote.CredentialsBindMethod)
 	unbindAvailable := a.credentialsMutationAvailable(remote.CredentialsUnbindMethod)
-	ui.Column(c).Fill().Padding(24).Gap(14).Children(func() {
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(14).Children(func() {
 		ui.Row(c).Gap(12).Wrap().Children(func() {
-			ui.Text(c, locales.CredentialsTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
 			ui.Button(c, locales.RefreshRemote()).Disabled(p.busy || p.mutationBusy).OnClick(func() {
 				p.loaded = false
 				a.refreshCredentials()
@@ -85,7 +83,7 @@ func (a *App) credentialsView(c *ui.Context) {
 				return
 			}
 			for _, profile := range p.items {
-				ui.Column(c.Key(profile.ID)).FillWidth().Padding(14).Gap(5).Background(c.Theme().Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key(profile.ID)).FillWidth().Padding(14).Gap(5)).Children(func() {
 					ui.Row(c).Gap(10).Wrap().Children(func() {
 						ui.Text(c, profile.DisplayName).Bold().Grow(1)
 						ui.Text(c, locales.CredentialsStatus(profile.Status)).TextColor(c.Theme().TextMuted)

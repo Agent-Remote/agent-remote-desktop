@@ -11,11 +11,7 @@ import (
 )
 
 func (a *App) diagnosticsView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(14).Children(func() {
-		ui.Row(c).Gap(12).Wrap().Children(func() {
-			ui.Text(c, locales.DiagnosticsTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(14).Children(func() {
 		ui.Text(c, locales.DiagnosticsHelp()).TextColor(c.Theme().TextMuted)
 		ui.Text(c, locales.DiagnosticsDeepHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Row(c).Gap(12).Wrap().Children(func() {
@@ -56,7 +52,7 @@ func (a *App) diagnosticsView(c *ui.Context) {
 			ui.Text(c, a.diagnostics.report.Home).FontSize(12).TextColor(c.Theme().TextMuted)
 			ui.Text(c, locales.DiagnosticsChecks()).Bold()
 			for _, check := range a.diagnostics.report.Checks {
-				ui.Column(c.Key(check.ID)).FillWidth().Gap(4).Padding(10).Background(c.Theme().Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key(check.ID)).FillWidth().Gap(4).Padding(10)).Children(func() {
 					ui.Row(c).Gap(12).Wrap().Children(func() {
 						ui.Text(c, locales.DiagnosticsCheckLabel(check.ID)).Bold()
 						ui.Text(c, locales.DiagnosticsStatus(check.Status)).TextColor(c.Theme().TextMuted)
@@ -73,7 +69,7 @@ func (a *App) diagnosticsView(c *ui.Context) {
 			ui.Text(c, locales.DiagnosticsManifest(a.diagnostics.report.ManifestSource)).FontSize(12)
 			ui.Text(c, locales.DiagnosticsVersionHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 			for index, dependency := range a.diagnostics.report.Dependencies {
-				ui.Column(c.Key(index)).FillWidth().Gap(5).Padding(12).Background(c.Theme().Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key(index)).FillWidth().Gap(5).Padding(12)).Children(func() {
 					ui.Row(c).Gap(12).Wrap().Children(func() {
 						ui.Text(c, dependency.Name).Bold()
 						ui.Text(c, locales.DiagnosticsStatus(dependency.Status)).TextColor(c.Theme().TextMuted)

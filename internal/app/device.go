@@ -155,11 +155,7 @@ func (a *App) cancelDeviceWait() {
 
 func (a *App) deviceView(c *ui.Context) {
 	p := &a.device
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.DeviceTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Text(c, locales.DeviceHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Scroll(c).Grow(1).FillWidth().Gap(10).Children(func() {
 			if p.loading {
@@ -167,7 +163,7 @@ func (a *App) deviceView(c *ui.Context) {
 				return
 			}
 			if p.err != nil {
-				ui.Text(c, presentation.Error(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, presentation.Error(p.err))
 				if p.local != nil {
 					a.deviceLocalDetailsView(c, p.local)
 				}
@@ -210,7 +206,7 @@ func (a *App) deviceView(c *ui.Context) {
 }
 
 func (a *App) deviceLocalDetailsView(c *ui.Context, status *remote.DeviceLocalStatus) {
-	ui.Column(c).FillWidth().Padding(14).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(14).Gap(6)).Children(func() {
 		ui.Text(c, locales.DeviceLocalTitle()).Bold()
 		ui.Text(c, locales.DeviceLocalInstallation(status.App.Installation)).FontSize(12)
 		ui.Text(c, locales.DeviceLocalPath(status.App.Path)).FontSize(12)
@@ -223,9 +219,9 @@ func (a *App) deviceLocalDetailsView(c *ui.Context, status *remote.DeviceLocalSt
 		if a.device.plan != nil {
 			ui.Text(c, locales.DeviceLocalPlanTitle(a.device.plan.Action)).Bold().FontSize(12)
 			ui.Text(c, locales.DeviceLocalPlanHelp(a.device.plan.TerminalMethod)).FontSize(11).TextColor(c.Theme().TextMuted)
-			for _, stage := range a.device.plan.Stages {
-				ui.Text(c, locales.DeviceLocalPlanStage(stage.ID, stage.State)).FontSize(11)
-			}
+			a.receiptStages(c, len(a.device.plan.Stages), func(i int) (string, string) {
+				return locales.DeviceLocalPlanStage(a.device.plan.Stages[i].ID, a.device.plan.Stages[i].State), a.device.plan.Stages[i].State
+			})
 		} else if a.device.planErr != nil {
 			ui.Text(c, locales.DeviceLocalPlanUnavailable(presentation.Error(a.device.planErr))).FontSize(11).TextColor(c.Theme().TextMuted)
 		}
@@ -264,7 +260,7 @@ func (a *App) openDeviceLocalCommand(action string) {
 }
 
 func (a *App) deviceDetailsView(c *ui.Context, snapshot *remote.DeviceOverview) {
-	ui.Column(c).FillWidth().Padding(14).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(14).Gap(6)).Children(func() {
 		ui.Text(c, snapshot.Device.Name).Bold()
 		ui.Text(c, locales.DeviceID(snapshot.Device.ID)).FontSize(12)
 		ui.Text(c, locales.DevicePlatform(snapshot.Device.Platform)).FontSize(12)
@@ -281,7 +277,7 @@ func (a *App) deviceDetailsView(c *ui.Context, snapshot *remote.DeviceOverview) 
 }
 
 func (a *App) deviceReviewView(c *ui.Context, input *remote.DeviceActionInput) {
-	ui.Column(c).FillWidth().Padding(14).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(14).Gap(6)).Children(func() {
 		ui.Text(c, locales.DeviceReview()).Bold()
 		ui.Text(c, locales.DeviceAction(a.device.action)).Bold()
 		ui.Text(c, locales.DeviceID(input.DeviceID)).FontSize(12)

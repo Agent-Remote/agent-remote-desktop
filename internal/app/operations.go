@@ -388,11 +388,7 @@ func (a *App) operationsView(c *ui.Context) {
 			active++
 		}
 	}
-	ui.Column(c).Fill().Padding(24).Gap(14).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.OperationsTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(14).Children(func() {
 		ui.Text(c, locales.OperationsHelp()).TextColor(c.Theme().TextMuted)
 		ui.Text(c, locales.OperationsSummary(active, len(entries))).FontSize(12).TextColor(c.Theme().TextMuted)
 		if len(entries) == 0 {
@@ -404,7 +400,7 @@ func (a *App) operationsView(c *ui.Context) {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(10).Children(func() {
 			for _, entry := range entries {
 				item := entry
-				ui.Column(c.Key("operation-" + item.id)).FillWidth().Padding(12).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key("operation-"+item.id)).FillWidth().Padding(12).Gap(6)).Children(func() {
 					ui.Row(c).Gap(10).Wrap().Children(func() {
 						ui.Text(c, item.title).Bold().Grow(1)
 						ui.Text(c, operationStatusText(item.status)).TextColor(operationStatusColor(c, item.status))

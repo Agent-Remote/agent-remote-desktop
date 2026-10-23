@@ -13,10 +13,8 @@ import (
 )
 
 func (a *App) capabilitiesView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.CapabilitiesTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
 			ui.Button(c, locales.RefreshRemote()).Disabled(a.capabilities.busy).OnClick(a.refreshCapabilities)
 		})
 		ui.Text(c, locales.CapabilitiesHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
@@ -36,24 +34,23 @@ func (a *App) capabilitiesView(c *ui.Context) {
 			ui.TextInput(c, &a.capabilities.filter).Label(locales.CapabilitiesFilter()).Placeholder(locales.CapabilitiesFilter())
 		}
 		ui.Scroll(c).Grow(1).FillWidth().Gap(12).Children(func() {
-			ui.Text(c, a.home).FontSize(12).TextColor(c.Theme().TextMuted)
 			if a.capabilities.tab == "commands" {
 				a.capabilitiesCommands(c)
 				return
 			}
 			snapshot := a.capabilities.snapshot
 			if snapshot.ProtocolError != nil {
-				ui.Text(c, presentation.Error(snapshot.ProtocolError)).TextColor(c.Theme().Danger)
+				a.errorText(c, snapshot.ProtocolError, presentation.Error(snapshot.ProtocolError))
 				return
 			}
 			ui.Text(c, locales.CapabilitiesVersion(snapshot.Capabilities.CLIVersion, capability.HostPlatform(snapshot.Capabilities.Platform))).FontSize(12)
 			if snapshot.ContextError != nil {
-				ui.Text(c, presentation.Error(snapshot.ContextError)).TextColor(c.Theme().Danger)
+				a.errorText(c, snapshot.ContextError, presentation.Error(snapshot.ContextError))
 			}
 			ui.Text(c, locales.CapabilitiesPermissionHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 			for _, operation := range capability.Operations() {
 				assessment := a.operationAssessment(operation.Method)
-				ui.Column(c.Key(operation.Method)).FillWidth().Padding(12).Gap(4).Background(c.Theme().Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key(operation.Method)).FillWidth().Padding(12).Gap(4)).Children(func() {
 					ui.Text(c, locales.CapabilitiesOperation(strings.ReplaceAll(operation.Method, ".", "_"))).Bold()
 					ui.Text(c, locales.CapabilitiesState(assessment.State)).FontSize(12).TextColor(c.Theme().TextMuted)
 				})
@@ -74,7 +71,7 @@ func (a *App) capabilitiesCommands(c *ui.Context) {
 	for _, catalog := range a.capabilities.snapshot.Catalogs {
 		ui.Text(c, catalog.Executable).Bold()
 		if catalog.Err != nil {
-			ui.Text(c, presentation.Error(catalog.Err)).TextColor(c.Theme().Danger)
+			a.errorText(c, catalog.Err, presentation.Error(catalog.Err))
 			continue
 		}
 		ui.Text(c, locales.CapabilitiesCommandVersion(catalog.Schema.CLIVersion)).FontSize(12)
@@ -87,7 +84,7 @@ func (a *App) capabilitiesCommands(c *ui.Context) {
 				continue
 			}
 			count++
-			ui.Column(c.Key(name)).FillWidth().Gap(5).Padding(12).Background(c.Theme().Surface).Radius(8).Children(func() {
+			a.card(c, ui.Column(c.Key(name)).FillWidth().Gap(5).Padding(12)).Children(func() {
 				ui.Text(c, name).Bold()
 				platformState, declaredPlatforms := commandPlatformInfo(catalog.Executable, command)
 				ui.Text(c, locales.CapabilitiesPlatform(platformState)).FontSize(12)

@@ -247,11 +247,7 @@ func (a *App) startGenericCLI() {
 
 func (a *App) genericCLIView(c *ui.Context) {
 	p := &a.genericCLI
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.CliFormTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = ""; a.genericCLI = genericCLIPage{} })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Text(c, locales.CliFormHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Text(c, locales.CliFormHomeManaged()).FontSize(12).TextColor(c.Theme().TextMuted)
 		if p.dedicated.Method == "fclaude run" || p.dedicated.Method == "fclaude new" {

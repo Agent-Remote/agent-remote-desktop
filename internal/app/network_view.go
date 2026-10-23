@@ -14,8 +14,7 @@ import (
 )
 
 func (a *App) networkView(c *ui.Context) {
-	ui.Column(c).Fill().Padding(24).Gap(10).Children(func() {
-		ui.Text(c, locales.WireGuardNetworkTitle()).FontSize(24).Bold()
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(10).Children(func() {
 		ui.Text(c, locales.WireGuardNetworkHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Row(c).Gap(10).Wrap().Children(func() {
 			ui.Radio(c, &a.network.section, "", locales.WireGuardCheckSummary())

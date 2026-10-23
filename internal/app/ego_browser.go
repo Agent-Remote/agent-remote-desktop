@@ -369,18 +369,14 @@ func (a *App) cancelEgoBrowserWait() {
 
 func (a *App) egoBrowserView(c *ui.Context) {
 	p := &a.egoBrowser
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.EgoBrowserTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Text(c, locales.EgoBrowserHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
 		ui.Scroll(c).Grow(1).FillWidth().Gap(10).Children(func() {
 			switch {
 			case p.loading:
 				ui.Text(c, locales.EgoBrowserLoading())
 			case p.err != nil:
-				ui.Text(c, presentation.Error(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, presentation.Error(p.err))
 			case p.loaded:
 				a.egoBrowserDetails(c, &p.snapshot)
 				a.egoBrowserDeletePanel(c)
@@ -397,7 +393,7 @@ func (a *App) egoBrowserView(c *ui.Context) {
 }
 
 func (a *App) egoBrowserDetails(c *ui.Context, status *remote.EgoBrowserStatus) {
-	ui.Column(c).FillWidth().Padding(14).Gap(8).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(14).Gap(8)).Children(func() {
 		ui.Text(c, locales.EgoBrowserLocalState(status.Local.Installation, status.Local.Store)).Bold()
 		ui.Text(c, locales.EgoBrowserPolicy(status.Policy.Enrollment, status.Policy.Execution)).FontSize(12)
 		if status.Context.ServerURL != nil {
@@ -406,7 +402,7 @@ func (a *App) egoBrowserDetails(c *ui.Context, status *remote.EgoBrowserStatus) 
 		ui.Text(c, locales.EgoBrowserDeviceCount(strconv.Itoa(len(status.Devices)))).FontSize(12)
 		for _, device := range status.Devices {
 			device := device
-			ui.Column(c.Key("ego-device-" + device.ID)).Gap(2).Padding(8).Background(c.Theme().SurfaceHover).Radius(6).Children(func() {
+			a.card(c, ui.Column(c.Key("ego-device-"+device.ID)).FillWidth().Gap(2).Padding(8)).Children(func() {
 				ui.Text(c, locales.EgoBrowserDevice(device.ID, device.Status)).Bold()
 				ui.Text(c, locales.EgoBrowserVersion(egoVersion(device.BridgeVersion), egoVersion(device.RuntimeVersion))).FontSize(12)
 				if device.Status == "revoked" {
@@ -440,9 +436,9 @@ func (a *App) egoBrowserDetails(c *ui.Context, status *remote.EgoBrowserStatus) 
 		if p := &a.egoBrowser; p.bindingBusy {
 			ui.Text(c, locales.EgoBrowserBindingWorking()).TextColor(c.Theme().TextMuted)
 		} else if p.bindingErr != nil {
-			ui.Text(c, presentation.Error(p.bindingErr)).TextColor(c.Theme().Danger)
+			a.errorText(c, p.bindingErr, presentation.Error(p.bindingErr))
 		} else if p.bindingPlan != nil {
-			ui.Column(c).FillWidth().Padding(12).Gap(6).Background(c.Theme().SurfaceHover).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(6)).Children(func() {
 				ui.Text(c, locales.EgoBrowserBindingReview()).Bold()
 				ui.Text(c, locales.EgoBrowserBindingReviewTarget(p.bindingPlan.Binding.ID, p.bindingPlan.Action))
 				if p.bindingPlan.Allowed {
@@ -466,7 +462,7 @@ func (a *App) egoBrowserDetails(c *ui.Context, status *remote.EgoBrowserStatus) 
 		case p.candidatesLoading:
 			ui.Text(c, locales.EgoBrowserCandidatesLoading()).TextColor(c.Theme().TextMuted)
 		case p.candidatesErr != nil:
-			ui.Text(c, presentation.Error(p.candidatesErr)).TextColor(c.Theme().Danger)
+			a.errorText(c, p.candidatesErr, presentation.Error(p.candidatesErr))
 		case len(p.candidates) == 0:
 			ui.Text(c, locales.EgoBrowserCandidatesEmpty()).TextColor(c.Theme().TextMuted)
 		default:
@@ -481,9 +477,9 @@ func (a *App) egoBrowserDetails(c *ui.Context, status *remote.EgoBrowserStatus) 
 		if p.claimBusy {
 			ui.Text(c, locales.EgoBrowserClaimWorking()).TextColor(c.Theme().TextMuted)
 		} else if p.claimErr != nil {
-			ui.Text(c, presentation.Error(p.claimErr)).TextColor(c.Theme().Danger)
+			a.errorText(c, p.claimErr, presentation.Error(p.claimErr))
 		} else if p.claimPlan != nil {
-			ui.Column(c).FillWidth().Padding(12).Gap(6).Background(c.Theme().SurfaceHover).Radius(8).Children(func() {
+			a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(6)).Children(func() {
 				ui.Text(c, locales.EgoBrowserClaimReview()).Bold()
 				ui.Text(c, locales.EgoBrowserClaimReviewTarget(p.claimPlan.Candidate.ToolSessionID, p.claimPlan.Candidate.DisplayName))
 				ui.Text(c, locales.EgoBrowserClaimReviewWarning()).TextColor(c.Theme().Danger)
@@ -502,7 +498,7 @@ func (a *App) egoBrowserDetails(c *ui.Context, status *remote.EgoBrowserStatus) 
 			case p.requestsLoading:
 				ui.Text(c, locales.EgoBrowserRequestsLoading())
 			case p.requestErr != nil:
-				ui.Text(c, presentation.Error(p.requestErr)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.requestErr, presentation.Error(p.requestErr))
 			case len(p.requests) == 0:
 				ui.Text(c, locales.EgoBrowserRequestsEmpty()).TextColor(c.Theme().TextMuted)
 			default:

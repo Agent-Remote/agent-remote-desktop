@@ -158,21 +158,9 @@ func (a *App) invalidateCommandDiagnostics() {
 
 func (a *App) commandDiagnosticsView(c *ui.Context) {
 	p := &a.commandDiagnostics
-	title := locales.CommandDiagnosticsMethod(p.method)
-	if p.method == "doctor.inspect" || p.method == "doctor.repair" {
-		title = locales.CliDoctorHelp()
-	} else if p.method == "deps.inspect" || p.method == "deps.repair" {
-		title = locales.DependenciesTitle()
-	} else if p.method == "status.inspect" {
-		title = locales.CommandDiagnosticsStatus()
-	} else if p.method == "ssh.inspect" {
-		title = locales.CommandDiagnosticsSSH()
-	}
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, title).FontSize(24).Bold().Grow(1)
 			ui.Button(c, locales.ReturnDiagnostics()).OnClick(a.openDiagnostics)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
 		})
 		ui.Text(c, locales.CommandDiagnosticsMethod(p.method)).FontSize(12).TextColor(c.Theme().TextMuted)
 		if p.method == "doctor.inspect" || p.method == "doctor.repair" {
@@ -209,7 +197,7 @@ func (a *App) commandDiagnosticsView(c *ui.Context) {
 			return
 		}
 		if p.err != nil {
-			ui.Text(c, presentation.Error(p.err)).TextColor(c.Theme().Danger)
+			a.errorText(c, p.err, presentation.Error(p.err))
 			return
 		}
 		if !p.loaded {

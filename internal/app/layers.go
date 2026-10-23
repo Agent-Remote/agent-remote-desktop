@@ -52,6 +52,13 @@ type layerState struct {
 
 	control        chrome.SheetState // only its Offset: the sheet is built while open
 	controlClosing bool              // released past half: keep building until at rest
+	hosted         string            // the page the sheet shows ("" its grid)
+	ccQuery        string            // the Control Center's search
+	dock           ui.Point          // the dock's drag offset: 0 open, −height pushed away
+	dockClosing    bool              // pushed past half: keep building until at rest
+	pull           float32           // how far a press on the bar has pulled the sheet up
+	pulling        bool              // the sheet follows that press 1:1
+	pulled         bool              // the press pulled: its release is no click
 
 	pointer      ui.Point // last pointer seen over the open layer
 	pointerKnown bool
@@ -127,24 +134,34 @@ func (a *App) enterLayer(layer, was string) {
 	if was == "" && a.focusValue != focusLayer {
 		l.returnTo = a.focusValue
 	}
+	if was == layerControl && layer != layerControl {
+		// Another layer replaces the Control Center and its page.
+		a.page, a.pendingPage, l.hosted = "", "", ""
+	}
 
 	l.search, l.query, l.searchHot = false, "", 0
 	l.sel, l.shift, l.moved, l.pointerKnown = -1, false, false, false
 	switch layer {
 	case layerAgents:
 		l.sel = a.defaultAgent()
+		l.dock, l.dockClosing = ui.Point{}, false
 	case layerProjects:
 		a.ensureSlots()
 	case layerControl:
 		l.controlClosing = false
 		l.control.Offset = ui.Point{}
+		l.ccQuery = ""
 	}
 	a.focusValue = focusLayer
 }
 
-// closeLayer returns to Zen and gives the keyboard back.
+// closeLayer returns to Zen and gives the keyboard back. Closing the
+// Control Center leaves its page; the sheet keeps drawing it on the way out.
 func (a *App) closeLayer() {
 	l := &a.layers
+	if a.openLayer() == layerControl {
+		a.page, a.pendingPage = "", ""
+	}
 	l.rec.Cancel()
 	l.search = false
 	back := l.returnTo

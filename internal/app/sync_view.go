@@ -13,11 +13,7 @@ import (
 
 func (a *App) syncView(c *ui.Context) {
 	p := &a.sync
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.SyncTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(10).Children(func() {
 			if p.localPath == "" {
 				ui.Text(c, locales.SyncChooseProject())
@@ -25,7 +21,6 @@ func (a *App) syncView(c *ui.Context) {
 			}
 			ui.Text(c, locales.SyncField("project", p.projectName)).Bold()
 			ui.Text(c, p.localPath).FontSize(12)
-			ui.Text(c, a.home).FontSize(12)
 			if p.expected.ServerURL != nil {
 				ui.Text(c, *p.expected.ServerURL).FontSize(12)
 			}
@@ -58,16 +53,16 @@ func (a *App) syncView(c *ui.Context) {
 				return
 			}
 			for _, record := range p.history {
-				syncRecordView(c, record)
+				a.syncRecordView(c, record)
 			}
-			syncRecordView(c, syncRecord{receipt: p.receipt, err: p.err})
+			a.syncRecordView(c, syncRecord{receipt: p.receipt, err: p.err})
 			a.syncRecoveryResultsView(c)
 			if p.loading {
 				ui.Text(c, locales.LoadingRemote())
 				return
 			}
 			if p.queryErr != nil {
-				ui.Text(c, syncError(p.queryErr)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.queryErr, syncError(p.queryErr))
 			}
 			if p.status != nil {
 				ui.Text(c, locales.SyncObservationScope()).Bold()
@@ -165,9 +160,9 @@ func syncMutagenView(c *ui.Context, m remote.MutagenObservation) {
 	}
 }
 
-func syncRecordView(c *ui.Context, record syncRecord) {
+func (a *App) syncRecordView(c *ui.Context, record syncRecord) {
 	if record.err != nil {
-		ui.Text(c, syncError(record.err)).TextColor(c.Theme().Danger)
+		a.errorText(c, record.err, syncError(record.err))
 	}
 	if record.receipt == nil {
 		return
@@ -187,9 +182,9 @@ func syncRecordView(c *ui.Context, record syncRecord) {
 	if r.DryRun {
 		ui.Text(c, locales.SyncSkipLocalHelp()).TextColor(c.Theme().Danger)
 	}
-	for _, stage := range r.Stages {
-		ui.Text(c, locales.SyncStage(stage.Name, stage.State))
-	}
+	a.receiptStages(c, len(r.Stages), func(i int) (string, string) {
+		return locales.SyncStage(r.Stages[i].Name, r.Stages[i].State), r.Stages[i].State
+	})
 	if r.ErrorCode != nil {
 		ui.Text(c, syncError(&cliadapter.OperationError{Code: *r.ErrorCode})).TextColor(c.Theme().Danger)
 	}

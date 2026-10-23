@@ -5,6 +5,7 @@ import (
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/session"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/terminalhost"
+	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
 	"github.com/Agent-Remote/agent-remote-desktop/locales"
 	"github.com/egoist/mygo"
 	"github.com/egoist/mygo/i18n"
@@ -161,68 +162,58 @@ func (a *App) settingsView(c *ui.Context) {
 	if a.tools == nil {
 		a.refreshTools()
 	}
-	ui.Scroll(c).Fill().Padding(36).Gap(20).Children(func() {
-		ui.Text(c, locales.Settings()).FontSize(30).Bold()
-		ui.Text(c, locales.Language()).Bold()
-		ui.Row(c).Gap(12).Wrap().Children(func() {
-			ui.Button(c, locales.FollowSystem()).OnClick(func() { mygo.App.SetLocale("") })
-			for _, tag := range mygo.App.Languages() {
-				button := ui.Button(c.Key(tag), i18n.Autonym(tag))
-				if tag == i18n.Locale() {
-					button.Background(a.tokens().Selected()).TextColor(a.tokens().AccentInk)
-				}
-				button.OnClick(func() { mygo.App.SetLocale(tag) })
-			}
-		})
-		ui.Text(c, locales.SharedConfigHelp()).TextColor(c.Theme().TextMuted)
-		ui.Text(c, a.home).FontSize(13)
-		ui.Text(c, locales.Tools()).Bold().Margin(12, 0, 0, 0)
-		ui.Button(c, locales.RefreshTools()).OnClick(a.refreshTools)
-		for _, tool := range a.tools {
-			name, path := tool.name, tool.path
-			if path == "" {
-				path = locales.ToolMissing()
-			}
-			ui.Column(c.Key(name)).Padding(12).Gap(10).Background(c.Theme().Surface).Radius(8).Children(func() {
-				ui.Text(c, name).Bold()
-				ui.Text(c, path).FontSize(12).TextColor(c.Theme().TextMuted)
-				if tool.path == "" {
-					ui.Text(c, locales.ProviderInstallHelp(name)).FontSize(12)
-					a.providerGuideButton(c, name)
+	env := a.chromeEnv(c)
+	ui.Scroll(c).Fill().Padding(4, 28, 24).Gap(14).Children(func() {
+		env.Panel(c, locales.Language(), false, func() {
+			ui.Row(c).Gap(10).Wrap().Children(func() {
+				ui.Button(c, locales.FollowSystem()).OnClick(func() { mygo.App.SetLocale("") })
+				for _, tag := range mygo.App.Languages() {
+					button := ui.Button(c.Key(tag), i18n.Autonym(tag))
+					if tag == i18n.Locale() {
+						button.Background(env.P.Selected()).TextColor(env.P.AccentInk)
+					}
+					button.OnClick(func() { mygo.App.SetLocale(tag) })
 				}
 			})
-		}
-		ui.Text(c, locales.Appearance()).Bold().Margin(12, 0, 0, 0)
-		env := a.chromeEnv(c)
-		// Segment order follows the redesign: follow system, light, dark, kawaii.
-		choice := 0
-		if !a.state.Preferences.FollowSystemTheme {
-			choice = map[string]int{"daybreak": 1, "midnight": 2, "sakura": 3}[a.state.Preferences.Theme]
-		}
-		if env.Segmented(c, &choice, locales.AppearanceTheme(), locales.FollowSystem(), locales.ThemeDaybreak(), locales.ThemeMidnight(), locales.ThemeSakura()) {
-			if choice == 0 {
-				a.setTheme("", true)
-			} else {
-				a.setTheme([...]string{"", "daybreak", "midnight", "sakura"}[choice], false)
-			}
-		}
-		if ui.Checkbox(c, &a.state.Preferences.FocusMode, locales.FocusMode()).Changed() {
-			a.persist()
-		}
-		if ui.Checkbox(c, &a.state.Preferences.ReduceMotion, locales.ReduceMotion()).Changed() {
-			a.persist()
-		}
-		ui.Text(c, locales.ReduceMotionHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
-		if ui.Checkbox(c, &a.state.Preferences.ReduceTransparency, locales.ReduceTransparency()).Changed() {
-			a.persist()
-		}
-		ui.Text(c, locales.ReduceTransparencyHelp()).FontSize(12).TextColor(c.Theme().TextMuted)
-		ui.Row(c).Gap(12).Wrap().Children(func() {
-			ui.Text(c, locales.FontSize(int(a.state.Preferences.FontSize)))
-			ui.Button(c, "－").Label(locales.DecreaseFont()).Disabled(a.state.Preferences.FontSize <= 10).OnClick(func() { a.changeFont(-1) })
-			ui.Button(c, "＋").Label(locales.IncreaseFont()).Disabled(a.state.Preferences.FontSize >= 32).OnClick(func() { a.changeFont(1) })
 		})
-		ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
+		env.Panel(c, locales.Tools(), false, func() {
+			env.Text(c, locales.SharedConfigHelp(), theme.Caption, env.P.TextSecondary)
+			ui.Row(c).Children(func() { ui.Button(c, locales.RefreshTools()).OnClick(a.refreshTools) })
+			for _, tool := range a.tools {
+				name, path := tool.name, tool.path
+				if path == "" {
+					path = locales.ToolMissing()
+				}
+				env.Well(ui.Column(c.Key(name)).FillWidth().Padding(12).Gap(6)).Children(func() {
+					env.Text(c, name, theme.BodyStrong, env.P.TextPrimary)
+					env.Text(c, path, theme.MonoSmall, env.P.TextSecondary)
+					if tool.path == "" {
+						env.Text(c, locales.ProviderInstallHelp(name), theme.Caption, env.P.TextPrimary)
+						ui.Row(c).Children(func() { a.providerGuideButton(c, name) })
+					}
+				})
+			}
+		})
+		env.Panel(c, locales.Appearance(), false, func() {
+			// Segment order follows the redesign: follow system, light, dark, kawaii.
+			a.appearanceSwitch(c, env)
+			if ui.Checkbox(c, &a.state.Preferences.FocusMode, locales.FocusMode()).Changed() {
+				a.persist()
+			}
+			if ui.Checkbox(c, &a.state.Preferences.ReduceMotion, locales.ReduceMotion()).Changed() {
+				a.persist()
+			}
+			env.Text(c, locales.ReduceMotionHelp(), theme.Caption, env.P.TextSecondary)
+			if ui.Checkbox(c, &a.state.Preferences.ReduceTransparency, locales.ReduceTransparency()).Changed() {
+				a.persist()
+			}
+			env.Text(c, locales.ReduceTransparencyHelp(), theme.Caption, env.P.TextSecondary)
+			ui.Row(c).Gap(12).Wrap().Children(func() {
+				ui.Text(c, locales.FontSize(int(a.state.Preferences.FontSize)))
+				ui.Button(c, "－").Label(locales.DecreaseFont()).Disabled(a.state.Preferences.FontSize <= 10).OnClick(func() { a.changeFont(-1) })
+				ui.Button(c, "＋").Label(locales.IncreaseFont()).Disabled(a.state.Preferences.FontSize >= 32).OnClick(func() { a.changeFont(1) })
+			})
+		})
 	})
 }
 

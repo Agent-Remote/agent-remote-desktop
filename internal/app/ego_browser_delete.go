@@ -78,9 +78,9 @@ func (a *App) egoBrowserDeletePanel(c *ui.Context) {
 	if p.deleteBusy {
 		ui.Text(c, locales.EgoBrowserDeleteWorking()).TextColor(c.Theme().TextMuted)
 	} else if p.deleteErr != nil {
-		ui.Text(c, presentation.Error(p.deleteErr)).TextColor(c.Theme().Danger)
+		a.errorText(c, p.deleteErr, presentation.Error(p.deleteErr))
 	} else if p.deletePlan != nil {
-		ui.Column(c).FillWidth().Padding(12).Gap(6).Background(c.Theme().SurfaceHover).Radius(8).Children(func() {
+		a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(6)).Children(func() {
 			ui.Text(c, locales.EgoBrowserDeleteReview()).Bold()
 			ui.Text(c, locales.EgoBrowserDeleteReviewTarget(p.deletePlan.Target, p.deletePlan.ID, strconv.FormatUint(p.deletePlan.Generation, 10)))
 			if p.deletePlan.Allowed {

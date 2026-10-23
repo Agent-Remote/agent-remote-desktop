@@ -9,14 +9,9 @@ import (
 
 func (a *App) accountDefaultView(c *ui.Context) {
 	p := &a.accountDefault
-	ui.Column(c).Fill().Padding(24).Gap(12).Children(func() {
-		ui.Row(c).Gap(10).Wrap().Children(func() {
-			ui.Text(c, locales.AccountDefaultTitle()).FontSize(24).Bold().Grow(1)
-			ui.Button(c, locales.ReturnWorkbench()).OnClick(func() { a.page = "" })
-		})
+	ui.Column(c).Fill().Padding(4, 28, 24).Gap(12).Children(func() {
 		ui.Scroll(c).Grow(1).FillWidth().Gap(12).Children(func() {
 			ui.Text(c, locales.AccountDefaultScope()).FontSize(12).TextColor(c.Theme().TextMuted)
-			ui.Text(c, a.home).FontSize(12)
 			if p.loading {
 				ui.Text(c, locales.LoadingRemote())
 				return
@@ -30,7 +25,7 @@ func (a *App) accountDefaultView(c *ui.Context) {
 				return
 			}
 			if p.err != nil {
-				ui.Text(c, presentation.Error(p.err)).TextColor(c.Theme().Danger)
+				a.errorText(c, p.err, presentation.Error(p.err))
 				return
 			}
 			if p.receipt != nil {
@@ -58,7 +53,7 @@ func (a *App) accountDefaultView(c *ui.Context) {
 				ui.Text(c, *snapshot.Default.Context.ServerURL).FontSize(12)
 			}
 			if snapshot.AccountsError != nil {
-				ui.Text(c, presentation.Error(snapshot.AccountsError)).TextColor(c.Theme().Danger)
+				a.errorText(c, snapshot.AccountsError, presentation.Error(snapshot.AccountsError))
 				return
 			}
 			if snapshot.Default.Context.ServerURL == nil || snapshot.Default.Context.DeviceID == nil {
@@ -71,7 +66,7 @@ func (a *App) accountDefaultView(c *ui.Context) {
 					continue
 				}
 				count++
-				ui.Column(c.Key(account.ID)).FillWidth().Padding(12).Gap(5).Background(c.Theme().Surface).Radius(8).Children(func() {
+				a.card(c, ui.Column(c.Key(account.ID)).FillWidth().Padding(12).Gap(5)).Children(func() {
 					ui.Text(c, account.Name).Bold()
 					ui.Text(c, account.ID).FontSize(12)
 					ui.Text(c, locales.RemoteAccountSummary(account.Tool, presentation.RemoteStatus(account.Status), account.Region)).FontSize(12)

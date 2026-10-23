@@ -65,23 +65,23 @@ func syncRecoveryMutagenView(c *ui.Context, observation remote.SyncRecoveryMutag
 func (a *App) syncRecoveryResultsView(c *ui.Context) {
 	p := &a.sync.recovery
 	if p.err != nil {
-		ui.Text(c, syncError(p.err)).TextColor(c.Theme().Danger)
+		a.errorText(c, p.err, syncError(p.err))
 	}
 	for _, failure := range p.failures {
 		ui.Text(c, locales.SyncRecoveryReceipt()).Bold()
 		if failure.plan != nil {
 			syncRecoveryMappingView(c, *failure.plan)
 		}
-		ui.Text(c, syncError(failure.err)).TextColor(c.Theme().Danger)
+		a.errorText(c, failure.err, syncError(failure.err))
 	}
 	for _, receipt := range p.receipts {
 		ui.Text(c, locales.SyncRecoveryReceipt()).Bold()
 		ui.Text(c, locales.SyncOutcome(receipt.Outcome)).Bold()
 		ui.Text(c, locales.SyncField("operation_id", receipt.OperationID)).FontSize(12)
 		syncRecoveryMappingView(c, receipt.Plan)
-		for _, stage := range receipt.Stages {
-			ui.Text(c, locales.SyncStage(stage.Name, stage.State))
-		}
+		a.receiptStages(c, len(receipt.Stages), func(i int) (string, string) {
+			return locales.SyncStage(receipt.Stages[i].Name, receipt.Stages[i].State), receipt.Stages[i].State
+		})
 		if receipt.ErrorCode != nil {
 			ui.Text(c, syncError(&cliadapter.OperationError{Code: *receipt.ErrorCode})).TextColor(c.Theme().Danger)
 		}

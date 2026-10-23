@@ -187,24 +187,46 @@ func shiftLabel() string {
 	return "Shift"
 }
 
+// dockHeight is the dock's height; pushing it up by as much closes it.
+const dockHeight = 332
+
 // dockLayer is Layer 1.1: a glass drawer from the top edge with a card per
-// session; the workspace behind is pushed back (workspaceDepth).
-func (a *App) dockLayer(c *ui.Context, env chrome.Env) {
-	items := a.dockItems()
+// session; the workspace behind is pushed back (workspaceDepth). Pushing
+// the drawer back up 1:1 closes it the way it came (redesign §6.2,
+// apple-design §9); it is built until it comes to rest there.
+func (a *App) dockLayer(c *ui.Context, env chrome.Env, open bool) {
 	l := &a.layers
+	if !open && !l.dockClosing {
+		return
+	}
+	items := a.dockItems()
 	width, _ := c.Size()
-	// The transparent stage takes the keyboard and closes on an outside click.
-	stage := ui.Box(c.Key("dock-stage")).Absolute().Top(0).Right(0).Bottom(0).Left(0).
-		FocusBind(&a.focusValue, focusLayer).HandleInput(a.layerKey)
-	a.noteMovement(stage.PointerPosition())
-	if stage.Clicked() {
-		if _, y, ok := stage.PointerPosition(); ok && y > 332 {
-			a.closeLayer()
+	if open {
+		// The transparent stage takes the keyboard and closes on an outside click.
+		stage := ui.Box(c.Key("dock-stage")).Absolute().Top(0).Right(0).Bottom(0).Left(0).
+			FocusBind(&a.focusValue, focusLayer).HandleInput(a.layerKey)
+		a.noteMovement(stage.PointerPosition())
+		if stage.Clicked() {
+			if _, y, ok := stage.PointerPosition(); ok && y > dockHeight {
+				a.closeLayer()
+			}
 		}
 	}
-	dock := ui.Column(c.Key("dock")).Absolute().Top(0).Left(0).Right(0).Height(332).Padding(26, max(24, width*0.07), 18).Gap(18)
+	dock := ui.Column(c.Key("dock")).Absolute().Top(0).Left(0).Right(0).Height(dockHeight).Padding(26, max(24, width*0.07), 18).Gap(18)
 	dock = env.Glass(dock, chrome.Dock, 28, false).Radius(0, 0, 28, 28).BorderWidth(0, 0, 1, 0).
-		Transition(ui.ElementTransition{Animation: ptr(env.Move(theme.Sheet)), Enter: &ui.Motion{Y: -340, Opacity: 1}, Exit: &ui.Motion{Y: -340, Opacity: 1}})
+		Transition(ui.ElementTransition{Animation: ptr(env.Move(theme.Sheet)), Position: true, Enter: &ui.Motion{Y: -340, Opacity: 1}, Exit: &ui.Motion{Y: -340, Opacity: 1}})
+	dock = dock.Draggable(&l.dock, ui.DraggableOptions{
+		Axis: ui.Vertical, Bounds: &ui.Rect{Y: -dockHeight, H: dockHeight},
+		Snap:      ui.Nearest(ui.Point{}, ui.Point{Y: -dockHeight}),
+		Animation: env.Move(theme.Sheet),
+	})
+	switch {
+	case open && l.dock.Y <= -dockHeight/2 && !dock.Dragging():
+		a.closeLayer()
+		l.dockClosing = true
+	case !open && l.dockClosing && dock.DragOffset().Y <= 1-dockHeight && !dock.Transitioning():
+		l.dockClosing = false
+	}
 	dock.Children(func() {
 		ui.Row(c).FillWidth().Gap(12).Children(func() {
 			env.Text(c, "✦ "+chordLabel("A"), theme.Caption, env.P.TextSecondary).FontWeight(600)

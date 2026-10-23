@@ -18,12 +18,20 @@ func settle(tt *ui.Tester) {
 }
 
 // openPage reaches a management page the way the redesign does: the
-// breathing bar opens the Control Center, whose tile opens the page. It
+// breathing bar opens the Control Center, whose tile pushes the page into
+// the sheet; from another page, Back returns to the tiles first. It
 // replaces clicking the removed sidebar.
 func openPage(tt *ui.Tester, label string) error {
 	settle(tt)
-	if err := tt.Click(locales.OpenControlCenter()); err != nil {
-		return err
+	switch {
+	case tt.HasText(locales.BackToControlCenter()):
+		if err := tt.Click(locales.BackToControlCenter()); err != nil {
+			return err
+		}
+	case !tt.HasText(locales.CloseControlCenter()):
+		if err := tt.Click(locales.OpenControlCenter()); err != nil {
+			return err
+		}
 	}
 	settle(tt)
 	// Small windows scroll the sheet: scroll until the tile shows, as a

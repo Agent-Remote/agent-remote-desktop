@@ -219,7 +219,7 @@ func (a *App) remoteStopDialog(c *ui.Context) {
 				ui.Text(c, locales.RemoteStopPending()).TextColor(c.Theme().TextMuted)
 			}
 			if a.remote.stopErr != nil {
-				ui.Text(c, presentation.Error(a.remote.stopErr)).TextColor(c.Theme().Danger)
+				a.errorText(c, a.remote.stopErr, presentation.Error(a.remote.stopErr))
 			}
 			if a.remote.stopReceipt != nil {
 				a.remoteStopReceiptView(c, *a.remote.stopReceipt)
@@ -236,7 +236,7 @@ func (a *App) remoteStopDialog(c *ui.Context) {
 }
 
 func (a *App) remoteStopReceiptView(c *ui.Context, receipt remote.SessionStopReceipt) {
-	ui.Column(c).FillWidth().Padding(12).Gap(6).Background(c.Theme().Surface).Radius(8).Children(func() {
+	a.card(c, ui.Column(c).FillWidth().Padding(12).Gap(6)).Children(func() {
 		phase := receipt.Phase
 		switch phase {
 		case "pending", "accepted", "running", "saving":
