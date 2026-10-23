@@ -1,6 +1,7 @@
 package app
 
 import (
+	"runtime"
 	"strings"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/session"
@@ -193,6 +194,24 @@ func (a *App) settingsView(c *ui.Context) {
 					}
 				})
 			}
+		})
+		env.Panel(c, locales.ChordModifierTitle(), false, func() {
+			// The layers' chord: ⌥/Alt by default, ⌃⌥/Ctrl+Alt where ⌥ +
+			// letter must type text (redesign §7.3).
+			choice := 0
+			if a.state.Preferences.ChordModifier == chordModifierCtrlAlt {
+				choice = 1
+			}
+			option, both := "Alt", "Ctrl+Alt"
+			if runtime.GOOS == "darwin" {
+				option, both = "⌥", "⌃⌥"
+			}
+			if env.Segmented(c, &choice, locales.ChordModifierTitle(), option, both) {
+				a.state.Preferences.ChordModifier = map[int]string{0: "", 1: chordModifierCtrlAlt}[choice]
+				chordCtrlAlt = choice == 1
+				a.persist()
+			}
+			env.Text(c, locales.ChordModifierHelp(), theme.Caption, env.P.TextSecondary)
 		})
 		env.Panel(c, locales.Appearance(), false, func() {
 			// Segment order follows the redesign: follow system, light, dark, kawaii.

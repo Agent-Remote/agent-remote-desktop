@@ -1,5 +1,13 @@
 # 本轮生命周期增量
 
+2026-10-23 UI 重构 R5（收尾代码与人工验收工具，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §4.7、§6.2、§7.3）：
+
+- ⌃⌥ 修饰键（§7.3）：`Preferences.chord_modifier`（omitempty，取值为空或 `ctrl-alt`；读到未知值回退为空，以兼容新版本写入的值）。设置页新增「层快捷键」分段（⌥/Alt 或 ⌃⌥/Ctrl+Alt），说明文字写明 Windows AltGr 布局与 macOS VoiceOver 的冲突。按下、松开、按键抬起、窗口兜底、搜索框都统一使用 `chordMods()`：⌃⌥ 时单按 ⌥A 交给焦点元素处理（输入文字），松开 ⌃⌥ 中任一键即提交。呼吸条、抽屉、圆环的按键标签随设置变化。测试：`TestCtrlAltChordModifier`、`TestChordModifierRoundtripAndUnknownValue`。
+- 命令面板 HUD（§4.7）：改用 `DialogBase`，保留模态焦点、Esc 与点击背景关闭。外观为 scrim 上方约 1/3 高度处的 HUD 材质，搜索框更大，结果直接从搜索框下方展开，出现时 .96→1。新增上下键移动高亮、Enter 执行高亮项。
+- 景深跟随拖拽（§6.2）：拖动抽屉或控制中心 Sheet 时，工作区的缩放、位移、变暗、模糊按拖拽进度线性插值，不再等 Sheet 合上后才回位。由于工作区先于 Sheet 构建，景深比 Sheet 晚一帧。从呼吸条上拉时仍不移动工作区，保持指针下的呼吸条 1:1。测试：`TestWorkspaceDepthFollowsTheDrag` 读取左侧面板边缘的像素位置（Zen 14、打开 54、拖到中途时在两者之间）。
+- 人工验收工具 `tests/manual-acceptance`：生成一次性 home（两个项目：Go、Python），以及名为 codex/claude/fclaude 的替身 Agent。替身把终端置为原始模式，每收到一次字节就以十六进制和文本显示，组合键泄漏的字节（如 `c3 a5` = å）会直接出现在面板里。`go run ./tests/manual-acceptance` 准备好后用 `-home` 启动桌面；`-prepare` 只打印路径，便于在 Windows/Linux 上配合交叉编译的桌面程序使用。不读写用户自己的桌面状态。
+- 验证：`bash scripts/check.sh` 通过。
+
 2026-10-23 UI 重构 R4（收敛，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §9–§10）：
 
 - 小窗口（§9）：窗口高度不足 700 时，⌥C/⌥X 圆环整体最大缩放 .85，抽屉卡片高度 160（预览区按同样高度收缩），抽屉高度 304；推起关闭的阈值随抽屉高度变化。抽屉卡片的状态胶囊最大宽度为 132，过长时省略，名称不再被挤掉。

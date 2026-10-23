@@ -238,3 +238,47 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 		t.Fatal("⌥A from a focused terminal did not open the dock")
 	}
 }
+
+// Redesign §7.3: with ⌃⌥ chosen, ⌃⌥A peeks and letting go of either key
+// commits; ⌥A alone is left to the focused element (it types text).
+func TestCtrlAltChordModifier(t *testing.T) {
+	i18n.SetLocaleFunc(func() string { return "en" })
+	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
+	home := t.TempDir()
+	state := testutil.SavedWorkspace(t)
+	state.Preferences.ChordModifier = "ctrl-alt"
+	testutil.StoreWorkspace(t, home, state)
+	providers := &providerFixture{available: map[string]bool{"codex": true, "claude": true, "fclaude": true}, directory: t.TempDir()}
+	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = a.Close() })
+	tt := ui.NewTester(a.View, 1366, 768)
+	settle(tt)
+	if !tt.HasText("⌃⌥A") && !tt.HasText("Ctrl+Alt+A") {
+		t.Fatalf("the bar does not show the chosen chord: %q", tt.Texts())
+	}
+	tt.HoldModifiers(ui.Alt)
+	tt.Key(ui.Alt, ui.KeyA)
+	tt.HoldModifiers(0)
+	settle(tt)
+	if dockOpen(tt) {
+		t.Fatal("⌥A opened the dock although ⌃⌥ is the chord")
+	}
+	tt.HoldModifiers(ui.Ctrl | ui.Alt)
+	tt.Key(ui.Ctrl|ui.Alt, ui.KeyA)
+	settle(tt)
+	if !dockOpen(tt) {
+		t.Fatal("⌃⌥A did not peek the dock")
+	}
+	tt.Key(ui.Ctrl|ui.Alt, ui.KeyA) // cycle while held
+	settle(tt)
+	tt.HoldModifiers(ui.Ctrl) // ⌥ up, ⌃ still down: released
+	settle(tt)
+	tt.HoldModifiers(0)
+	settle(tt)
+	if dockOpen(tt) {
+		t.Fatal("releasing ⌥ of ⌃⌥ did not commit the peek")
+	}
+}

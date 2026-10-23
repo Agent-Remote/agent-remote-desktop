@@ -52,6 +52,7 @@ func (a *App) View(c *ui.Context) {
 	if a.savePending.Load() > 0 {
 		c.After(50 * time.Millisecond)
 	}
+	chordCtrlAlt = a.state.Preferences.ChordModifier == chordModifierCtrlAlt
 	a.resolveTheme(c.Theme().Dark)
 	t := theme.UI(a.shownTheme)
 	c.SetTheme(&t)
@@ -100,7 +101,7 @@ func (a *App) chordFallback(c *ui.Context) {
 		return
 	}
 	for key := range chordKeys {
-		c.OnShortcut(ui.Alt, key, func() { a.chordPress(ui.Alt, key) })
+		c.OnShortcut(chordMods(), key, func() { a.chordPress(chordMods(), key) })
 	}
 }
 
@@ -182,6 +183,12 @@ func (a *App) workspaceDepth(env chrome.Env) (ui.Pose, float32) {
 	if a.dialogOpen() && pose.Scale == 0 {
 		pose, blur = ui.Pose{Scale: 0.98, Fade: 0.1}, 0
 	}
+	if f := a.layers.follow; f >= 0 && a.openLayer() != "" {
+		// Dragged: as far back as the sheet is open (§6.2).
+		f = min(1, f)
+		pose = ui.Pose{X: pose.X * f, Y: pose.Y * f, Scale: 1 - (1-pose.Scale)*f, Fade: pose.Fade * f}
+		blur *= f
+	}
 	if env.S.ReduceTransparency || !a.layers.gpu.Load() || a.layers.budget.Exceeded() {
 		// Without blur the scrim and a deeper dim keep the layer readable.
 		blur = 0
@@ -196,8 +203,12 @@ func (a *App) workspace(c *ui.Context, env chrome.Env) {
 	pose, blur := a.workspaceDepth(env)
 	ws := ui.Column(c.Key("workspace")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Padding(14, 14, 0).
 		FocusBind(&a.focusValue, focusZen).HandleInput(a.rootKey)
-	ws = ws.AnimatePose(pose, env.Move(theme.Smooth))
-	sigma := ws.AnimateTo("blur", blur, env.Fade(theme.Smooth))
+	depth, haze := env.Move(theme.Smooth), env.Fade(theme.Smooth)
+	if a.layers.follow >= 0 {
+		depth, haze = theme.Instant, theme.Instant // the pointer moves it
+	}
+	ws = ws.AnimatePose(pose, depth)
+	sigma := ws.AnimateTo("blur", blur, haze)
 	if sigma > 0.2 {
 		ws = ws.Blur(sigma)
 	}

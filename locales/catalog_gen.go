@@ -13145,3 +13145,23 @@ func ProjectReading() string { return In(i18n.Locale()).ProjectReading() }
 func (msgs Messages) ProjectReading() string {
 	return Catalog.Format(msgs.locale, "projectReading", nil)
 }
+
+// ChordModifierTitle says "Layer shortcut"
+// in the language the app shows.
+func ChordModifierTitle() string { return In(i18n.Locale()).ChordModifierTitle() }
+
+// ChordModifierTitle says "Layer shortcut"
+// in the language of msgs.
+func (msgs Messages) ChordModifierTitle() string {
+	return Catalog.Format(msgs.locale, "chordModifierTitle", nil)
+}
+
+// ChordModifierHelp says "Hold this with A, C, X or S to open the layers. Choose Ctrl+Alt (⌃⌥ on macOS) if your keyboard layout or input me…"
+// in the language the app shows.
+func ChordModifierHelp() string { return In(i18n.Locale()).ChordModifierHelp() }
+
+// ChordModifierHelp says "Hold this with A, C, X or S to open the layers. Choose Ctrl+Alt (⌃⌥ on macOS) if your keyboard layout or input me…"
+// in the language of msgs.
+func (msgs Messages) ChordModifierHelp() string {
+	return Catalog.Format(msgs.locale, "chordModifierHelp", nil)
+}

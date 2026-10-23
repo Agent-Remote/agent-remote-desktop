@@ -88,3 +88,36 @@ func TestAppearancePreferencesRoundtrip(t *testing.T) {
 		t.Fatalf("appearance preferences lost: %+v", p)
 	}
 }
+
+// Redesign §7.3: the chord modifier round-trips, and a value this build
+// does not know (a newer version's) reads as the default chord.
+func TestChordModifierRoundtripAndUnknownValue(t *testing.T) {
+	for stored, want := range map[string]string{"ctrl-alt": "ctrl-alt", "": "", "hyper": ""} {
+		home := t.TempDir()
+		s, err := storage.Open(home)
+		if err != nil {
+			t.Fatal(err)
+		}
+		state, err := s.Load()
+		if err != nil {
+			t.Fatal(err)
+		}
+		state.Preferences.ChordModifier = stored
+		if err := s.Save(state); err != nil {
+			t.Fatal(err)
+		}
+		s.Close()
+		s, err = storage.Open(home)
+		if err != nil {
+			t.Fatal(err)
+		}
+		state, err = s.Load()
+		s.Close()
+		if err != nil {
+			t.Fatal(err)
+		}
+		if state.Preferences.ChordModifier != want {
+			t.Errorf("stored %q, read %q, want %q", stored, state.Preferences.ChordModifier, want)
+		}
+	}
+}

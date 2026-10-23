@@ -247,3 +247,50 @@ func abs(v float32) float32 {
 	}
 	return v
 }
+
+// Redesign §6.2: while the Control Center is dragged, the workspace's
+// depth follows the drag (one frame behind: it is built first) rather
+// than staying pushed back until the sheet closes. The left pane edge
+// moves in as the workspace scales back (14 DIP in Zen, 54 open).
+func TestWorkspaceDepthFollowsTheDrag(t *testing.T) {
+	_, tt, _ := layersTester(t)
+	tt.SetPreferences(ui.Preferences{TextScale: 1})
+	tt.SetDark(true)
+	paneEdge := func() int {
+		img := tt.Image()
+		base := img.RGBAAt(2, 400).R
+		for x := 0; x < 200; x++ {
+			if d := int(img.RGBAAt(x, 400).R) - int(base); d > 3 || d < -3 {
+				return x
+			}
+		}
+		return -1
+	}
+	tt.Advance(time.Second)
+	zen := paneEdge()
+	if err := tt.Click(locales.OpenControlCenter()); err != nil {
+		t.Fatal(err)
+	}
+	tt.Advance(time.Second)
+	open := paneEdge()
+	if open <= zen+20 {
+		t.Fatalf("opening did not push the workspace back: edge %d → %d", zen, open)
+	}
+	x, y := float32(683), float32(141) // the sheet's grabber
+	tt.Press(x, y)
+	tt.Move(x, y+10)
+	tt.Advance(16 * time.Millisecond)
+	tt.Move(x, y+250)
+	tt.Advance(16 * time.Millisecond)
+	tt.Advance(16 * time.Millisecond)
+	if mid := paneEdge(); mid <= zen+2 || mid >= open-2 {
+		t.Fatalf("mid-drag depth did not follow: zen %d, mid %d, open %d", zen, mid, open)
+	}
+	tt.Move(x, y+10)
+	tt.Advance(16 * time.Millisecond)
+	tt.Advance(16 * time.Millisecond)
+	if back := paneEdge(); back < open-3 {
+		t.Fatalf("dragging back did not push the workspace back again: %d, open %d", back, open)
+	}
+	tt.Release(x, y+10)
+}

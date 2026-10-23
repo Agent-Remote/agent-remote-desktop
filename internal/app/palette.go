@@ -4,6 +4,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/Agent-Remote/agent-remote-desktop/internal/chrome"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
 	"github.com/Agent-Remote/agent-remote-desktop/locales"
 	"github.com/egoist/mygo/ui"
@@ -81,27 +82,57 @@ func (a *App) searchIndex(q string) []paletteItem {
 
 func (a *App) choosePaletteItem(item paletteItem) { a.paletteOpen = false; item.run() }
 
+// palette is ⌘⇧P (redesign §4.7): a HUD search field a third of the way
+// down, over the scrim, its results growing from under it. The keyboard
+// stays in the field: arrows move the highlight, Enter runs it, Esc closes.
 func (a *App) palette(c *ui.Context) {
-	ui.Modal(c, &a.paletteOpen, func() {
-		ui.Column(c).Width(620).Gap(14).Children(func() {
-			ui.Text(c, locales.CommandPalette()).FontSize(24).Bold()
-			ui.TextInput(c, &a.paletteQuery).Label(locales.PaletteSearch()).Placeholder(locales.PaletteSearch()).AutoFocus().OnSubmit(func() {
-				if items := a.paletteItems(); len(items) > 0 {
-					a.choosePaletteItem(items[0])
+	if !a.paletteOpen {
+		a.paletteHot = 0
+	}
+	env := a.chromeEnv(c)
+	_, height := c.Size()
+	ui.DialogBase(c, &a.paletteOpen, func(backdrop, panel ui.Element) {
+		scrim := env.P.Scrim
+		if env.S.ReduceTransparency {
+			scrim = scrim.Alpha(2)
+		}
+		backdrop.Background(scrim).Justify(ui.Start).Padding(max(24, height/3-60), 24, 24)
+		env.Glass(panel.Width(620).Padding(10).Gap(8), chrome.HUD, 24, false).
+			Transition(ui.ElementTransition{Animation: ptr(env.Move(theme.Snappy)), Enter: &ui.Motion{Y: -8, Scale: 0.96}, Exit: &ui.Motion{Y: -8, Scale: 0.96}})
+		items := a.paletteItems()
+		a.paletteHot = max(0, min(a.paletteHot, len(items)-1))
+		in := ui.TextInput(c, &a.paletteQuery).Label(locales.PaletteSearch()).Placeholder(locales.PaletteSearch()).AutoFocus().
+			FontSize(17*c.Theme().FontSize/14).Padding(10, 14).OnSubmit(func() {
+			if len(items) > 0 {
+				a.choosePaletteItem(items[a.paletteHot])
+			}
+		})
+		if in.Changed() {
+			a.paletteHot = 0
+		}
+		in.OnShortcut(0, ui.KeyDown, func() { a.paletteHot++ })
+		in.OnShortcut(0, ui.KeyUp, func() { a.paletteHot = max(0, a.paletteHot-1) })
+		ui.Scroll(c).FillWidth().MaxHeight(min(360, height*2/3-90)).Gap(2).Children(func() {
+			if len(items) == 0 {
+				env.Text(c, locales.NoSearchResults(), theme.Body, env.P.TextSecondary).Padding(10, 14)
+			}
+			for i, item := range items {
+				row := ui.ButtonBase(c.Key(item.id)).FillWidth().Padding(9, 14).Radius(14).Justify(ui.Start).Label(item.title)
+				if i == a.paletteHot || row.Hovered() {
+					row = row.Background(env.P.Selected())
 				}
-			})
-			items := a.paletteItems()
-			ui.Scroll(c).Height(320).Gap(4).Children(func() {
-				if len(items) == 0 {
-					ui.Text(c, locales.NoSearchResults()).TextColor(c.Theme().TextMuted)
+				if row.Clicked() {
+					a.choosePaletteItem(item)
 				}
-				for _, item := range items {
-					ui.ButtonBase(c.Key(item.id)).FillWidth().Padding(10, 12).Radius(8).Children(func() {
-						ui.Column(c).Gap(4).Children(func() { ui.Text(c, item.title); ui.Text(c, item.detail).FontSize(11).TextColor(c.Theme().TextMuted) })
-					}).OnClick(func() { a.choosePaletteItem(item) })
-				}
-			})
-			ui.Row(c).Justify(ui.End).Children(func() { ui.Button(c, locales.Cancel()).OnClick(func() { a.paletteOpen = false }) })
+				row.Children(func() {
+					ui.Column(c).Gap(2).Shrink(1).MinWidth(0).Children(func() {
+						env.Text(c, item.title, theme.BodyStrong, env.P.TextPrimary).SingleLine().Ellipsis("…")
+						if item.detail != "" {
+							env.Text(c, item.detail, theme.Caption, env.P.TextSecondary).SingleLine().Ellipsis("…")
+						}
+					})
+				})
+			}
 		})
 	})
 }

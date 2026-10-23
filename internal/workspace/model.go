@@ -93,11 +93,14 @@ type Preferences struct {
 	FollowSystemTheme bool `json:"follow_system_theme,omitempty"`
 	// ReduceTransparency makes glass surfaces solid and turns blur off.
 	// mygo has no system signal for it; high contrast implies it.
-	ReduceTransparency bool    `json:"reduce_transparency,omitempty"`
-	FontSize           float32 `json:"font_size"`
-	SidebarWidth       float32 `json:"sidebar_width"`
-	SelectedProject    string  `json:"selected_project"`
-	ShowDetails        bool    `json:"show_details,omitempty"`
+	ReduceTransparency bool `json:"reduce_transparency,omitempty"`
+	// ChordModifier is what the layer chords hold: "" for ⌥/Alt, "ctrl-alt"
+	// for ⌃⌥/Ctrl+Alt where ⌥ + letter must type text (redesign §7.3).
+	ChordModifier   string  `json:"chord_modifier,omitempty"`
+	FontSize        float32 `json:"font_size"`
+	SidebarWidth    float32 `json:"sidebar_width"`
+	SelectedProject string  `json:"selected_project"`
+	ShowDetails     bool    `json:"show_details,omitempty"`
 }
 
 // Session contains only desktop history metadata, never argv, environment,

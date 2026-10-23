@@ -35,6 +35,25 @@ func isSessionFocus(v string) bool { return v != "" && v != focusZen && v != foc
 
 var chordKeys = map[ui.Key]string{ui.KeyA: layerAgents, ui.KeyC: layerCreate, ui.KeyX: layerProjects, ui.KeyS: layerControl}
 
+// chordCtrlAlt is the stored choice to hold ⌃⌥/Ctrl+Alt for the layers
+// instead of ⌥/Alt (redesign §7.3), for layouts and input methods whose
+// ⌥ + letter types text. One window, one value: labels read it too.
+var chordCtrlAlt bool
+
+const chordModifierCtrlAlt = "ctrl-alt"
+
+// chordMods is what a layer chord holds besides the letter.
+func chordMods() ui.Modifiers {
+	if chordCtrlAlt {
+		return ui.Ctrl | ui.Alt
+	}
+	return ui.Alt
+}
+
+// chordHeld reports whether mods still hold the chord modifier: letting
+// go of any of its keys releases the chord.
+func chordHeld(mods ui.Modifiers) bool { return mods&chordMods() == chordMods() }
+
 // createTools are the ⌥C sectors 0–2 at 12, 3 and 6 o'clock; sector 3 is
 // "Advanced…", which opens the full new-session dialog.
 var createTools = []session.Tool{session.Claude, session.Codex, session.RemoteClaude}
@@ -62,9 +81,13 @@ type layerState struct {
 	dockRise       bool              // opened from rest: place it closed, then spring down
 	dockH          float32           // the dock's height last built
 	cardHeight     float32           // the dock's card height in this window
-	pull           float32           // how far a press on the bar has pulled the sheet up
-	pulling        bool              // the sheet follows that press 1:1
-	pulled         bool              // the press pulled: its release is no click
+	// follow is how open the dragged dock or sheet shows (0 closed, 1
+	// open) while a pointer drags it, -1 otherwise: the workspace's depth
+	// follows the drag 1:1 instead of its spring (redesign §6.2).
+	follow  float32
+	pull    float32 // how far a press on the bar has pulled the sheet up
+	pulling bool    // the sheet follows that press 1:1
+	pulled  bool    // the press pulled: its release is no click
 
 	pointer      ui.Point // last pointer seen over the open layer
 	pointerKnown bool
@@ -101,7 +124,7 @@ func (a *App) invalidate() {
 // taken chord sends nothing to the program (R0).
 func (a *App) chordPress(mods ui.Modifiers, key ui.Key) bool {
 	layer, ok := chordKeys[key]
-	if !ok || mods&^ui.Shift != ui.Alt || a.dialogOpen() || a.closing {
+	if !ok || mods&^ui.Shift != chordMods() || a.dialogOpen() || a.closing {
 		return false
 	}
 	if layer == layerControl {
@@ -198,7 +221,7 @@ func (a *App) closeLayer() {
 func (a *App) watchChordRelease(c *ui.Context) {
 	l := &a.layers
 	mods := c.Modifiers()
-	if !l.rec.Held() || mods&ui.Alt != 0 {
+	if !l.rec.Held() || chordHeld(mods) {
 		return
 	}
 	layer := l.rec.Layer
@@ -216,7 +239,7 @@ func (a *App) watchChordRelease(c *ui.Context) {
 
 // noteKeyUp times a release of ⌥ that came with a key-up.
 func (a *App) noteKeyUp(ev ui.InputEvent) {
-	if ev.Kind == ui.InputKeyUp && ev.Mods&ui.Alt == 0 && a.layers.rec.Held() && a.layers.released.IsZero() {
+	if ev.Kind == ui.InputKeyUp && !chordHeld(ev.Mods) && a.layers.rec.Held() && a.layers.released.IsZero() {
 		a.layers.released = time.Now()
 	}
 }

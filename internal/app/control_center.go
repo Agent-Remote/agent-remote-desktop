@@ -172,6 +172,16 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 		Snap:      ui.Nearest(ui.Point{}, ui.Point{Y: h}),
 		Animation: follow,
 	})
+	dragged := float32(-1)
+	if sheet.Dragging() {
+		dragged = 1 - sheet.DragOffset().Y/max(h, 1)
+	}
+	if dragged != l.follow {
+		// The workspace was built before the sheet: build it again with
+		// this drag, so it moves in the same frame.
+		l.follow = dragged
+		c.AnimationFrame()
+	}
 	switch {
 	case open && !rising && !l.pulling && l.control.Offset.Y >= h/2 && !sheet.Dragging():
 		// Thrown or dragged past half: the layer closes at once and the

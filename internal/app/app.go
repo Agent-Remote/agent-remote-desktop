@@ -74,6 +74,7 @@ type App struct {
 	recoverOpen         bool
 	paletteOpen         bool
 	paletteQuery        string
+	paletteHot          int
 	remote              remotePage
 	accountDefault      accountDefaultPage
 	account             accountPage
@@ -204,6 +205,7 @@ func NewWithOptions(home string, options Options) (*App, error) {
 		return terminalhost.NewWithOptions(cmd, terminalhost.Options{OnKey: a.chordPress})
 	})
 	a.layers.probes = workspace.NewProbeCache(30*time.Second, a.invalidate)
+	a.layers.follow = -1
 	a.restoreFocus()
 	go a.saveWorker()
 	if recoveredOperation || recoveredDedicated {

@@ -168,14 +168,19 @@ func (a *App) previewOf(it dockItem) string {
 // chordLabel is the platform's spelling of the chord modifier and a key.
 func chordLabel(key string) string {
 	if runtime.GOOS == "darwin" {
-		return "⌥" + key
+		return modifierLabel() + key
 	}
-	return "Alt+" + key
+	return modifierLabel() + "+" + key
 }
 
 func modifierLabel() string {
-	if runtime.GOOS == "darwin" {
+	switch {
+	case runtime.GOOS == "darwin" && chordCtrlAlt:
+		return "⌃⌥"
+	case runtime.GOOS == "darwin":
 		return "⌥"
+	case chordCtrlAlt:
+		return "Ctrl+Alt"
 	}
 	return "Alt"
 }
@@ -240,6 +245,15 @@ func (a *App) dockLayer(c *ui.Context, env chrome.Env, open bool) {
 		Snap:      ui.Nearest(ui.Point{}, ui.Point{Y: -dockHeight}),
 		Animation: env.Move(theme.Sheet),
 	})
+	follow := float32(-1)
+	if dock.Dragging() {
+		follow = 1 + dock.DragOffset().Y/dockHeight
+	}
+	if follow != l.follow {
+		// As the Control Center's sheet: the workspace follows this frame.
+		l.follow = follow
+		c.AnimationFrame()
+	}
 	switch {
 	case open && !rising && l.dock.Y <= -dockHeight/2 && !dock.Dragging():
 		// Pushed or thrown past half: closed at once, built until at rest.

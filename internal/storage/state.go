@@ -170,6 +170,10 @@ func (s *State) restoreSelection() {
 			s.Board.Select(tab.ID)
 		}
 	}
+	if m := s.Preferences.ChordModifier; m != "" && m != "ctrl-alt" {
+		// A value from a newer version: fall back to the default chord.
+		s.Preferences.ChordModifier = ""
+	}
 	if !slices.ContainsFunc(s.Projects, func(p workspace.Project) bool { return p.ID == s.Preferences.SelectedProject }) {
 		s.Preferences.SelectedProject = ""
 		if len(s.Projects) > 0 {
