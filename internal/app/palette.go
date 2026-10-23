@@ -4,6 +4,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
 	"github.com/Agent-Remote/agent-remote-desktop/locales"
 	"github.com/egoist/mygo/ui"
 )
@@ -16,7 +17,10 @@ type paletteItem struct {
 func (a *App) openPalette() { a.paletteQuery = ""; a.paletteOpen = true }
 
 func (a *App) paletteItems() []paletteItem {
-	items := []paletteItem{{"operations", locales.OperationsTitle(), locales.OperationsHelp(), a.openOperations}, {"device", locales.DeviceTitle(), locales.DeviceHelp(), a.openDevice}, {"ego-browser", locales.EgoBrowserTitle(), locales.EgoBrowserHelp(), a.openEgoBrowser}, {"init", locales.InitWizardTitle(), locales.InitWizardHelp(), a.openInitWizard}, {"runtime-recovery", locales.RuntimeRecoveryTitle(), "", a.openRuntimeRecovery}, {"nodes", locales.NodesTitle(), locales.NodesHelp(), a.openNodes}, {"account-import-history", locales.AccountImportRecoveryTitle(), "", a.openAccountImportHistory}, {"mutagen-environment", locales.MutagenEnvironmentTitle(), "", a.openMutagenEnvironment}, {"dependencies", locales.DependenciesTitle(), locales.DependenciesHelp(), a.openDependencies}, {"account-default", locales.AccountDefaultTitle(), "", a.openAccountDefault}, {"capabilities", locales.CapabilitiesTitle(), "", a.openCapabilities}, {"skills", locales.SkillsTitle(), "", a.openSkills}, {"network", locales.WireGuardNetworkTitle(), "", a.openNetwork}}
+	items := []paletteItem{{"control-center", locales.ControlCenter(), "", func() { a.showLayer(layerControl) }},
+		{"sync", locales.SyncTitle(), "", a.openSync}, {"diagnostics", locales.DiagnosticsTitle(), "", a.openDiagnostics},
+		{"theme", locales.Theme(), "", func() { a.setTheme(theme.Next(a.shownTheme), false) }},
+		{"operations", locales.OperationsTitle(), locales.OperationsHelp(), a.openOperations}, {"device", locales.DeviceTitle(), locales.DeviceHelp(), a.openDevice}, {"ego-browser", locales.EgoBrowserTitle(), locales.EgoBrowserHelp(), a.openEgoBrowser}, {"init", locales.InitWizardTitle(), locales.InitWizardHelp(), a.openInitWizard}, {"runtime-recovery", locales.RuntimeRecoveryTitle(), "", a.openRuntimeRecovery}, {"nodes", locales.NodesTitle(), locales.NodesHelp(), a.openNodes}, {"account-import-history", locales.AccountImportRecoveryTitle(), "", a.openAccountImportHistory}, {"mutagen-environment", locales.MutagenEnvironmentTitle(), "", a.openMutagenEnvironment}, {"dependencies", locales.DependenciesTitle(), locales.DependenciesHelp(), a.openDependencies}, {"account-default", locales.AccountDefaultTitle(), "", a.openAccountDefault}, {"capabilities", locales.CapabilitiesTitle(), "", a.openCapabilities}, {"skills", locales.SkillsTitle(), "", a.openSkills}, {"network", locales.WireGuardNetworkTitle(), "", a.openNetwork}}
 	if a.account.submitted {
 		items = append(items, paletteItem{"operation-account", locales.AccountOperationStatus(), "", a.openAccountOperation})
 	}

@@ -41,10 +41,8 @@ func runtimeTester(t *testing.T, language string) (*app.App, *ui.Tester, string,
 }
 func openRuntimePage(t *testing.T, tt *ui.Tester) {
 	t.Helper()
-	if err := tt.Click(locales.SearchWorkbench()); err != nil {
-		t.Fatal(err)
-	}
-	if err := tt.Click(locales.RuntimeRecoveryTitle()); err != nil {
+	// The Control Center's Remote group holds administrator recovery.
+	if err := openPage(tt, locales.RuntimeRecoveryTitle()); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -326,7 +324,7 @@ func TestRuntimeRecoveryCancellationRetainsKeyWithoutReplay(t *testing.T) {
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.RuntimeRecoveryTitle()); err != nil {
+	if err := openPage(tt, locales.RuntimeRecoveryTitle()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.RuntimeRecoveryStopWaiting()); err != nil {

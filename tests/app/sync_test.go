@@ -33,7 +33,7 @@ func syncTester(t *testing.T, language string) (*ui.Tester, string) {
 	})
 	tt := ui.NewTester(a.View, 900, 600)
 	tt.SetLocale(language)
-	if err := tt.Click(locales.SyncOpen()); err != nil {
+	if err := openPage(tt, locales.SyncOpen()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.SyncMutagenState("available"))
@@ -76,7 +76,7 @@ func TestSyncReviewExactTargetDryRunAndNoReplay(t *testing.T) {
 			if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 				t.Fatal(err)
 			}
-			if err := tt.Click(locales.SyncOperationStatus()); err != nil {
+			if err := openPage(tt, locales.SyncOperationStatus()); err != nil {
 				t.Fatal(err)
 			}
 			if !tt.HasText(locales.SyncOutcome("completed")) {
@@ -109,7 +109,7 @@ func TestSyncStageProjectionSurvivesDesktopRestart(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 900, 600)
-	if err := tester.Click(locales.SyncOpen()); err != nil {
+	if err := openPage(tester, locales.SyncOpen()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tester, locales.SyncMutagenState("available"))
@@ -129,7 +129,7 @@ func TestSyncStageProjectionSurvivesDesktopRestart(t *testing.T) {
 	}
 	defer reopened.Close()
 	reopenedTester := ui.NewTester(reopened.View, 900, 600)
-	if err := reopenedTester.Click(locales.OperationsSidebar()); err != nil {
+	if err := openPage(reopenedTester, locales.OperationsSidebar()); err != nil {
 		t.Fatal(err)
 	}
 	if !reopenedTester.HasText(locales.OperationSync()) || !reopenedTester.HasText(locales.OperationCompleted()) {
@@ -162,11 +162,11 @@ func TestSyncPartialUnknownAndLocaleKeepReceipts(t *testing.T) {
 					t.Fatal(err)
 				}
 				tt.Frame()
-				if err := tt.Click("Second project"); err != nil {
+				if err := openProject(tt, "Second project"); err != nil {
 					t.Fatal(err)
 				}
 				tt.Frame()
-				if err := tt.Click(locales.SyncOpen()); err != nil {
+				if err := openPage(tt, locales.SyncOpen()); err != nil {
 					t.Fatal(err)
 				}
 				if !tt.HasText(locales.SyncOutcome(outcome)) || !tt.HasText(locales.SyncField("project", "First project")) {
@@ -185,11 +185,11 @@ func TestSyncProjectSwitchInvalidatesUnsubmittedReview(t *testing.T) {
 	if err := tt.Click(locales.SyncAction("reset")); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click("Second project"); err != nil {
+	if err := openProject(tt, "Second project"); err != nil {
 		t.Fatal(err)
 	}
 	tt.Frame()
-	if err := tt.Click(locales.SyncOpen()); err != nil {
+	if err := openPage(tt, locales.SyncOpen()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.SyncMutagenState("available"))
@@ -217,7 +217,7 @@ func TestSyncCancellationAfterSubmissionIsUnknown(t *testing.T) {
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.SyncOperationStatus()); err != nil {
+	if err := openPage(tt, locales.SyncOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.SyncStopWaiting()); err != nil {
@@ -250,7 +250,7 @@ func TestSyncClosePersistsAttentionForInFlightMutation(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 900, 600)
-	if err := tester.Click(locales.SyncOpen()); err != nil {
+	if err := openPage(tester, locales.SyncOpen()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tester, locales.SyncMutagenState("available"))
@@ -281,7 +281,7 @@ func TestSyncClosePersistsAttentionForInFlightMutation(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester = ui.NewTester(reopened.View, 900, 600)
-	if err := tester.Click(locales.OperationsSidebar()); err != nil {
+	if err := openPage(tester, locales.OperationsSidebar()); err != nil {
 		t.Fatal(err)
 	}
 	if !tester.HasText(locales.OperationSync()) || !tester.HasText(locales.OperationAttention()) {
@@ -311,7 +311,7 @@ func TestSyncLogoutInvalidatesObservationKeepsReceipt(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.SyncMutagenState("available"))
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
@@ -322,7 +322,7 @@ func TestSyncLogoutInvalidatesObservationKeepsReceipt(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.LogoutLocalComplete())
-	if err := tt.Click(locales.SyncOperationStatus()); err != nil {
+	if err := openPage(tt, locales.SyncOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.SyncOutcome("completed")) || !tt.HasText(locales.RemoteContextChanged()) || tt.HasText(locales.SyncObservationScope()) {

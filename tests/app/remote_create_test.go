@@ -47,7 +47,7 @@ func TestRemoteCreateRecoverySurvivesRestartAndQueriesOriginalKey(t *testing.T) 
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 1100, 820)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tester, locales.SessionCreateRecovery())
@@ -87,7 +87,7 @@ func TestRemoteCreateReplacementFreezesFullOriginalContext(t *testing.T) {
 	}
 	defer a.Close()
 	tester := ui.NewTester(a.View, 900, 600)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tester, "11111111-1111-4111-8111-111111111111")
@@ -129,7 +129,7 @@ func TestRemoteCreateReviewRejectsIncompleteInputBeforeCLI(t *testing.T) {
 	}
 	defer a.Close()
 	tester := ui.NewTester(a.View, 1100, 820)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tester, "11111111-1111-4111-8111-111111111111")

@@ -70,7 +70,7 @@ func TestNetworkQueriesCancelAndCloseTheirWorkers(t *testing.T) {
 						t.Fatal(err)
 					}
 					waitRemoteText(t, tt, locales.WireGuardQueryCanceled())
-					if err := tt.Click(locales.Settings()); err != nil {
+					if err := openPage(tt, locales.Settings()); err != nil {
 						t.Fatal(err)
 					}
 					openNetworkSearch(t, tt)

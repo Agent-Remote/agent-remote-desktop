@@ -39,7 +39,7 @@ func networkTester(t *testing.T, mode, language string) (*ui.Tester, *app.App, s
 
 func openNetworkSearch(t *testing.T, tt *ui.Tester) {
 	t.Helper()
-	if err := tt.Click(locales.SearchWorkbench()); err != nil {
+	if err := openSearch(tt); err != nil {
 		t.Fatal(err)
 	}
 	tt.Type(locales.WireGuardNetworkTitle())
@@ -82,7 +82,7 @@ func TestNetworkNavigationIsPassiveAndQueriesAreIndependent(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "wg-desktop")
-	if err := tt.Click(locales.Settings()); err != nil {
+	if err := openPage(tt, locales.Settings()); err != nil {
 		t.Fatal(err)
 	}
 	openNetworkSearch(t, tt)

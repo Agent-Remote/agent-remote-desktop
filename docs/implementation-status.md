@@ -1,5 +1,20 @@
 # 本轮生命周期增量
 
+2026-10-23 UI 重构 R2（Zen 工作区与三层，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §3–§4）：
+
+- 移除顶栏、侧栏、标签栏、状态栏和详情栏。Layer 0 改为全屏工作区：1–4 个终端面板，面板标题栏换成 36 DIP 的会话胶囊（状态点、名称、退出码、隐藏、关闭），底部是 44 DIP 呼吸条（项目、Agent、进行中操作、组合键，点击打开控制中心）。保存失败和启动错误等消息占用呼吸条这一行显示。
+- `internal/app/layers.go`：层状态机。接入 R0 的 `chord.Recognizer`：按住 ⌥ 预览，再按同一字母轮换，换另一个字母重定向，松开 ⌥ 提交；轻点（不到 250 ms 且没有移动）保持常驻；窗口失焦只转为常驻，不会提交。组合键由三处接收，按焦点二选一，保证不泄漏：终端 `Options.OnKey`（`terminalhost.NewWithOptions`）、工作台根元素和层的 `HandleInput`；只有焦点落在普通按钮上时才注册窗口快捷键作为兜底。Esc 在任何焦点下都能退出层。松开时间在按键抬起事件里记录，避免帧调度把轻点误判为按住。
+- ⌥A 抽屉（`dock.go`）：每个会话一张卡片，包括隐藏的会话，按 MRU 预选上一个用过的 Agent。只显示事实状态：`terminalhost.Host.LastOutput` 2 秒内有输出为「有新输出」，其余为空闲、已连接、未连接或退出码。预览取终端最后 4 行、去掉控制字符，每 500 ms 最多采样一次，只存内存。卡片可拖拽调整标签顺序，替代原标签栏。
+- ⌥C 圆环（`wheels.go`）：Claude、Codex 立即启动；fclaude 和「高级…」打开原新建对话框（远程审阅、名称、参数、历史）；工具缺失时也打开对话框，显示安装指引。松开时按住 Shift 在当前面板旁分屏。
+- ⌥X 圆环：12 点方向是「··· 更多」（搜索框、结果列表、打开文件夹），另有 7 个稳定槽位。新增 `Project.Slot`/`LastOpened`（omitempty，存储版本仍为 3，校验槽位唯一且在 0–7 之间）和 `workspace.AssignSlot`：新项目占空位，满了才替换最久未打开的项目，其他项目不移动。`workspace.Probe` 读取 `.git/HEAD`（支持 worktree 和游离 HEAD）及标记文件判断语言，不调用 git；`ProbeCache` 在后台刷新，不阻塞界面。
+- 控制中心（`control_center.go`）：从呼吸条升起的毛玻璃 Sheet，可 1:1 下拉关闭，拖过一半后由弹簧落到底再移除。分组宫格与重构方案 §4.5 一致，「进行中」组承接原侧栏的操作状态入口；头部有外观切换、搜索和关闭。R2 中点宫格仍以原整页方式打开页面，页面内嵌到 Sheet 属于 R3。登录、注销页面不再阻断控制中心和 ⌘⇧P，其余快捷键照旧停用。
+- 景深：工作区按层使用 v3 的缩放、位移和变暗。模糊只在 GPU 绘制时启用（`Painter.Accelerated` 探针）；CPU 渲染或开启降低透明度时改用更深的变暗加 scrim，即 R0 测得 17 ms 超预算之后的回退方案。kawaii 主题的星芒保持静止，切换主题时闪一次；星轨环只在圆环打开且未减弱动效时转动。
+- 快捷键：⌘T 打开 ⌥C 圆环，⌘O 打开 ⌥X 搜索；命令面板新增控制中心、同步、诊断、切换主题。⌃⌥ 修饰键设置推迟实现。
+- 测试：`tests/app/layers_test.go` 覆盖按住轮换并松开提交、轻点常驻与 Esc、按住后在空白处松开即取消、按住时重定向、项目圆环切换与槽位稳定、⌘O 搜索、控制中心开关、终端聚焦时 ⌥A 走 OnKey。`tests/workspace/wheel_slots_test.go` 覆盖槽位分配与淘汰、HEAD/worktree/游离 HEAD/语言探测及缓存。另把 162 处原本点击侧栏/工具栏的用例迁移到 `tests/app/navigation_helpers_test.go`（通过控制中心、抽屉或圆环进入）。
+- 修正一处既有的假通过：`tests/testutil/control.go` 漏声明 15 个 ego-browser 终端操作（真实 CLI 在 `desktop_control/queries.rs` 中有声明），导致对应「打开表单」按钮被禁用；原用例只因侧栏上也有「Ego Browser」字样而通过。已按真实 CLI 补齐，现在这些用例真正验证了路由。
+- 验证：`bash scripts/check.sh` 通过；视图构建 p95 为 0.032 ms（R1 为 0.045 ms）。三主题下各层的 headless 截图已人工检视。尚未在三平台原生主机上运行真实 app 的组合键与模糊路径；R0 探针只验证了相同机制。
+- 未完成（R3）：控制中心内的页面推入/返回与统一操作页模板、抽屉上推关闭、从呼吸条上拉拉起控制中心、⌃⌥ 修饰键设置。
+
 2026-10-23 UI 重构 R1（token 与组件，[重构方案](../../agent-remote/docs/agent-remote-desktop-redesign.zh-CN.md) §5–§7）：
 
 - `internal/theme/tokens.go`：浅色/深色/次元三套完整 token。v3 原值逐项照抄；v4 补充值包括 accent 拆为 Accent（非文字）、AccentFill（按钮）、AccentInk（文字），另有 DangerFill、TerminalBG、实色回退、scrim。`theme.UI`/`theme.Terminal` 改为由 token 生成；新增 `Resolve`（跟随系统）、`TerminalPair`（跟随系统时把浅/深两套交给终端）、`Selected`（8% 选中底，保证 4.5:1）、`ToolAccent`。`type.go` 为字号/字重/字距/行高成套的字阶。移除 Sakura 立绘（决策 D4）。

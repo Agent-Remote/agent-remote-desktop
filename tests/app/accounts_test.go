@@ -33,7 +33,7 @@ func accountsTester(t *testing.T, language string) (*ui.Tester, string) {
 	})
 	tt := ui.NewTester(a.View, 900, 600)
 	tt.SetLocale(language)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -113,7 +113,7 @@ func TestAccountsCreateRequiresExactReviewAndPreservesAllCLIFields(t *testing.T)
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.AccountOperationStatus()); err != nil {
+	if err := openPage(tt, locales.AccountOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.AccountAccepted("create")) {
@@ -190,7 +190,7 @@ func TestAccountsAuthenticationMutationInvalidatesReview(t *testing.T) {
 	if err := tt.Click(locales.AccountActionTitle("bind")); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
@@ -202,7 +202,7 @@ func TestAccountsAuthenticationMutationInvalidatesReview(t *testing.T) {
 	}
 	waitRemoteText(t, tt, locales.LogoutLocalComplete())
 	// Navigating through the list must perform a fresh observation before actions.
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "account-1")
@@ -285,7 +285,7 @@ func TestAccountsCrossPageResultInvalidatesOldAccountList(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitAccountStarted(t, started)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.AccountDetailsTitle())
@@ -296,7 +296,7 @@ func TestAccountsCrossPageResultInvalidatesOldAccountList(t *testing.T) {
 	if tt.HasText(locales.AccountDetailsTitle()) {
 		t.Fatal("stale account rows remained actionable")
 	}
-	if err := tt.Click(locales.AccountOperationStatus()); err != nil {
+	if err := openPage(tt, locales.AccountOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.AccountAccepted("disable")) {
@@ -328,7 +328,7 @@ func TestAccountsCancelAfterNavigationPreservesUnknownOutcome(t *testing.T) {
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.AccountOperationStatus()); err != nil {
+	if err := openPage(tt, locales.AccountOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.AccountStopWaiting()); err != nil {
@@ -371,7 +371,7 @@ func TestAccountsAuthenticationInvalidatesRefreshedStatusButPreservesReceipt(t *
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.AccountState("active"))
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
@@ -382,7 +382,7 @@ func TestAccountsAuthenticationInvalidatesRefreshedStatusButPreservesReceipt(t *
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.LogoutLocalComplete())
-	if err := tt.Click(locales.AccountOperationStatus()); err != nil {
+	if err := openPage(tt, locales.AccountOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.AccountAccepted("bind")) || !tt.HasText(locales.RemoteContextChanged()) || tt.HasText(locales.AccountState("active")) || tt.HasText(locales.AccountBindingConnect()) {

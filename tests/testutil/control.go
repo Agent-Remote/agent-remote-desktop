@@ -219,7 +219,23 @@ func ControlHelper() bool {
 			map[string]any{"method": "agent-remote ego-browser status", "protocol_version": 1},
 			map[string]any{"method": "agent-remote ego-browser list", "protocol_version": 1},
 			map[string]any{"method": "agent-remote ego-browser requests", "protocol_version": 1},
+			// Matches agent-remote-cli src/desktop_control/queries.rs.
 			map[string]any{"method": "agent-remote ego-browser cancel-request", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser forget-this-mac", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser forget", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser re-enroll", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser device-rotate", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser switch-server", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser register", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser claim", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser pause", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser resume", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser stop", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser revoke", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser delete-device", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser device-delete", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser delete-binding", "protocol_version": 1},
+			map[string]any{"method": "agent-remote ego-browser binding-delete", "protocol_version": 1},
 		}
 		if mode == "node-terminal-unsupported" {
 			// Keep the read-only nodes.list operation available while removing

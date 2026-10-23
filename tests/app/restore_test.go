@@ -27,17 +27,19 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1366, 768)
-	if !tt.HasText("Saved session") || !tt.HasText("Not connected") || tt.HasText("Running") {
+	settle(tt)
+	if !tt.HasText("Saved session") || tt.HasText("Running") {
 		t.Fatal("restored metadata was presented as a running Agent")
 	}
-	from, ok := tt.Find(locales.TabTerminals("Review", 2))
-	if !ok {
-		t.Fatal("split tab missing")
+	// ⌥A: every session of the project is a card, with facts only.
+	tt.Key(ui.Alt, ui.KeyA)
+	settle(tt)
+	if !tt.HasText(locales.SavedSessionStatus()) || !tt.HasText(locales.PaneOfSplit(1, 2)) {
+		t.Fatal("dock does not show restored sessions as not connected, in their split")
 	}
-	to, ok := tt.Find("Remote")
-	if !ok {
-		t.Fatal("second tab missing")
-	}
+	// Dragging the split's card onto the remote card reorders their tabs.
+	from := find(t, tt, "codex")
+	to := find(t, tt, "fclaude")
 	tt.Press(from.X+from.W/2, from.Y+from.H/2)
 	tt.Move(from.X+from.W/2+12, from.Y+from.H/2)
 	tt.Move(to.X+to.W/2, to.Y+to.H/2)
@@ -56,9 +58,22 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 		}
 		time.Sleep(10 * time.Millisecond)
 	}
+	tt.Key(0, ui.KeyEscape)
+	settle(tt)
 	// The selected tab and its last focused pane survive reordering.
 	tt.Key(0, ui.KeyF6)
-	if err := tt.Click(locales.HideTab("Remote")); err != nil {
+	settle(tt)
+	// Switch to the remote session's tab from the dock and hide its pane.
+	tt.Key(ui.Alt, ui.KeyA)
+	settle(tt)
+	card := find(t, tt, "fclaude")
+	tt.Move(card.X+card.W/2, card.Y+card.H/2) // a pointer comes to a card before it clicks
+	settle(tt)
+	if err := tt.Click("fclaude"); err != nil {
+		t.Fatal(err)
+	}
+	settle(tt)
+	if err := tt.Click(locales.Hide()); err != nil {
 		t.Fatal(err)
 	}
 	if err := a.Close(); err != nil {
@@ -66,7 +81,7 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 	}
 	saved := testutil.LoadWorkspace(t, home)
 	if len(saved.Sessions) != 5 || len(saved.Board.Tabs) != 2 {
-		t.Fatal("hiding a tab deleted history")
+		t.Fatal("hiding a pane deleted history")
 	}
 	if saved.Board.Current("one").FocusedSession != "a" {
 		t.Fatalf("focus did not cycle in preserved split: %+v", saved.Board.Current("one"))
@@ -74,20 +89,23 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 	if saved.Board.Current("one").Root.Ratio != 64 {
 		t.Fatal("drag changed split geometry")
 	}
-	// Reopening must keep the hidden remote session available in the sidebar.
+	// Reopening must keep the hidden remote session available in the dock.
 	second, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve})
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer second.Close()
 	view := ui.NewTester(second.View, 1366, 768)
-	if !view.HasText("fclaude · Remote  Not connected") {
+	settle(view)
+	view.Key(ui.Alt, ui.KeyA)
+	settle(view)
+	if _, ok := view.Find("fclaude"); !ok {
 		t.Fatal("hidden history disappeared on restart")
 	}
-	if err := view.Click("fclaude · Remote  Not connected"); err != nil {
+	if err := view.Click("fclaude"); err != nil {
 		t.Fatal(err)
 	}
-	view.Frame()
+	settle(view)
 	if err := view.Click(locales.ResumeSession()); err != nil {
 		t.Fatal(err)
 	}
@@ -116,7 +134,7 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 	}
 }
 
-func TestPaletteNavigatesByQueryAndSidebarResizeIsSaved(t *testing.T) {
+func TestPaletteNavigatesByQueryAndIsSaved(t *testing.T) {
 	i18n.SetLocaleFunc(func() string { return "en" })
 	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
 	home := t.TempDir()
@@ -128,14 +146,6 @@ func TestPaletteNavigatesByQueryAndSidebarResizeIsSaved(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1366, 768)
-	divider, ok := tt.Find("Divider")
-	if !ok {
-		t.Fatal("sidebar divider missing")
-	}
-	x, y := divider.X+divider.W/2, divider.Y+divider.H/2
-	tt.Press(x, y)
-	tt.Move(x+30, y)
-	tt.Release(x+30, y)
 	tt.Key(ui.Cmd|ui.Shift, ui.KeyP)
 	if err := tt.Click(locales.PaletteSearch()); err != nil {
 		t.Fatal(err)
@@ -149,8 +159,8 @@ func TestPaletteNavigatesByQueryAndSidebarResizeIsSaved(t *testing.T) {
 		t.Fatal(err)
 	}
 	stored := testutil.LoadWorkspace(t, home)
-	if stored.Preferences.SelectedProject != "two" || stored.Preferences.SidebarWidth < 285 || stored.Preferences.SidebarWidth > 295 {
-		t.Fatalf("navigation or resize was not saved: %+v", stored.Preferences)
+	if stored.Preferences.SelectedProject != "two" {
+		t.Fatalf("navigation was not saved: %+v", stored.Preferences)
 	}
 }
 
@@ -168,7 +178,7 @@ func TestSessionCreationActionsFitMinimumWindowInEveryLanguage(t *testing.T) {
 			defer a.Close()
 			tt := ui.NewTester(a.View, 900, 600)
 			tt.SetLocale(lang)
-			if err := tt.Click(locales.NewSessionAction()); err != nil {
+			if err := openNewSessionDialog(tt); err != nil {
 				t.Fatal(err)
 			}
 			for _, label := range []string{locales.SessionName(), locales.LaunchArgs(), locales.StartSession(), locales.Cancel()} {

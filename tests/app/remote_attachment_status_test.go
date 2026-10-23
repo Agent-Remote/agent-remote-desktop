@@ -9,7 +9,7 @@ import (
 func TestExactRemoteAttachShowsTextOnlyAttachmentStatus(t *testing.T) {
 	a, tt, _, _, _ := attachHistoryTester(t, "en", "", nil)
 	defer a.Close()
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, attachSessionID)
@@ -26,7 +26,7 @@ func TestExactRemoteAttachShowsTextOnlyAttachmentStatus(t *testing.T) {
 func TestExactRemoteAttachShowsTransferAttachmentStatus(t *testing.T) {
 	a, tt, _, _, _ := attachHistoryTester(t, "en", "remote-attach-transfer", nil)
 	defer a.Close()
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, attachSessionID)

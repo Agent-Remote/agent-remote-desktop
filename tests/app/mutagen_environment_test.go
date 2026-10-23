@@ -30,7 +30,7 @@ func environmentTester(t *testing.T, language string) (*ui.Tester, string) {
 	})
 	tt := ui.NewTester(a.View, 900, 600)
 	tt.SetLocale(language)
-	if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.DiagnosticsChecks())
@@ -76,7 +76,7 @@ func TestMutagenEnvironmentNoProjectNoLoginAndExplicitGlobalConfirmation(t *test
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.MutagenEnvironmentOperation()); err != nil {
+	if err := openPage(tt, locales.MutagenEnvironmentOperation()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.MutagenEnvironmentOutcome("completed")) {
@@ -135,7 +135,7 @@ func TestMutagenEnvironmentPartialAndCancellationKeepOriginalScope(t *testing.T)
 				if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 					t.Fatal(err)
 				}
-				if err := tt.Click(locales.MutagenEnvironmentOperation()); err != nil {
+				if err := openPage(tt, locales.MutagenEnvironmentOperation()); err != nil {
 					t.Fatal(err)
 				}
 				if err := tt.Click(locales.SyncStopWaiting()); err != nil {
@@ -190,7 +190,7 @@ func TestMutagenEnvironmentRetainsProjectReceiptAndInvalidatesObservation(t *tes
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.MutagenEnvironmentOutcome("completed"))
-	if err := tt.Click(locales.SyncOperationStatus()); err != nil {
+	if err := openPage(tt, locales.SyncOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.SyncOutcome("completed")) || tt.HasText(locales.SyncObservationScope()) || !tt.HasText(locales.MutagenEnvironmentResultCode("sync_mutagen_environment_changed")) {

@@ -31,7 +31,7 @@ Windows/Linux runtime validation remain on the implementation plan.
 The workbench uses the redesign's token set (prototype-v3 colours): Light,
 Dark and Kawaii, stored as `daybreak`, `midnight` and `sakura`. New installs
 follow the system appearance; a state saved by an earlier build keeps its
-explicit theme. The toolbar cycles from the theme on screen, which makes the
+explicit theme. Choosing a theme in the Control Center or Settings makes the
 choice explicit. Terminal panes use an opaque background per theme with
 contrast-checked cursor and selection colours; ANSI colours are not re-tinted.
 Settings → Appearance also offers Reduce transparency (solid surfaces, no blur;
@@ -165,12 +165,33 @@ verify the installed desktop at runtime.
 
 ## Workspaces and recovery
 
-Sessions can be named when created. Drag tabs to reorder them, resize split panes,
-and use Search to find workbench commands, projects and sessions. Hiding a tab
-keeps its sessions available in the sidebar.
+The workbench is a full-window Zen workspace: one to four terminal panes and a
+breathing bar at the bottom, with no sidebar, toolbar or tab strip. Everything
+else is a layer over it (redesign doc §3):
 
-The desktop saves tab order, split ratios, pane focus, sidebar width and session
-metadata. After an application restart, saved panes are shown as disconnected.
+- **⌥A / Alt+A — Agents dock.** A card per session of the project: state
+  (new output, idle, connected, not connected, exited — facts the PTY shows,
+  never "thinking"), the last lines of output, split position and last activity.
+  Hold ⌥ and press A again to cycle, release ⌥ to switch; a quick tap keeps it
+  open for the arrows and Enter. Drag a card onto another to reorder tabs.
+- **⌥C — New Agent wheel.** Claude and Codex start at once in the project;
+  fclaude and **Advanced…** open the full new-session dialog (name, arguments,
+  history, review). Hold Shift when releasing to split beside the focused pane.
+- **⌥X — Project wheel.** "··· More" (search, or open a folder) and seven
+  stable slots: a project keeps its sector until it is the least recently
+  opened when an eighth arrives. The HUD shows path, Git branch (read from
+  `.git/HEAD`, never by running git) and language.
+- **⌥S, or click the breathing bar — Control Center.** Every management page,
+  grouped by project, remote, connections and system, with in-progress
+  operations first, the appearance switch and search.
+
+Chords are taken by the focused terminal before it encodes the key, so the
+Agent receives nothing (R0 evidence: a window shortcut alone leaks `å` on macOS
+and enters the system menu on Windows). Escape leaves any layer. Hiding a pane
+keeps its session in the dock.
+
+The desktop saves tab order, split ratios, pane focus, project wheel slots and
+session metadata. After an application restart, saved panes are shown as disconnected.
 Choose **Continue a saved session** to open the Codex/Claude history picker or
 provide a specific session ID. Remote recovery refreshes the current server and
 session list, then confirms the saved home/server/device and exact running session.
@@ -200,8 +221,9 @@ Use Command on macOS and Control elsewhere for `Mod` below:
 
 | Action | Shortcut |
 | --- | --- |
+| Agents / New Agent / Project / Control Center | `⌥A` / `⌥C` / `⌥X` / `⌥S` (Alt on Windows/Linux) |
 | Commands and navigation | `Mod+Shift+P` |
-| Open project / New session | `Mod+O` / `Mod+T` |
+| Project search / New Agent wheel | `Mod+O` / `Mod+T` |
 | Horizontal / Vertical split | `Mod+Shift+D` / `Mod+Shift+E` |
 | Next / Previous tab | `Ctrl+Tab` / `Ctrl+Shift+Tab` |
 | Next / Previous project | `Mod+Alt+Right` / `Mod+Alt+Left` |
@@ -303,7 +325,7 @@ completion key and, after a transport or timeout failure, queries only that exac
 key; missing, expired or invalid receipts remain unknown and are never replayed.
 
 Sign-in and sign-out keep running when you navigate to another page. Return via
-their status entry in the sidebar or command search. Results remain available
+their entry in the Control Center's In progress group or command search. Results remain available
 until you acknowledge them with **Back to remote management**; reopening a status
 page does not submit the operation again. The operation center restores only a
 non-sensitive lifecycle summary after restart; exact request keys, receipts and
@@ -339,7 +361,7 @@ request context remain in the CLI journal, and the desktop never replays repair
 automatically. Dependency installation remains in development; this is partial
 P2 delivery.
 
-**Complete initialization** is available from the sidebar and command palette. It
+**Complete initialization** is available from the Control Center and command palette. It
 orders local setup, password or browser/device-code sign-in, optional device
 registration, optional WireGuard publication, and final diagnostics plus account/
 session readiness. WireGuard always pauses after its read-only plan for a separate

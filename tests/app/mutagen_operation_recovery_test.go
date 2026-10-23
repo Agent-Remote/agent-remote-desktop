@@ -28,7 +28,7 @@ func TestMutagenOperationStagesSurviveDesktopRestart(t *testing.T) {
 	}
 	tester := ui.NewTester(a.View, 900, 600)
 	tester.SetLocale("en")
-	if err := tester.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tester, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tester, locales.DiagnosticsChecks())
@@ -84,7 +84,7 @@ func TestMutagenOperationStagesSurviveDesktopRestart(t *testing.T) {
 	defer reopened.Close()
 	restarted := ui.NewTester(reopened.View, 900, 600)
 	restarted.SetLocale("en")
-	if err := restarted.Click(locales.OperationsSidebar()); err != nil {
+	if err := openPage(restarted, locales.OperationsSidebar()); err != nil {
 		t.Fatal(err)
 	}
 	if !restarted.HasText(locales.OperationMutagen()) || !restarted.HasText(locales.OperationCompleted()) {

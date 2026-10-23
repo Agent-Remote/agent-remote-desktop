@@ -61,13 +61,12 @@ func attachHistoryTester(t *testing.T, language, mode string, edit func(*storage
 
 func reviewHistory(t *testing.T, tt *ui.Tester) {
 	t.Helper()
-	// Select the persisted remote tab first. This gives the saved remote pane a
-	// stable action target even when pseudo-localized labels share text with
-	// other saved panes in the sidebar.
-	if err := tt.Click("Remote"); err != nil {
+	// Switch to the persisted remote session from the ⌥A dock first. This
+	// gives the saved remote pane a stable action target even when
+	// pseudo-localized labels share text with other saved panes.
+	if err := openDockCard(tt, "fclaude"); err != nil {
 		t.Fatal(err)
 	}
-	tt.Frame()
 	action, continuation := locales.RemoteHistoryReviewAction(), locales.RemoteHistoryContinue()
 	if !tt.HasText(action) {
 		// Legacy history has no saved remote context and keeps the generic
@@ -200,7 +199,7 @@ func TestRemoteListRejectsUnsupportedAndAmbiguousAttachments(t *testing.T) {
 	for _, mode := range []string{"remote-attach-unsupported", "remote-attach-future", "remote-attach-prefix", "remote-attach-duplicate"} {
 		t.Run(mode, func(t *testing.T) {
 			_, tt, _, _, _ := attachHistoryTester(t, "en", mode, nil)
-			if err := tt.Click(locales.RemoteManagement()); err != nil {
+			if err := openPage(tt, locales.RemoteManagement()); err != nil {
 				t.Fatal(err)
 			}
 			notice := locales.RemoteAttachContextInvalid()
@@ -229,7 +228,7 @@ func TestRemoteListRejectsUnsupportedAndAmbiguousAttachments(t *testing.T) {
 
 func TestRemoteActiveSessionRemainsAttachable(t *testing.T) {
 	_, tt, _, _, _ := attachHistoryTester(t, "en", "remote-attach-active", nil)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, attachSessionID)
@@ -246,7 +245,7 @@ func TestRemoteRefreshFailureAndCancellationDiscardOldAttachment(t *testing.T) {
 	for _, mode := range []string{"wrong-id", "cancel"} {
 		t.Run(mode, func(t *testing.T) {
 			a, tt, home, _, state := attachHistoryTester(t, "en", "", nil)
-			if err := tt.Click(locales.RemoteManagement()); err != nil {
+			if err := openPage(tt, locales.RemoteManagement()); err != nil {
 				t.Fatal(err)
 			}
 			waitRemoteText(t, tt, attachSessionID)

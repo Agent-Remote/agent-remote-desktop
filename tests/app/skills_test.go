@@ -21,11 +21,11 @@ func TestSkillsPageShowsProjectedCatalogAndAccountLocalState(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
-	if err := tt.Click(locales.SkillsTitle()); err != nil {
+	if err := openPage(tt, locales.SkillsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	deadline := time.Now().Add(15 * time.Second)
@@ -62,11 +62,11 @@ func TestSkillsPageKeepsUnsupportedCapabilityExplicit(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
-	if err := tt.Click(locales.SkillsTitle()); err != nil {
+	if err := openPage(tt, locales.SkillsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.SkillsUnsupported())
@@ -82,11 +82,11 @@ func TestSkillsPageReviewsAndSubmitsEnableDisableChange(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
-	if err := tt.Click(locales.SkillsTitle()); err != nil {
+	if err := openPage(tt, locales.SkillsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "Review helper")
@@ -115,11 +115,11 @@ func TestSkillsPageLoadsDedicatedInfoProjection(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
-	if err := tt.Click(locales.SkillsTitle()); err != nil {
+	if err := openPage(tt, locales.SkillsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "Review helper")
@@ -142,11 +142,11 @@ func TestSkillsPageLoadsBoundedStateDiffProjection(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
-	if err := tt.Click(locales.SkillsTitle()); err != nil {
+	if err := openPage(tt, locales.SkillsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "Review helper")
@@ -201,11 +201,11 @@ func TestSkillsPageOpensExportReviewFromRetainedCheckpoint(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
-	if err := tt.Click(locales.SkillsTitle()); err != nil {
+	if err := openPage(tt, locales.SkillsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "Review helper")

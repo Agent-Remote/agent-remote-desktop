@@ -15,6 +15,44 @@ type Project struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
 	Path string `json:"path"`
+	// Slot is the project's place on the ⌥X wheel, 1–7 clockwise from the
+	// sector after "more"; 0 is not on the wheel. Slots stay put so muscle
+	// memory holds: a new project takes a free slot, or the slot of the
+	// least recently opened project (AssignSlot).
+	Slot       int       `json:"slot,omitempty"`
+	LastOpened time.Time `json:"last_opened,omitzero"`
+}
+
+// WheelSlots is how many projects the ⌥X wheel holds besides "more".
+const WheelSlots = 7
+
+// AssignSlot gives projects[i] a wheel slot if it has none: the lowest free
+// slot, else the slot of the least recently opened project, which leaves
+// the wheel. Other projects keep their slots.
+func AssignSlot(projects []Project, i int) {
+	if projects[i].Slot != 0 {
+		return
+	}
+	used := map[int]int{}
+	for j, p := range projects {
+		if p.Slot >= 1 && p.Slot <= WheelSlots {
+			used[p.Slot] = j
+		}
+	}
+	for slot := 1; slot <= WheelSlots; slot++ {
+		if _, ok := used[slot]; !ok {
+			projects[i].Slot = slot
+			return
+		}
+	}
+	oldest := -1
+	for slot := 1; slot <= WheelSlots; slot++ {
+		j := used[slot]
+		if oldest < 0 || projects[j].LastOpened.Before(projects[oldest].LastOpened) {
+			oldest = j
+		}
+	}
+	projects[i].Slot, projects[oldest].Slot = projects[oldest].Slot, 0
 }
 
 func NewProject(path string) (Project, error) {

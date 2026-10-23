@@ -15,7 +15,7 @@ import (
 
 func TestCapabilitiesDepsStatusUsesInspectThenExplicitRepair(t *testing.T) {
 	_, tt, log := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))
@@ -107,7 +107,7 @@ func TestStructuredCommandDiagnosticsPagesUseControlMethods(t *testing.T) {
 	t.Cleanup(func() { _ = a.Close() })
 	tt := ui.NewTester(a.View, 1100, 820)
 	tt.SetLocale("en")
-	if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.DiagnosticsSuggestion("repair_installation"))
@@ -150,7 +150,7 @@ func TestStructuredDependenciesPageUsesDepsInspectMethod(t *testing.T) {
 	t.Cleanup(func() { _ = a.Close() })
 	tt := ui.NewTester(a.View, 1100, 820)
 	tt.SetLocale("en")
-	if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.DiagnosticsSuggestion("repair_installation"))

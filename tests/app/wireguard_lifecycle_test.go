@@ -13,7 +13,7 @@ import (
 
 func openWireGuardSearch(t *testing.T, tt *ui.Tester) {
 	t.Helper()
-	if err := tt.Click(locales.SearchWorkbench()); err != nil {
+	if err := openSearch(tt); err != nil {
 		t.Fatal(err)
 	}
 	tt.Type(locales.WireGuardConfigTitle())
@@ -93,30 +93,30 @@ func TestWireGuardOperationSurvivesNavigationAndExplicitAcknowledgment(t *testin
 	}
 	waitFixtureFile(t, tt, started)
 	for _, label := range []string{locales.Settings(), locales.WireGuardOperationStatus()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
 	if !tt.HasText(locales.WireGuardConfigBusy()) {
 		t.Fatal("navigation lost active operation")
 	}
-	if err := tt.Click(locales.Settings()); err != nil {
+	if err := openPage(tt, locales.Settings()); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(release, nil, 0600); err != nil {
 		t.Fatal(err)
 	}
 	for _, label := range []string{locales.Focus(), locales.SearchWorkbench()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
 	tt.Type(locales.WireGuardOperationStatus())
-	if err := tt.Click(locales.WireGuardOperationStatus()); err != nil {
+	if err := tt.Click(locales.WireGuardOperationStatus()); err != nil { // the palette's item
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.WireGuardConfigComplete())
-	if err := tt.Click(locales.Focus()); err != nil {
+	if err := toggleFocusMode(tt); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.ReturnDiagnostics()); err != nil {
@@ -141,7 +141,7 @@ func TestWireGuardApplyBlocksLoginLogoutAndSetup(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitFixtureFile(t, tt, started)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -154,7 +154,7 @@ func TestWireGuardApplyBlocksLoginLogoutAndSetup(t *testing.T) {
 		t.Fatal("WireGuard apply allowed concurrent credential changes")
 	}
 	for _, label := range []string{locales.DiagnosticsTitle(), locales.LocalSetupTitle()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -168,7 +168,7 @@ func TestWireGuardApplyBlocksLoginLogoutAndSetup(t *testing.T) {
 			t.Fatalf("concurrent mutation %s: %q", method, calls)
 		}
 	}
-	if err := tt.Click(locales.WireGuardOperationStatus()); err != nil {
+	if err := openPage(tt, locales.WireGuardOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.StopWireGuardWaiting()); err != nil {
@@ -186,7 +186,7 @@ func TestWireGuardApplyWaitsForOtherLocalMutations(t *testing.T) {
 			case "setup":
 				t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "slow-setup")
 				for _, label := range []string{locales.DiagnosticsTitle(), locales.LocalSetupTitle()} {
-					if err := tt.Click(label); err != nil {
+					if err := navigate(tt, label); err != nil {
 						t.Fatal(err)
 					}
 				}
@@ -196,7 +196,7 @@ func TestWireGuardApplyWaitsForOtherLocalMutations(t *testing.T) {
 				}
 			default:
 				t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "slow-"+kind)
-				if err := tt.Click(locales.RemoteManagement()); err != nil {
+				if err := openPage(tt, locales.RemoteManagement()); err != nil {
 					t.Fatal(err)
 				}
 				waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -250,7 +250,7 @@ func TestAuthenticationInvalidatesWireGuardConfirmationIncludingPendingPlans(t *
 			} else {
 				reviewWireGuard(t, tt)
 			}
-			if err := tt.Click(locales.RemoteManagement()); err != nil {
+			if err := openPage(tt, locales.RemoteManagement()); err != nil {
 				t.Fatal(err)
 			}
 			waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")

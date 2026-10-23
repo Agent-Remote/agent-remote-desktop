@@ -29,7 +29,7 @@ func TestDiagnosticsPageHasLocalizedActionsAtMinimumSize(t *testing.T) {
 			defer a.Close()
 			tt := ui.NewTester(a.View, 900, 600)
 			tt.SetLocale(language)
-			if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+			if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 				t.Fatal(err)
 			}
 			waitRemoteText(t, tt, locales.DiagnosticsSuggestion("repair_installation"))
@@ -82,7 +82,7 @@ func TestDiagnosticsCancellationIsDistinctFromRemoteSessionCancellation(t *testi
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.CancelRemoteQuery()); err != nil {

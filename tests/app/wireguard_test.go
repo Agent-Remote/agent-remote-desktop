@@ -34,7 +34,7 @@ func wireguardTester(t *testing.T, mode, language string) (*ui.Tester, *app.App,
 	tt := ui.NewTester(a.View, 900, 600)
 	tt.SetLocale(language)
 	for _, label := range []string{locales.DiagnosticsTitle(), locales.WireGuardConfigTitle()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -219,7 +219,7 @@ func TestWireGuardPartialAndUnknownReceiptsDoNotReplay(t *testing.T) {
 				t.Fatal("uncertain result reported completion or offered blind retry")
 			}
 			for _, label := range []string{locales.Settings(), locales.WireGuardOperationStatus()} {
-				if err := tt.Click(label); err != nil {
+				if err := navigate(tt, label); err != nil {
 					t.Fatal(err)
 				}
 			}

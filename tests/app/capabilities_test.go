@@ -44,7 +44,7 @@ func capabilityTester(t *testing.T, language string) (*app.App, *ui.Tester, stri
 
 func TestCapabilitiesPageIsPassiveAndFiltersCommandPlatformDeclarations(t *testing.T) {
 	_, tt, log := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))
@@ -75,7 +75,7 @@ func TestCapabilitiesPageIsPassiveAndFiltersCommandPlatformDeclarations(t *testi
 
 func TestCapabilitiesRoutesCredentialCommandsToSecurePage(t *testing.T) {
 	_, tt, _ := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))
@@ -97,7 +97,7 @@ func TestCapabilitiesRoutesCredentialCommandsToSecurePage(t *testing.T) {
 
 func TestCapabilitiesRoutesInitToCompositionWizard(t *testing.T) {
 	_, tt, _ := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))
@@ -121,7 +121,7 @@ func TestCapabilitiesRoutesInitToCompositionWizard(t *testing.T) {
 
 func TestCapabilitiesCommandCardShowsUnknownPermissionMapping(t *testing.T) {
 	_, tt, _ := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))
@@ -149,7 +149,7 @@ func TestCapabilitiesNodeInstallShowsMissingTerminalWorkflow(t *testing.T) {
 	// target discovery cannot make the reviewed install terminal executable.
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "node-terminal-unsupported")
 	_, tt, _ := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))
@@ -174,7 +174,7 @@ func TestCapabilitiesNodeInstallShowsMissingTerminalWorkflow(t *testing.T) {
 
 func TestCapabilitiesRoutesSensitiveLoginCommandToSecurePage(t *testing.T) {
 	_, tt, _ := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))
@@ -203,11 +203,11 @@ func TestCapabilitiesRoutesSensitiveLoginCommandToSecurePage(t *testing.T) {
 func TestCapabilitiesPreserveDeniedPermissionWithoutRequeryingAndDiscardOtherContext(t *testing.T) {
 	_, tt, log := capabilityTester(t, "en")
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "permission")
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("denied"))
@@ -231,7 +231,7 @@ func TestCapabilitiesPreserveDeniedPermissionWithoutRequeryingAndDiscardOtherCon
 func TestCapabilitiesCancelAndCloseBoundWorkerLifetime(t *testing.T) {
 	a, tt, _ := capabilityTester(t, "en")
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "slow-schema")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.CancelRemoteQuery()); err != nil {
@@ -250,7 +250,7 @@ func TestCapabilitiesMinimumLocalizedLayout(t *testing.T) {
 	for _, language := range []string{"en", "zh-Hans", "en-XA"} {
 		t.Run(language, func(t *testing.T) {
 			_, tt, _ := capabilityTester(t, language)
-			if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+			if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 				t.Fatal(err)
 			}
 			waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))

@@ -25,7 +25,7 @@ func TestCredentialsPageShowsSecretFreeProfileMetadata(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
@@ -52,7 +52,7 @@ func TestCredentialsPageKeepsUnsupportedOperationExplicit(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")
@@ -71,7 +71,7 @@ func TestCredentialsCreateUsesReviewedSecureControlRequest(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "https://test.invalid")

@@ -26,7 +26,7 @@ func TestDependenciesPageUsesReadOnlyStructuredInspection(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 900, 600)
-	if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.DiagnosticsSuggestion("repair_installation"))

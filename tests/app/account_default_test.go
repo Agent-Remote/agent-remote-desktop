@@ -33,7 +33,7 @@ func accountDefaultTester(t *testing.T, mode, language string) (*ui.Tester, stri
 	})
 	tt := ui.NewTester(a.View, 900, 600)
 	tt.SetLocale(language)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.AccountDefaultTitle()); err != nil {
@@ -107,7 +107,7 @@ func TestAccountDefaultReviewAndExactConfirmation(t *testing.T) {
 			if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 				t.Fatal(err)
 			}
-			if err := tt.Click(locales.AccountDefaultStatus()); err != nil {
+			if err := openPage(tt, locales.AccountDefaultStatus()); err != nil {
 				t.Fatal(err)
 			}
 			if !tt.HasText(locales.AccountDefaultSaved()) {
@@ -241,7 +241,7 @@ func TestAccountDefaultCancelAfterNavigationPreservesUnknownOutcome(t *testing.T
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.AccountDefaultStatus()); err != nil {
+	if err := openPage(tt, locales.AccountDefaultStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.AccountDefaultWaiting()) {
@@ -265,7 +265,7 @@ func TestAccountDefaultReviewInvalidatedByAuthenticationChange(t *testing.T) {
 	if err := tt.Click(locales.AccountDefaultSelect()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -276,7 +276,7 @@ func TestAccountDefaultReviewInvalidatedByAuthenticationChange(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.LogoutLocalComplete())
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.AccountDefaultTitle()); err != nil {

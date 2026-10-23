@@ -15,7 +15,7 @@ func reopenImportAfterReview(t *testing.T, tt *ui.Tester) {
 	if err := tt.Click(locales.AccountImportNew()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.AccountDetailsTitle())

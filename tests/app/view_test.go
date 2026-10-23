@@ -37,7 +37,8 @@ func TestPreferencesSaveFailureIsVisibleAndReportedOnClose(t *testing.T) {
 		t.Fatal(err)
 	}
 	tt := ui.NewTester(a.View, 1366, 768)
-	if err := tt.Click("Theme"); err != nil {
+	// Any preference change saves; choose a theme in the Control Center.
+	if err := openPage(tt, locales.ThemeMidnight()); err != nil {
 		t.Fatal(err)
 	}
 	deadline := time.Now().Add(5 * time.Second)
@@ -83,17 +84,31 @@ func TestWorkbenchProjectFlowAndTheme(t *testing.T) {
 	if !tt.HasText("新建项目会话") {
 		t.Fatal("project workspace did not open")
 	}
-	// A new install follows the system appearance; with a dark system the
-	// quick switch starts from midnight, so one click chooses sakura and the
-	// explicit choice stops following.
-	tt.SetDark(true)
-	if err = tt.Click("主题"); err != nil {
+	// A new install follows the system appearance; choosing 次元 in the
+	// Control Center's appearance switch makes the choice explicit.
+	settle(tt)
+	if err = tt.Click(locales.OpenControlCenter()); err != nil {
 		t.Fatal(err)
 	}
-
+	settle(tt)
+	if err = tt.Click(locales.ThemeSakura()); err != nil {
+		t.Fatal(err)
+	}
+	tt.Key(0, ui.KeyEscape)
+	settle(tt)
+	// The empty project's action opens the ⌥C wheel; "Advanced…" opens
+	// the full new-session dialog.
 	if err = tt.Click("新建项目会话"); err != nil {
 		t.Fatal(err)
 	}
+	settle(tt)
+	if !tt.HasText(locales.CreateAdvanced()) {
+		t.Fatal("create wheel missing")
+	}
+	if err = tt.Click(locales.CreateAdvanced()); err != nil {
+		t.Fatal(err)
+	}
+	settle(tt)
 	if !tt.HasText("新建 Agent 会话") {
 		t.Fatal("agent picker missing")
 	}
@@ -101,8 +116,9 @@ func TestWorkbenchProjectFlowAndTheme(t *testing.T) {
 		t.Fatal(err)
 	}
 	tt.SetSize(900, 600)
-	if !tt.HasText("＋ 新建会话") {
-		t.Fatal("primary action lost at minimum window size")
+	settle(tt)
+	if r, ok := tt.Find(locales.OpenControlCenter()); !ok || r.Y+r.H > 601 {
+		t.Fatalf("breathing bar lost at minimum window size: %+v", r)
 	}
 	if err := a.Close(); err != nil {
 		t.Fatal(err)
@@ -134,20 +150,20 @@ func TestRenderWorkbench(t *testing.T) {
 	if err = os.MkdirAll(output, 0755); err != nil {
 		t.Fatal(err)
 	}
-	previousIndex := 0
-	for index, name := range theme.ThemeNames {
+	for _, name := range theme.ThemeNames {
 		tt := ui.NewTester(a.View, 1366, 768)
-		tt.SetDark(true) // the cycle starts from midnight, as ThemeNames does
-		// The toolbar follows the same built-in order as the production
-		// quick-switch action. Advance from the previous capture so each
-		// rendered artifact names the palette it actually captures (including
-		// Sakura).
-		for click := previousIndex; click < index; click++ {
-			if err := tt.Click("主题"); err != nil {
-				t.Fatal(err)
-			}
+		// Choose each palette explicitly in the Control Center.
+		settle(tt)
+		if err := tt.Click(locales.OpenControlCenter()); err != nil {
+			t.Fatal(err)
 		}
-		previousIndex = index
+		settle(tt)
+		label := map[string]string{"midnight": locales.ThemeMidnight(), "sakura": locales.ThemeSakura(), "daybreak": locales.ThemeDaybreak()}[name]
+		if err := tt.Click(label); err != nil {
+			t.Fatal(err)
+		}
+		tt.Key(0, ui.KeyEscape)
+		settle(tt)
 		f, err := os.Create(filepath.Join(output, name+".png"))
 		if err != nil {
 			t.Fatal(err)
@@ -203,7 +219,7 @@ func TestChangingLanguagePreservesProjectInputAndErrors(t *testing.T) {
 	if !tt.HasText("New project session") || !tt.HasText(dir) {
 		t.Fatal("project was lost during language switch")
 	}
-	if err := tt.Click("Settings"); err != nil {
+	if err := openPage(tt, "Settings"); err != nil {
 		t.Fatal(err)
 	}
 	for _, label := range []string{"Language", "Follow system", "English", "简体中文"} {
@@ -225,11 +241,16 @@ func TestLocalizedPrimaryActionsAtMinimumWindowSize(t *testing.T) {
 			defer a.Close()
 			tt := ui.NewTester(a.View, 900, 600)
 			tt.SetLocale(language)
-			for _, action := range []string{locales.NewSessionAction(), locales.OpenProjectDirectory(), locales.ViewEnvironment(), locales.Settings()} {
+			for _, action := range []string{locales.OpenControlCenter(), locales.OpenProjectDirectory(), locales.ViewEnvironment()} {
 				r, ok := tt.Find(action)
 				if !ok || r.X < 0 || r.Y < 0 || r.X+r.W > 901 || r.Y+r.H > 601 {
 					t.Errorf("%q action is outside window: %+v", action, r)
 				}
+			}
+			// Every destination stays reachable at the minimum size, with long
+			// pseudo-localized labels: the Control Center scrolls its tiles.
+			if err := openPage(tt, locales.Settings()); err != nil {
+				t.Errorf("settings unreachable at minimum size: %v", err)
 			}
 			if output := os.Getenv("DESKTOP_RENDER_DIR"); output != "" {
 				if err := os.MkdirAll(output, 0755); err != nil {

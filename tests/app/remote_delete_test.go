@@ -67,7 +67,7 @@ func TestRemoteDeleteRecoverySurvivesRestartAndQueriesOriginalKey(t *testing.T) 
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 1100, 820)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteDeleteText(t, tester, locales.RemoteDeleteRecovery())
@@ -111,7 +111,7 @@ func TestRemoteDeleteUnknownQueriesOriginalCallerKey(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteDeleteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -167,7 +167,7 @@ func TestRemoteDeleteRecoveryPointerSurvivesOpeningNewReview(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 1100, 820)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteDeleteText(t, tester, "11111111-1111-4111-8111-111111111111")

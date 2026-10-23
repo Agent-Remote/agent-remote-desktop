@@ -77,7 +77,7 @@ func TestMissingProvidersDisableNewSessionAndRefreshDetectionWithoutExecutingToo
 			if resolver.calls != calls {
 				t.Fatal("redrawing repeated executable discovery")
 			}
-			if err := tt.Click(locales.NewSessionAction()); err != nil {
+			if err := openNewSessionDialog(tt); err != nil {
 				t.Fatal(err)
 			}
 			calls = resolver.calls
@@ -137,9 +137,12 @@ func TestMissingProvidersDisableRecoveryAndKeepExplicitRemoteTarget(t *testing.T
 			if tool == session.RemoteClaude {
 				location = locales.Remote()
 			}
-			if err := tt.Click(locales.SessionSummary(string(tool), location, locales.SavedSessionStatus())); err != nil {
+			// The restored session is the project's only pane: its card in the
+			// ⌥A dock replaces the removed sidebar row.
+			if err := openDockCard(tt, string(tool)); err != nil {
 				t.Fatal(err)
 			}
+			_ = location
 			if err := tt.Click(locales.ResumeSession()); err != nil {
 				t.Fatal(err)
 			}
@@ -182,7 +185,7 @@ func TestProviderGuideFailureAndMinimumLocalizedDialogs(t *testing.T) {
 	for _, language := range []string{"en", "zh-Hans", "en-XA"} {
 		t.Run(language, func(t *testing.T) {
 			tt, _ := providerTester(t, language, session.Codex, false)
-			if err := tt.Click(locales.NewSessionAction()); err != nil {
+			if err := openNewSessionDialog(tt); err != nil {
 				t.Fatal(err)
 			}
 			for _, label := range []string{locales.NewAgentSession(), locales.StartSession(), locales.Cancel(), locales.ProviderRequired("codex"), locales.ProviderInstallGuide("codex"), locales.RefreshTools()} {

@@ -45,7 +45,7 @@ func TestRemotePageQueriesFiltersAndTranslatesPermissionErrors(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click("Remote management"); err != nil {
+	if err := openPage(tt, "Remote management"); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -83,7 +83,7 @@ func TestRemoteQueryCanBeCanceledWithoutBlockingAppClose(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click("Remote management"); err != nil {
+	if err := openPage(tt, "Remote management"); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click("Cancel query"); err != nil {
@@ -120,7 +120,7 @@ func TestRemoteAttachConfirmationAndMinimumLocalizedLayout(t *testing.T) {
 			defer a.Close()
 			tt := ui.NewTester(a.View, 900, 600)
 			tt.SetLocale(language)
-			if err := tt.Click(locales.RemoteManagement()); err != nil {
+			if err := openPage(tt, locales.RemoteManagement()); err != nil {
 				t.Fatal(err)
 			}
 			waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")

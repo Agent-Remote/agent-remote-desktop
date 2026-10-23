@@ -47,7 +47,7 @@ func lifecycleApp(t *testing.T, home, scenario, marker string) (*app.App, *ui.Te
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 1100, 820)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tester, "11111111-1111-4111-8111-111111111111")

@@ -80,12 +80,16 @@ func (s *State) Validate() error {
 		}
 		dedicatedIDs[operation.ID] = true
 	}
-	projects := map[string]bool{}
+	projects, slots := map[string]bool{}, map[int]bool{}
 	for _, p := range s.Projects {
 		if p.ID == "" || p.Path == "" || projects[p.ID] {
 			return fault.WorkspaceData
 		}
-		projects[p.ID] = true
+		// A wheel slot is unique and within the wheel; 0 is off the wheel.
+		if p.Slot < 0 || p.Slot > workspace.WheelSlots || (p.Slot != 0 && slots[p.Slot]) {
+			return fault.WorkspaceData
+		}
+		projects[p.ID], slots[p.Slot] = true, p.Slot != 0
 	}
 	sessions := map[string]workspace.Session{}
 	for _, session := range s.Sessions {

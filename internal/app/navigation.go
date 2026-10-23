@@ -6,10 +6,18 @@ func (a *App) restoreFocus() {
 		a.active = tab.FocusedSession
 	}
 	a.focusValue = a.active
+	if a.focusValue == "" {
+		// The workbench root takes the chords while no pane has the keyboard.
+		a.focusValue = focusZen
+	}
 }
 
 func (a *App) focusPane(id string, request bool) {
+	if !isSessionFocus(id) {
+		return
+	}
 	if a.active != id {
+		a.noteFocus(a.active)
 		a.active = id
 		a.state.Board.Focus(id)
 		a.layoutChanged()

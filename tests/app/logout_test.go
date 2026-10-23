@@ -32,7 +32,7 @@ func logoutTester(t *testing.T, mode, language string) (*ui.Tester, string) {
 	})
 	tt := ui.NewTester(a.View, 900, 600)
 	tt.SetLocale(language)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")

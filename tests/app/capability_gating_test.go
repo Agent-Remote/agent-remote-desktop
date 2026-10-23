@@ -16,7 +16,7 @@ func TestRemoteRejectsIncompatiblePlatformBeforeAuthenticatedRequests(t *testing
 		t.Run(mode, func(t *testing.T) {
 			_, tt, log := capabilityTester(t, "en")
 			t.Setenv("DESKTOP_TEST_CLI_SCENARIO", mode)
-			if err := tt.Click(locales.RemoteManagement()); err != nil {
+			if err := openPage(tt, locales.RemoteManagement()); err != nil {
 				t.Fatal(err)
 			}
 			waitRemoteText(t, tt, presentation.Error(fault.CLIProtocol))
@@ -28,7 +28,7 @@ func TestRemoteRejectsIncompatiblePlatformBeforeAuthenticatedRequests(t *testing
 				t.Fatalf("incompatible CLI performed further operations: %q (%v)", calls, err)
 			}
 			if mode == "other-platform" {
-				if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+				if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 					t.Fatal(err)
 				}
 				waitRemoteText(t, tt, locales.CapabilitiesState("platform_unsupported"))
@@ -40,7 +40,7 @@ func TestRemoteRejectsIncompatiblePlatformBeforeAuthenticatedRequests(t *testing
 func TestRemoteOldCLIReadOperationsDoNotEnableMissingAuthenticationMethods(t *testing.T) {
 	_, tt, log := capabilityTester(t, "en")
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "read-only-capabilities")
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -75,11 +75,12 @@ func TestCapabilityFailurePreservesExistingAuthenticationResultNavigation(t *tes
 			}
 			waitRemoteText(t, tt, result)
 			t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "other-platform")
-			if err := tt.Click(locales.RemoteManagement()); err != nil {
+			if err := openPage(tt, locales.RemoteManagement()); err != nil {
 				t.Fatal(err)
 			}
 			waitRemoteText(t, tt, presentation.Error(fault.CLIProtocol))
-			if err := tt.Click(status); err != nil {
+			// The status lives in the Control Center's "in progress" group.
+			if err := openPage(tt, status); err != nil {
 				t.Fatal(err)
 			}
 			if !tt.HasText(result) {

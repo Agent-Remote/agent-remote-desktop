@@ -474,11 +474,11 @@ func (msgs Messages) ThemeSakura() string {
 	return Catalog.Format(msgs.locale, "themeSakura", nil)
 }
 
-// FocusMode says "Focus mode: hide the sidebar and decorations"
+// FocusMode says "Focus mode: hide decorations and the status line"
 // in the language the app shows.
 func FocusMode() string { return In(i18n.Locale()).FocusMode() }
 
-// FocusMode says "Focus mode: hide the sidebar and decorations"
+// FocusMode says "Focus mode: hide decorations and the status line"
 // in the language of msgs.
 func (msgs Messages) FocusMode() string {
 	return Catalog.Format(msgs.locale, "focusMode", nil)
@@ -12196,4 +12196,734 @@ func RemoteSessionClearFilter() string { return In(i18n.Locale()).RemoteSessionC
 // in the language of msgs.
 func (msgs Messages) RemoteSessionClearFilter() string {
 	return Catalog.Format(msgs.locale, "remoteSessionClearFilter", nil)
+}
+
+// ControlCenter says "Control Center"
+// in the language the app shows.
+func ControlCenter() string { return In(i18n.Locale()).ControlCenter() }
+
+// ControlCenter says "Control Center"
+// in the language of msgs.
+func (msgs Messages) ControlCenter() string {
+	return Catalog.Format(msgs.locale, "controlCenter", nil)
+}
+
+// OpenControlCenter says "Open Control Center"
+// in the language the app shows.
+func OpenControlCenter() string { return In(i18n.Locale()).OpenControlCenter() }
+
+// OpenControlCenter says "Open Control Center"
+// in the language of msgs.
+func (msgs Messages) OpenControlCenter() string {
+	return Catalog.Format(msgs.locale, "openControlCenter", nil)
+}
+
+// CloseControlCenter says "Close Control Center"
+// in the language the app shows.
+func CloseControlCenter() string { return In(i18n.Locale()).CloseControlCenter() }
+
+// CloseControlCenter says "Close Control Center"
+// in the language of msgs.
+func (msgs Messages) CloseControlCenter() string {
+	return Catalog.Format(msgs.locale, "closeControlCenter", nil)
+}
+
+// ControlCenterProject says "Current project"
+// in the language the app shows.
+func ControlCenterProject() string { return In(i18n.Locale()).ControlCenterProject() }
+
+// ControlCenterProject says "Current project"
+// in the language of msgs.
+func (msgs Messages) ControlCenterProject() string {
+	return Catalog.Format(msgs.locale, "controlCenterProject", nil)
+}
+
+// ControlCenterRemote says "Remote"
+// in the language the app shows.
+func ControlCenterRemote() string { return In(i18n.Locale()).ControlCenterRemote() }
+
+// ControlCenterRemote says "Remote"
+// in the language of msgs.
+func (msgs Messages) ControlCenterRemote() string {
+	return Catalog.Format(msgs.locale, "controlCenterRemote", nil)
+}
+
+// ControlCenterConnections says "Connections & devices"
+// in the language the app shows.
+func ControlCenterConnections() string { return In(i18n.Locale()).ControlCenterConnections() }
+
+// ControlCenterConnections says "Connections & devices"
+// in the language of msgs.
+func (msgs Messages) ControlCenterConnections() string {
+	return Catalog.Format(msgs.locale, "controlCenterConnections", nil)
+}
+
+// ControlCenterSystem says "System"
+// in the language the app shows.
+func ControlCenterSystem() string { return In(i18n.Locale()).ControlCenterSystem() }
+
+// ControlCenterSystem says "System"
+// in the language of msgs.
+func (msgs Messages) ControlCenterSystem() string {
+	return Catalog.Format(msgs.locale, "controlCenterSystem", nil)
+}
+
+// ControlCenterActive says "In progress"
+// in the language the app shows.
+func ControlCenterActive() string { return In(i18n.Locale()).ControlCenterActive() }
+
+// ControlCenterActive says "In progress"
+// in the language of msgs.
+func (msgs Messages) ControlCenterActive() string {
+	return Catalog.Format(msgs.locale, "controlCenterActive", nil)
+}
+
+// NewAgent says "New Agent"
+// in the language the app shows.
+func NewAgent() string { return In(i18n.Locale()).NewAgent() }
+
+// NewAgent says "New Agent"
+// in the language of msgs.
+func (msgs Messages) NewAgent() string {
+	return Catalog.Format(msgs.locale, "newAgent", nil)
+}
+
+// DockTitle says "{project} — {count, plural, =0 {no agents} one {# agent} other {# agents}}"
+// in the language the app shows.
+//
+// dockTitle
+func DockTitle(project string, count int) string { return In(i18n.Locale()).DockTitle(project, count) }
+
+// DockTitle says "{project} — {count, plural, =0 {no agents} one {# agent} other {# agents}}"
+// in the language of msgs.
+//
+// dockTitle
+func (msgs Messages) DockTitle(project string, count int) string {
+	return Catalog.Format(msgs.locale, "dockTitle", map[string]any{"project": project, "count": count})
+}
+
+// DockPeekHint says "Hold {mod} and press A to cycle · release to switch"
+// in the language the app shows.
+//
+// dockPeekHint
+func DockPeekHint(mod string) string { return In(i18n.Locale()).DockPeekHint(mod) }
+
+// DockPeekHint says "Hold {mod} and press A to cycle · release to switch"
+// in the language of msgs.
+//
+// dockPeekHint
+func (msgs Messages) DockPeekHint(mod string) string {
+	return Catalog.Format(msgs.locale, "dockPeekHint", map[string]any{"mod": mod})
+}
+
+// DockStickyHint says "←/→ choose · Enter switch · Esc back"
+// in the language the app shows.
+func DockStickyHint() string { return In(i18n.Locale()).DockStickyHint() }
+
+// DockStickyHint says "←/→ choose · Enter switch · Esc back"
+// in the language of msgs.
+func (msgs Messages) DockStickyHint() string {
+	return Catalog.Format(msgs.locale, "dockStickyHint", nil)
+}
+
+// StatusOutput says "New output"
+// in the language the app shows.
+func StatusOutput() string { return In(i18n.Locale()).StatusOutput() }
+
+// StatusOutput says "New output"
+// in the language of msgs.
+func (msgs Messages) StatusOutput() string {
+	return Catalog.Format(msgs.locale, "statusOutput", nil)
+}
+
+// StatusIdle says "Idle"
+// in the language the app shows.
+func StatusIdle() string { return In(i18n.Locale()).StatusIdle() }
+
+// StatusIdle says "Idle"
+// in the language of msgs.
+func (msgs Messages) StatusIdle() string {
+	return Catalog.Format(msgs.locale, "statusIdle", nil)
+}
+
+// StatusConnected says "Connected"
+// in the language the app shows.
+func StatusConnected() string { return In(i18n.Locale()).StatusConnected() }
+
+// StatusConnected says "Connected"
+// in the language of msgs.
+func (msgs Messages) StatusConnected() string {
+	return Catalog.Format(msgs.locale, "statusConnected", nil)
+}
+
+// PaneOfSplit says "Split {index}/{count}"
+// in the language the app shows.
+//
+// paneOfSplit
+func PaneOfSplit(index int, count int) string { return In(i18n.Locale()).PaneOfSplit(index, count) }
+
+// PaneOfSplit says "Split {index}/{count}"
+// in the language of msgs.
+//
+// paneOfSplit
+func (msgs Messages) PaneOfSplit(index int, count int) string {
+	return Catalog.Format(msgs.locale, "paneOfSplit", map[string]any{"index": index, "count": count})
+}
+
+// ActiveJustNow says "Just now"
+// in the language the app shows.
+func ActiveJustNow() string { return In(i18n.Locale()).ActiveJustNow() }
+
+// ActiveJustNow says "Just now"
+// in the language of msgs.
+func (msgs Messages) ActiveJustNow() string {
+	return Catalog.Format(msgs.locale, "activeJustNow", nil)
+}
+
+// ActiveMinutesAgo says "{minutes, plural, one {# min ago} other {# min ago}}"
+// in the language the app shows.
+//
+// activeMinutesAgo
+func ActiveMinutesAgo(minutes int) string { return In(i18n.Locale()).ActiveMinutesAgo(minutes) }
+
+// ActiveMinutesAgo says "{minutes, plural, one {# min ago} other {# min ago}}"
+// in the language of msgs.
+//
+// activeMinutesAgo
+func (msgs Messages) ActiveMinutesAgo(minutes int) string {
+	return Catalog.Format(msgs.locale, "activeMinutesAgo", map[string]any{"minutes": minutes})
+}
+
+// ActiveHoursAgo says "{hours, plural, one {# h ago} other {# h ago}}"
+// in the language the app shows.
+//
+// activeHoursAgo
+func ActiveHoursAgo(hours int) string { return In(i18n.Locale()).ActiveHoursAgo(hours) }
+
+// ActiveHoursAgo says "{hours, plural, one {# h ago} other {# h ago}}"
+// in the language of msgs.
+//
+// activeHoursAgo
+func (msgs Messages) ActiveHoursAgo(hours int) string {
+	return Catalog.Format(msgs.locale, "activeHoursAgo", map[string]any{"hours": hours})
+}
+
+// NoOutputYet says "No output yet"
+// in the language the app shows.
+func NoOutputYet() string { return In(i18n.Locale()).NoOutputYet() }
+
+// NoOutputYet says "No output yet"
+// in the language of msgs.
+func (msgs Messages) NoOutputYet() string {
+	return Catalog.Format(msgs.locale, "noOutputYet", nil)
+}
+
+// CreateWheelPeekHint says "Move to a sector, release {mod} to create"
+// in the language the app shows.
+//
+// createWheelPeekHint
+func CreateWheelPeekHint(mod string) string { return In(i18n.Locale()).CreateWheelPeekHint(mod) }
+
+// CreateWheelPeekHint says "Move to a sector, release {mod} to create"
+// in the language of msgs.
+//
+// createWheelPeekHint
+func (msgs Messages) CreateWheelPeekHint(mod string) string {
+	return Catalog.Format(msgs.locale, "createWheelPeekHint", map[string]any{"mod": mod})
+}
+
+// WheelStickyHint says "Click a sector, or use the arrows and Enter"
+// in the language the app shows.
+func WheelStickyHint() string { return In(i18n.Locale()).WheelStickyHint() }
+
+// WheelStickyHint says "Click a sector, or use the arrows and Enter"
+// in the language of msgs.
+func (msgs Messages) WheelStickyHint() string {
+	return Catalog.Format(msgs.locale, "wheelStickyHint", nil)
+}
+
+// WheelProject says "Project · {name}"
+// in the language the app shows.
+//
+// wheelProject
+func WheelProject(name string) string { return In(i18n.Locale()).WheelProject(name) }
+
+// WheelProject says "Project · {name}"
+// in the language of msgs.
+//
+// wheelProject
+func (msgs Messages) WheelProject(name string) string {
+	return Catalog.Format(msgs.locale, "wheelProject", map[string]any{"name": name})
+}
+
+// CreateAdvanced says "Advanced…"
+// in the language the app shows.
+func CreateAdvanced() string { return In(i18n.Locale()).CreateAdvanced() }
+
+// CreateAdvanced says "Advanced…"
+// in the language of msgs.
+func (msgs Messages) CreateAdvanced() string {
+	return Catalog.Format(msgs.locale, "createAdvanced", nil)
+}
+
+// CreateAdvancedSub says "Name, arguments, history"
+// in the language the app shows.
+func CreateAdvancedSub() string { return In(i18n.Locale()).CreateAdvancedSub() }
+
+// CreateAdvancedSub says "Name, arguments, history"
+// in the language of msgs.
+func (msgs Messages) CreateAdvancedSub() string {
+	return Catalog.Format(msgs.locale, "createAdvancedSub", nil)
+}
+
+// CreateLocalSub says "Local · this project"
+// in the language the app shows.
+func CreateLocalSub() string { return In(i18n.Locale()).CreateLocalSub() }
+
+// CreateLocalSub says "Local · this project"
+// in the language of msgs.
+func (msgs Messages) CreateLocalSub() string {
+	return Catalog.Format(msgs.locale, "createLocalSub", nil)
+}
+
+// CreateRemoteSub says "Remote · review first"
+// in the language the app shows.
+func CreateRemoteSub() string { return In(i18n.Locale()).CreateRemoteSub() }
+
+// CreateRemoteSub says "Remote · review first"
+// in the language of msgs.
+func (msgs Messages) CreateRemoteSub() string {
+	return Catalog.Format(msgs.locale, "createRemoteSub", nil)
+}
+
+// CreateSplitHint says "Hold {shift} when releasing to split beside the focused pane"
+// in the language the app shows.
+//
+// createSplitHint
+func CreateSplitHint(shift string) string { return In(i18n.Locale()).CreateSplitHint(shift) }
+
+// CreateSplitHint says "Hold {shift} when releasing to split beside the focused pane"
+// in the language of msgs.
+//
+// createSplitHint
+func (msgs Messages) CreateSplitHint(shift string) string {
+	return Catalog.Format(msgs.locale, "createSplitHint", map[string]any{"shift": shift})
+}
+
+// ToolReady says "Ready"
+// in the language the app shows.
+func ToolReady() string { return In(i18n.Locale()).ToolReady() }
+
+// ToolReady says "Ready"
+// in the language of msgs.
+func (msgs Messages) ToolReady() string {
+	return Catalog.Format(msgs.locale, "toolReady", nil)
+}
+
+// ToolNotInstalled says "Not installed · opens setup help"
+// in the language the app shows.
+func ToolNotInstalled() string { return In(i18n.Locale()).ToolNotInstalled() }
+
+// ToolNotInstalled says "Not installed · opens setup help"
+// in the language of msgs.
+func (msgs Messages) ToolNotInstalled() string {
+	return Catalog.Format(msgs.locale, "toolNotInstalled", nil)
+}
+
+// TagLocalAgent says "Local Agent"
+// in the language the app shows.
+func TagLocalAgent() string { return In(i18n.Locale()).TagLocalAgent() }
+
+// TagLocalAgent says "Local Agent"
+// in the language of msgs.
+func (msgs Messages) TagLocalAgent() string {
+	return Catalog.Format(msgs.locale, "tagLocalAgent", nil)
+}
+
+// TagRemoteAgent says "Remote Agent"
+// in the language the app shows.
+func TagRemoteAgent() string { return In(i18n.Locale()).TagRemoteAgent() }
+
+// TagRemoteAgent says "Remote Agent"
+// in the language of msgs.
+func (msgs Messages) TagRemoteAgent() string {
+	return Catalog.Format(msgs.locale, "tagRemoteAgent", nil)
+}
+
+// TagAdvanced says "Advanced"
+// in the language the app shows.
+func TagAdvanced() string { return In(i18n.Locale()).TagAdvanced() }
+
+// TagAdvanced says "Advanced"
+// in the language of msgs.
+func (msgs Messages) TagAdvanced() string {
+	return Catalog.Format(msgs.locale, "tagAdvanced", nil)
+}
+
+// ChooseProjectFirst says "Choose a project first"
+// in the language the app shows.
+func ChooseProjectFirst() string { return In(i18n.Locale()).ChooseProjectFirst() }
+
+// ChooseProjectFirst says "Choose a project first"
+// in the language of msgs.
+func (msgs Messages) ChooseProjectFirst() string {
+	return Catalog.Format(msgs.locale, "chooseProjectFirst", nil)
+}
+
+// SwitchProject says "Switch project"
+// in the language the app shows.
+func SwitchProject() string { return In(i18n.Locale()).SwitchProject() }
+
+// SwitchProject says "Switch project"
+// in the language of msgs.
+func (msgs Messages) SwitchProject() string {
+	return Catalog.Format(msgs.locale, "switchProject", nil)
+}
+
+// ProjectWheelPeekHint says "Move to a sector, release {mod} to switch"
+// in the language the app shows.
+//
+// projectWheelPeekHint
+func ProjectWheelPeekHint(mod string) string { return In(i18n.Locale()).ProjectWheelPeekHint(mod) }
+
+// ProjectWheelPeekHint says "Move to a sector, release {mod} to switch"
+// in the language of msgs.
+//
+// projectWheelPeekHint
+func (msgs Messages) ProjectWheelPeekHint(mod string) string {
+	return Catalog.Format(msgs.locale, "projectWheelPeekHint", map[string]any{"mod": mod})
+}
+
+// ProjectMore says "··· More"
+// in the language the app shows.
+func ProjectMore() string { return In(i18n.Locale()).ProjectMore() }
+
+// ProjectMore says "··· More"
+// in the language of msgs.
+func (msgs Messages) ProjectMore() string {
+	return Catalog.Format(msgs.locale, "projectMore", nil)
+}
+
+// ProjectMoreBadge says "Search / open"
+// in the language the app shows.
+func ProjectMoreBadge() string { return In(i18n.Locale()).ProjectMoreBadge() }
+
+// ProjectMoreBadge says "Search / open"
+// in the language of msgs.
+func (msgs Messages) ProjectMoreBadge() string {
+	return Catalog.Format(msgs.locale, "projectMoreBadge", nil)
+}
+
+// ProjectSearchTitle says "Search or open a project"
+// in the language the app shows.
+func ProjectSearchTitle() string { return In(i18n.Locale()).ProjectSearchTitle() }
+
+// ProjectSearchTitle says "Search or open a project"
+// in the language of msgs.
+func (msgs Messages) ProjectSearchTitle() string {
+	return Catalog.Format(msgs.locale, "projectSearchTitle", nil)
+}
+
+// ProjectSearchPlaceholder says "Project name or path…"
+// in the language the app shows.
+func ProjectSearchPlaceholder() string { return In(i18n.Locale()).ProjectSearchPlaceholder() }
+
+// ProjectSearchPlaceholder says "Project name or path…"
+// in the language of msgs.
+func (msgs Messages) ProjectSearchPlaceholder() string {
+	return Catalog.Format(msgs.locale, "projectSearchPlaceholder", nil)
+}
+
+// ProjectOpenFolder says "Open folder…"
+// in the language the app shows.
+func ProjectOpenFolder() string { return In(i18n.Locale()).ProjectOpenFolder() }
+
+// ProjectOpenFolder says "Open folder…"
+// in the language of msgs.
+func (msgs Messages) ProjectOpenFolder() string {
+	return Catalog.Format(msgs.locale, "projectOpenFolder", nil)
+}
+
+// ProjectSearchNoMatch says "No match · Enter opens the path"
+// in the language the app shows.
+func ProjectSearchNoMatch() string { return In(i18n.Locale()).ProjectSearchNoMatch() }
+
+// ProjectSearchNoMatch says "No match · Enter opens the path"
+// in the language of msgs.
+func (msgs Messages) ProjectSearchNoMatch() string {
+	return Catalog.Format(msgs.locale, "projectSearchNoMatch", nil)
+}
+
+// ProjectEmptySlot says "Empty"
+// in the language the app shows.
+func ProjectEmptySlot() string { return In(i18n.Locale()).ProjectEmptySlot() }
+
+// ProjectEmptySlot says "Empty"
+// in the language of msgs.
+func (msgs Messages) ProjectEmptySlot() string {
+	return Catalog.Format(msgs.locale, "projectEmptySlot", nil)
+}
+
+// ProjectLastAgent says "Last agent: {agent}"
+// in the language the app shows.
+//
+// projectLastAgent
+func ProjectLastAgent(agent string) string { return In(i18n.Locale()).ProjectLastAgent(agent) }
+
+// ProjectLastAgent says "Last agent: {agent}"
+// in the language of msgs.
+//
+// projectLastAgent
+func (msgs Messages) ProjectLastAgent(agent string) string {
+	return Catalog.Format(msgs.locale, "projectLastAgent", map[string]any{"agent": agent})
+}
+
+// ProjectLastAgentNone says "No agent yet"
+// in the language the app shows.
+func ProjectLastAgentNone() string { return In(i18n.Locale()).ProjectLastAgentNone() }
+
+// ProjectLastAgentNone says "No agent yet"
+// in the language of msgs.
+func (msgs Messages) ProjectLastAgentNone() string {
+	return Catalog.Format(msgs.locale, "projectLastAgentNone", nil)
+}
+
+// ProjectCurrent says "Current · {name}"
+// in the language the app shows.
+//
+// projectCurrent
+func ProjectCurrent(name string) string { return In(i18n.Locale()).ProjectCurrent(name) }
+
+// ProjectCurrent says "Current · {name}"
+// in the language of msgs.
+//
+// projectCurrent
+func (msgs Messages) ProjectCurrent(name string) string {
+	return Catalog.Format(msgs.locale, "projectCurrent", map[string]any{"name": name})
+}
+
+// ProjectAgents says "{count, plural, =0 {No agents} one {# agent} other {# agents}}"
+// in the language the app shows.
+//
+// projectAgents
+func ProjectAgents(count int) string { return In(i18n.Locale()).ProjectAgents(count) }
+
+// ProjectAgents says "{count, plural, =0 {No agents} one {# agent} other {# agents}}"
+// in the language of msgs.
+//
+// projectAgents
+func (msgs Messages) ProjectAgents(count int) string {
+	return Catalog.Format(msgs.locale, "projectAgents", map[string]any{"count": count})
+}
+
+// ProjectDetached says "Detached at {commit}"
+// in the language the app shows.
+//
+// projectDetached
+func ProjectDetached(commit string) string { return In(i18n.Locale()).ProjectDetached(commit) }
+
+// ProjectDetached says "Detached at {commit}"
+// in the language of msgs.
+//
+// projectDetached
+func (msgs Messages) ProjectDetached(commit string) string {
+	return Catalog.Format(msgs.locale, "projectDetached", map[string]any{"commit": commit})
+}
+
+// ProjectNotRepository says "Not a Git repository"
+// in the language the app shows.
+func ProjectNotRepository() string { return In(i18n.Locale()).ProjectNotRepository() }
+
+// ProjectNotRepository says "Not a Git repository"
+// in the language of msgs.
+func (msgs Messages) ProjectNotRepository() string {
+	return Catalog.Format(msgs.locale, "projectNotRepository", nil)
+}
+
+// ProjectLanguageTag says "{language} project"
+// in the language the app shows.
+//
+// projectLanguageTag
+func ProjectLanguageTag(language string) string {
+	return In(i18n.Locale()).ProjectLanguageTag(language)
+}
+
+// ProjectLanguageTag says "{language} project"
+// in the language of msgs.
+//
+// projectLanguageTag
+func (msgs Messages) ProjectLanguageTag(language string) string {
+	return Catalog.Format(msgs.locale, "projectLanguageTag", map[string]any{"language": language})
+}
+
+// LanguageOther says "Project"
+// in the language the app shows.
+func LanguageOther() string { return In(i18n.Locale()).LanguageOther() }
+
+// LanguageOther says "Project"
+// in the language of msgs.
+func (msgs Messages) LanguageOther() string {
+	return Catalog.Format(msgs.locale, "languageOther", nil)
+}
+
+// BarProject says "Project {name}"
+// in the language the app shows.
+//
+// barProject
+func BarProject(name string) string { return In(i18n.Locale()).BarProject(name) }
+
+// BarProject says "Project {name}"
+// in the language of msgs.
+//
+// barProject
+func (msgs Messages) BarProject(name string) string {
+	return Catalog.Format(msgs.locale, "barProject", map[string]any{"name": name})
+}
+
+// BarAgent says "Agent {name}"
+// in the language the app shows.
+//
+// barAgent
+func BarAgent(name string) string { return In(i18n.Locale()).BarAgent(name) }
+
+// BarAgent says "Agent {name}"
+// in the language of msgs.
+//
+// barAgent
+func (msgs Messages) BarAgent(name string) string {
+	return Catalog.Format(msgs.locale, "barAgent", map[string]any{"name": name})
+}
+
+// BarNoProject says "No project open"
+// in the language the app shows.
+func BarNoProject() string { return In(i18n.Locale()).BarNoProject() }
+
+// BarNoProject says "No project open"
+// in the language of msgs.
+func (msgs Messages) BarNoProject() string {
+	return Catalog.Format(msgs.locale, "barNoProject", nil)
+}
+
+// BarNoAgent says "No agent"
+// in the language the app shows.
+func BarNoAgent() string { return In(i18n.Locale()).BarNoAgent() }
+
+// BarNoAgent says "No agent"
+// in the language of msgs.
+func (msgs Messages) BarNoAgent() string {
+	return Catalog.Format(msgs.locale, "barNoAgent", nil)
+}
+
+// BarOperations says "{count, plural, one {# operation running} other {# operations running}}"
+// in the language the app shows.
+//
+// barOperations
+func BarOperations(count int) string { return In(i18n.Locale()).BarOperations(count) }
+
+// BarOperations says "{count, plural, one {# operation running} other {# operations running}}"
+// in the language of msgs.
+//
+// barOperations
+func (msgs Messages) BarOperations(count int) string {
+	return Catalog.Format(msgs.locale, "barOperations", map[string]any{"count": count})
+}
+
+// LanguageGo says "Go"
+// in the language the app shows.
+func LanguageGo() string { return In(i18n.Locale()).LanguageGo() }
+
+// LanguageGo says "Go"
+// in the language of msgs.
+func (msgs Messages) LanguageGo() string {
+	return Catalog.Format(msgs.locale, "languageGo", nil)
+}
+
+// LanguageRust says "Rust"
+// in the language the app shows.
+func LanguageRust() string { return In(i18n.Locale()).LanguageRust() }
+
+// LanguageRust says "Rust"
+// in the language of msgs.
+func (msgs Messages) LanguageRust() string {
+	return Catalog.Format(msgs.locale, "languageRust", nil)
+}
+
+// LanguageTypeScript says "TypeScript"
+// in the language the app shows.
+func LanguageTypeScript() string { return In(i18n.Locale()).LanguageTypeScript() }
+
+// LanguageTypeScript says "TypeScript"
+// in the language of msgs.
+func (msgs Messages) LanguageTypeScript() string {
+	return Catalog.Format(msgs.locale, "languageTypeScript", nil)
+}
+
+// LanguageJavaScript says "JavaScript"
+// in the language the app shows.
+func LanguageJavaScript() string { return In(i18n.Locale()).LanguageJavaScript() }
+
+// LanguageJavaScript says "JavaScript"
+// in the language of msgs.
+func (msgs Messages) LanguageJavaScript() string {
+	return Catalog.Format(msgs.locale, "languageJavaScript", nil)
+}
+
+// LanguagePython says "Python"
+// in the language the app shows.
+func LanguagePython() string { return In(i18n.Locale()).LanguagePython() }
+
+// LanguagePython says "Python"
+// in the language of msgs.
+func (msgs Messages) LanguagePython() string {
+	return Catalog.Format(msgs.locale, "languagePython", nil)
+}
+
+// LanguageSwift says "Swift"
+// in the language the app shows.
+func LanguageSwift() string { return In(i18n.Locale()).LanguageSwift() }
+
+// LanguageSwift says "Swift"
+// in the language of msgs.
+func (msgs Messages) LanguageSwift() string {
+	return Catalog.Format(msgs.locale, "languageSwift", nil)
+}
+
+// LanguageCpp says "C/C++"
+// in the language the app shows.
+func LanguageCpp() string { return In(i18n.Locale()).LanguageCpp() }
+
+// LanguageCpp says "C/C++"
+// in the language of msgs.
+func (msgs Messages) LanguageCpp() string {
+	return Catalog.Format(msgs.locale, "languageCpp", nil)
+}
+
+// ToolNameClaude says "Claude"
+// in the language the app shows.
+func ToolNameClaude() string { return In(i18n.Locale()).ToolNameClaude() }
+
+// ToolNameClaude says "Claude"
+// in the language of msgs.
+func (msgs Messages) ToolNameClaude() string {
+	return Catalog.Format(msgs.locale, "toolNameClaude", nil)
+}
+
+// ToolNameCodex says "Codex"
+// in the language the app shows.
+func ToolNameCodex() string { return In(i18n.Locale()).ToolNameCodex() }
+
+// ToolNameCodex says "Codex"
+// in the language of msgs.
+func (msgs Messages) ToolNameCodex() string {
+	return Catalog.Format(msgs.locale, "toolNameCodex", nil)
+}
+
+// ToolNameFclaude says "fclaude"
+// in the language the app shows.
+func ToolNameFclaude() string { return In(i18n.Locale()).ToolNameFclaude() }
+
+// ToolNameFclaude says "fclaude"
+// in the language of msgs.
+func (msgs Messages) ToolNameFclaude() string {
+	return Catalog.Format(msgs.locale, "toolNameFclaude", nil)
 }

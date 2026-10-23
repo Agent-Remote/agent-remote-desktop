@@ -29,7 +29,7 @@ func TestInitWizardRunsOrderedSafeReadinessFlow(t *testing.T) {
 	t.Cleanup(func() { _ = a.Close() })
 	tt := ui.NewTester(a.View, 1100, 850)
 	tt.SetLocale("en")
-	if err := tt.Click(locales.InitWizardTitle()); err != nil {
+	if err := openPage(tt, locales.InitWizardTitle()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.LoginServer()); err != nil {
@@ -84,7 +84,7 @@ func TestInitWizardRequiresSeparateWireGuardPlanConfirmation(t *testing.T) {
 	t.Cleanup(func() { _ = a.Close() })
 	tt := ui.NewTester(a.View, 1100, 850)
 	tt.SetLocale("en")
-	if err := tt.Click(locales.InitWizardTitle()); err != nil {
+	if err := openPage(tt, locales.InitWizardTitle()); err != nil {
 		t.Fatal(err)
 	}
 	for _, input := range []struct{ label, value string }{{locales.LoginServer(), "https://test.invalid"}, {locales.LoginUsername(), "desktop-user"}, {locales.LoginPassword(), "private-login-password"}} {
@@ -135,7 +135,7 @@ func TestInitWizardDoesNotAuthenticateAfterIncompleteLocalSetup(t *testing.T) {
 	t.Cleanup(func() { _ = a.Close() })
 	tt := ui.NewTester(a.View, 1100, 850)
 	tt.SetLocale("en")
-	if err := tt.Click(locales.InitWizardTitle()); err != nil {
+	if err := openPage(tt, locales.InitWizardTitle()); err != nil {
 		t.Fatal(err)
 	}
 	for _, input := range []struct{ label, value string }{{locales.LoginServer(), "https://test.invalid"}, {locales.LoginUsername(), "desktop-user"}, {locales.LoginPassword(), "private-login-password"}} {

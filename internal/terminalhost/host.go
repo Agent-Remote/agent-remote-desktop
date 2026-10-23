@@ -20,6 +20,7 @@ import (
 	"github.com/charmbracelet/x/xpty"
 	"github.com/egoist/mygo/plugins/terminal"
 	"github.com/egoist/mygo/transfer"
+	"github.com/egoist/mygo/ui"
 )
 
 // ErrStopTimeout leaves the process and terminal intact until explicit force approval.
@@ -38,17 +39,41 @@ type Host struct {
 	attachmentLimits   attachment.Limits
 	titleMu            sync.RWMutex
 	title              string
+	// lastOutput is when the program last wrote, in Unix nanoseconds. It is
+	// the only activity signal the workbench shows: output arriving is a
+	// fact, whereas "thinking" or "waiting" cannot be told from a PTY.
+	lastOutput atomic.Int64
+}
+
+// Options are the workbench hooks of a terminal. OnKey runs on the main
+// thread before the terminal encodes a key and takes it by returning true:
+// neither the key nor the text it types reaches the program (R0 showed that
+// a window shortcut alone leaks Option text on macOS).
+type Options struct {
+	OnKey func(mods ui.Modifiers, key ui.Key) bool
 }
 
 // conn closes only the stream. Terminal.Close must not decide process policy.
 type conn struct {
 	xpty.Pty
 	once sync.Once
+	read func(n int)
+}
+
+func (c *conn) Read(p []byte) (int, error) {
+	n, err := c.Pty.Read(p)
+	if n > 0 && c.read != nil {
+		c.read(n)
+	}
+	return n, err
 }
 
 func (c *conn) Close() error { var err error; c.once.Do(func() { err = c.Pty.Close() }); return err }
 
-func New(command session.Command) (*Host, error) {
+func New(command session.Command) (*Host, error) { return NewWithOptions(command, Options{}) }
+
+// NewWithOptions starts command with the workbench's terminal hooks.
+func NewWithOptions(command session.Command, hooks Options) (*Host, error) {
 	if len(command.Argv) == 0 {
 		return nil, fault.ExecutableMissing
 	}
@@ -62,7 +87,7 @@ func New(command session.Command) (*Host, error) {
 	configureProcess(cmd)
 	h := &Host{pty: p, cmd: cmd, done: make(chan struct{}), attachmentTransfer: command.Remote && command.AttachmentTransfer, attachmentLimits: command.AttachmentLimits}
 	h.exit.Store(-1)
-	stream := &conn{Pty: p}
+	stream := &conn{Pty: p, read: func(int) { h.lastOutput.Store(time.Now().UnixNano()) }}
 	// Keep arbitrary OSC 52/5522 reads denied, including for exact remote
 	// sessions. PasteData offers are answered independently by mygo when the
 	// user explicitly pastes or drops a payload, so the fclaude attachment
@@ -77,6 +102,7 @@ func New(command session.Command) (*Host, error) {
 		// OSC title. Keep that transient status at the host boundary so the
 		// workbench can show it without persisting terminal-controlled text.
 		OnTitle: h.setTitle,
+		OnKey:   hooks.OnKey,
 	}
 	if command.Remote && !command.AttachmentTransfer {
 		// A remote terminal without the exact attachment contract remains
@@ -183,7 +209,15 @@ func environment(base, overrides []string) []string {
 }
 
 func (h *Host) Done() <-chan struct{} { return h.done }
-func (h *Host) ExitCode() int         { return int(h.exit.Load()) }
+
+// LastOutput is when the program last wrote to the terminal; zero if never.
+func (h *Host) LastOutput() time.Time {
+	if n := h.lastOutput.Load(); n != 0 {
+		return time.Unix(0, n)
+	}
+	return time.Time{}
+}
+func (h *Host) ExitCode() int { return int(h.exit.Load()) }
 
 // Title returns the latest transient OSC title emitted by the managed
 // program. It is presentation state only: callers must not use it as an

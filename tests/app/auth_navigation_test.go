@@ -20,31 +20,31 @@ func TestLoginOperationRemainsReachableAcrossNavigationUntilAcknowledged(t *test
 	}
 	waitRemoteText(t, tt, "ABCD-1234")
 	for _, label := range []string{locales.Settings(), locales.LoginOperationStatus()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
 	if !tt.HasText("ABCD-1234") || !tt.HasText(locales.StopLoginWaiting()) {
 		t.Fatal("navigation lost live authorization")
 	}
-	if err := tt.Click(locales.Settings()); err != nil {
+	if err := openPage(tt, locales.Settings()); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(approved, nil, 0600); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.LoginOperationStatus()); err != nil {
+	if err := openPage(tt, locales.LoginOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.LoginCompleted())
 	// A completed receipt also remains reachable when the sidebar is hidden.
 	for _, label := range []string{locales.Settings(), locales.Focus(), locales.SearchWorkbench()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
 	tt.Type(locales.LoginOperationStatus())
-	if err := tt.Click(locales.LoginOperationStatus()); err != nil {
+	if err := tt.Click(locales.LoginOperationStatus()); err != nil { // the palette's item
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.LoginCompleted()) || tt.HasText(locales.ConfirmLogin()) {
@@ -54,7 +54,7 @@ func TestLoginOperationRemainsReachableAcrossNavigationUntilAcknowledged(t *test
 	if strings.Count(string(calls), "login.device_code\n") != 1 {
 		t.Fatalf("navigation restarted login: %q", calls)
 	}
-	if err := tt.Click(locales.Focus()); err != nil {
+	if err := toggleFocusMode(tt); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.ReturnRemoteManagement()); err != nil {
@@ -80,7 +80,7 @@ func TestLogoutOperationRetainsResultsAndCancelAcrossNavigation(t *testing.T) {
 				t.Fatal(err)
 			}
 			for _, label := range []string{locales.Settings(), locales.LogoutOperationStatus()} {
-				if err := tt.Click(label); err != nil {
+				if err := navigate(tt, label); err != nil {
 					t.Fatal(err)
 				}
 			}
@@ -97,7 +97,7 @@ func TestLogoutOperationRetainsResultsAndCancelAcrossNavigation(t *testing.T) {
 			}
 			waitRemoteText(t, tt, want)
 			for _, label := range []string{locales.Settings(), locales.LogoutOperationStatus()} {
-				if err := tt.Click(label); err != nil {
+				if err := navigate(tt, label); err != nil {
 					t.Fatal(err)
 				}
 			}

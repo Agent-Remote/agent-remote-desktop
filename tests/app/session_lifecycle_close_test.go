@@ -44,18 +44,22 @@ func TestClosePersistsFinalLocalExitCode(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 900, 600)
+	// The empty project opens the ⌥C wheel; its Codex sector starts at once.
 	if err := tester.Click(locales.NewProjectSession()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tester.Click(locales.StartSession()); err != nil {
+	settle(tester)
+	if err := tester.Click(locales.ToolNameCodex()); err != nil {
 		t.Fatal(err)
 	}
+	// A live pane shows its chip; the sidebar's "Running" row is gone (R2).
+	running := func() bool { return tester.HasText(locales.LocalTool("codex")) && !tester.HasText(locales.Starting()) }
 	deadline := time.Now().Add(10 * time.Second)
-	for !tester.HasText(locales.Running()) && time.Now().Before(deadline) {
+	for !running() && time.Now().Before(deadline) {
 		tester.Frame()
 		time.Sleep(20 * time.Millisecond)
 	}
-	if !tester.HasText(locales.Running()) {
+	if !running() {
 		t.Fatalf("local Agent did not reach running state (ready=%v required=%v starting=%v)", tester.HasText(locales.ProviderReady("codex")), tester.HasText(locales.ProviderRequired("codex")), tester.HasText(locales.Starting()))
 	}
 	// Ensure the fixture has installed its TERM trap before explicit quit. The

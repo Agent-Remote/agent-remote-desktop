@@ -67,7 +67,7 @@ func TestSyncRecoveryKeepsOriginalResultAndSeparatelyReviewsNewRelation(t *testi
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.SyncOperationStatus()); err != nil {
+	if err := openPage(tt, locales.SyncOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.SyncRecoveryReceipt()) || !tt.HasText(locales.SyncOutcome("partial")) {
@@ -164,7 +164,7 @@ func TestSyncRecoveryCancellationAndPartialKeepScopeWithoutReplay(t *testing.T) 
 			if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 				t.Fatal(err)
 			}
-			if err := tt.Click(locales.SyncOperationStatus()); err != nil {
+			if err := openPage(tt, locales.SyncOperationStatus()); err != nil {
 				t.Fatal(err)
 			}
 			if !tt.HasText(locales.SyncField("mutagen_identifier", "sync_exact_old")) {
@@ -179,7 +179,7 @@ func TestSyncRecoveryCancellationAndPartialKeepScopeWithoutReplay(t *testing.T) 
 func TestSyncRecoveryReviewInvalidatesOnProjectChange(t *testing.T) {
 	tt, log := syncTester(t, "en")
 	openSyncRecovery(t, tt, "")
-	if err := tt.Click("Second project"); err != nil {
+	if err := openProject(tt, "Second project"); err != nil {
 		t.Fatal(err)
 	}
 	tt.Frame()

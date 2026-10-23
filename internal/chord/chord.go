@@ -99,6 +99,12 @@ func (r *Recognizer) FocusLost() Outcome {
 	return None
 }
 
+// Show opens layer sticky without a held chord, as ⌘T, a click or a menu
+// does. It replaces any gesture in progress.
+func (r *Recognizer) Show(layer string) {
+	*r = Recognizer{Phase: Sticky, Layer: layer}
+}
+
 // Cancel closes the gesture (Escape, click outside, explicit commit).
 func (r *Recognizer) Cancel() Outcome {
 	if r.Phase == Idle {

@@ -28,7 +28,7 @@ func TestOperationJournalIsShownAfterApplicationRestart(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 900, 600)
-	if err := tester.Click(locales.OperationsSidebar()); err != nil {
+	if err := openPage(tester, locales.OperationsSidebar()); err != nil {
 		t.Fatal(err)
 	}
 	if !tester.HasText(locales.OperationSync()) || !tester.HasText(locales.OperationAttention()) {
@@ -103,7 +103,7 @@ func TestDedicatedOperationRestoresAttentionWithoutReceiptAndClearsSafely(t *tes
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 900, 600)
-	if err := tester.Click(locales.OperationsSidebar()); err != nil {
+	if err := openPage(tester, locales.OperationsSidebar()); err != nil {
 		t.Fatal(err)
 	}
 	if !tester.HasText(locales.DedicatedOperationTitle("agent-remote skill retry")) || !tester.HasText(locales.OperationAttention()) {

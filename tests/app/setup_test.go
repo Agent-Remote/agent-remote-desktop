@@ -36,7 +36,7 @@ func setupTester(t *testing.T, mode, language string) (*ui.Tester, *app.App, str
 	tt := ui.NewTester(a.View, 900, 600)
 	tt.SetLocale(language)
 	for _, label := range []string{locales.DiagnosticsTitle(), locales.LocalSetupTitle()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -137,10 +137,10 @@ func TestLocalSetupUnknownAndPartialResultsAreNotRetried(t *testing.T) {
 			if tt.HasText(locales.ConfirmLocalSetup()) || tt.HasText(locales.LocalSetupComplete()) {
 				t.Fatal("unknown/partial result offered duplicate or complete outcome")
 			}
-			if err := tt.Click(locales.Settings()); err != nil {
+			if err := openPage(tt, locales.Settings()); err != nil {
 				t.Fatal(err)
 			}
-			if err := tt.Click(locales.LocalSetupOperationStatus()); err != nil {
+			if err := openPage(tt, locales.LocalSetupOperationStatus()); err != nil {
 				t.Fatal(err)
 			}
 			if !tt.HasText(want) {
@@ -165,30 +165,30 @@ func TestLocalSetupContinuesAcrossPagesAndAcknowledgmentRefreshesDiagnostics(t *
 	}
 	waitFixtureFile(t, tt, started)
 	for _, label := range []string{locales.Settings(), locales.LocalSetupOperationStatus()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
 	if !tt.HasText(locales.LocalSetupBusy()) {
 		t.Fatal("navigation lost operation")
 	}
-	if err := tt.Click(locales.Settings()); err != nil {
+	if err := openPage(tt, locales.Settings()); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(release, nil, 0600); err != nil {
 		t.Fatal(err)
 	}
 	for _, label := range []string{locales.Focus(), locales.SearchWorkbench()} {
-		if err := tt.Click(label); err != nil {
+		if err := navigate(tt, label); err != nil {
 			t.Fatal(err)
 		}
 	}
 	tt.Type(locales.LocalSetupOperationStatus())
-	if err := tt.Click(locales.LocalSetupOperationStatus()); err != nil {
+	if err := tt.Click(locales.LocalSetupOperationStatus()); err != nil { // the palette's item
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.LocalSetupComplete())
-	if err := tt.Click(locales.Focus()); err != nil {
+	if err := toggleFocusMode(tt); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.ReturnDiagnostics()); err != nil {
@@ -260,7 +260,7 @@ func TestLocalSetupDiscardsInFlightDiagnostics(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitFixtureFile(t, tt, mutationStarted)
-	if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.DiagnosticsSuggestion("repair_installation"))
@@ -271,7 +271,7 @@ func TestLocalSetupDiscardsInFlightDiagnostics(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitFixtureFile(t, tt, started)
-	if err := tt.Click(locales.LocalSetupOperationStatus()); err != nil {
+	if err := openPage(tt, locales.LocalSetupOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.WriteFile(complete, nil, 0600); err != nil {
@@ -312,7 +312,7 @@ func TestLocalSetupPreflightCancelFromSearchLoadsDiagnostics(t *testing.T) {
 		}
 	})
 	tt := ui.NewTester(a.View, 900, 600)
-	if err := tt.Click(locales.SearchWorkbench()); err != nil {
+	if err := openSearch(tt); err != nil {
 		t.Fatal(err)
 	}
 	tt.Type(locales.LocalSetupTitle())
@@ -376,7 +376,7 @@ func TestLocalSetupCompletionRefreshesAlreadyIdleDiagnostics(t *testing.T) {
 		t.Fatal(err)
 	}
 	waitFixtureFile(t, tt, started)
-	if err := tt.Click(locales.DiagnosticsTitle()); err != nil {
+	if err := openPage(tt, locales.DiagnosticsTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.DiagnosticsSuggestion("repair_installation"))
@@ -408,7 +408,7 @@ func TestLocalSetupCompletionRefreshesAlreadyIdleDiagnostics(t *testing.T) {
 	if strings.Count(string(calls), "setup.local\n") != 1 {
 		t.Fatalf("setup was repeated: %q", calls)
 	}
-	if err := tt.Click(locales.LocalSetupOperationStatus()); err != nil {
+	if err := openPage(tt, locales.LocalSetupOperationStatus()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.LocalSetupComplete()) {
@@ -430,7 +430,7 @@ func TestLocalSetupCapabilitiesChangedAfterReviewShowUnsupportedWithoutRetry(t *
 				t.Fatal("unsupported CLI was shown as a protocol failure or offered a retry")
 			}
 			for _, label := range []string{locales.Settings(), locales.LocalSetupOperationStatus()} {
-				if err := tt.Click(label); err != nil {
+				if err := navigate(tt, label); err != nil {
 					t.Fatal(err)
 				}
 			}

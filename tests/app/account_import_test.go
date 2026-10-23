@@ -92,7 +92,7 @@ func TestAccountImportExplicitLocalReadsAndSeparateServerConfirmations(t *testin
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.AccountImportRecoveryTitle()); err != nil {
+	if err := openPage(tt, locales.AccountImportRecoveryTitle()); err != nil {
 		t.Fatal(err)
 	}
 	if !tt.HasText(locales.AccountImportPhase("accepted")) {
@@ -164,7 +164,7 @@ func TestAccountImportUnknownKeepsOriginalRequestAcrossRestart(t *testing.T) {
 		t.Fatal(err)
 	}
 	tt := ui.NewTester(a.View, 900, 600)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -204,13 +204,13 @@ func TestAccountImportUnknownKeepsOriginalRequestAcrossRestart(t *testing.T) {
 	restored := ui.NewTester(b.View, 900, 600)
 	log := filepath.Join(t.TempDir(), "calls")
 	t.Setenv("DESKTOP_TEST_CLI_LOG", log)
-	if err := restored.Click(locales.SearchWorkbench()); err != nil {
+	if err := openSearch(restored); err != nil {
 		t.Fatal(err)
 	}
 	// Filter the palette before clicking: recovery may be below the initial
 	// viewport once new commands are registered.
 	restored.Type(locales.AccountImportRecoveryTitle())
-	if err := restored.Click(locales.AccountImportRecoveryTitle()); err != nil {
+	if err := restored.Click(locales.AccountImportRecoveryTitle()); err != nil { // the palette's item
 		t.Fatal(err)
 	}
 	waitRemoteText(t, restored, locales.AccountImportRequest(ref.RequestID))
@@ -234,7 +234,7 @@ func TestAccountImportUnknownKeepsOriginalRequestAcrossRestart(t *testing.T) {
 		t.Fatalf("recovery reread/uploaded %s", calls)
 	}
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "")
-	if err := restored.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(restored, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, restored, "11111111-1111-4111-8111-111111111111")
@@ -316,7 +316,7 @@ func TestAccountImportCancellationKeepsOriginalKeyWithoutReplay(t *testing.T) {
 	if err := tt.Click(locales.ReturnWorkbench()); err != nil {
 		t.Fatal(err)
 	}
-	if err := tt.Click(locales.AccountImportRecoveryTitle()); err != nil {
+	if err := openPage(tt, locales.AccountImportRecoveryTitle()); err != nil {
 		t.Fatal(err)
 	}
 	if err := tt.Click(locales.AccountImportStopWaiting()); err != nil {
@@ -358,7 +358,7 @@ func TestAccountImportManagedSkillsRequiresExplicitForgetAndSelection(t *testing
 	}
 	waitRemoteText(t, tt, locales.AccountImportNoPending())
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "")
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.AccountDetailsTitle())

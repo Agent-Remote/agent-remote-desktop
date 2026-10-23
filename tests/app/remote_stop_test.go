@@ -47,7 +47,7 @@ func TestRemoteStopUnknownQueriesOriginalCallerKey(t *testing.T) {
 	}
 	defer a.Close()
 	tt := ui.NewTester(a.View, 1100, 820)
-	if err := tt.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tt, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteStopText(t, tt, "11111111-1111-4111-8111-111111111111")
@@ -97,7 +97,7 @@ func TestRemoteStopRecoverySurvivesRestartAndQueriesOriginalKey(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 1100, 820)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteStopText(t, tester, "11111111-1111-4111-8111-111111111111")
@@ -138,7 +138,7 @@ func TestRemoteStopRecoverySurvivesRestartAndQueriesOriginalKey(t *testing.T) {
 	}
 	defer reopened.Close()
 	ret := ui.NewTester(reopened.View, 1100, 820)
-	if err := ret.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(ret, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteStopText(t, ret, locales.RemoteStopRecovery())
@@ -181,7 +181,7 @@ func TestRemoteStopRecoveryPointerSurvivesOpeningNewReview(t *testing.T) {
 		t.Fatal(err)
 	}
 	tester := ui.NewTester(a.View, 1100, 820)
-	if err := tester.Click(locales.RemoteManagement()); err != nil {
+	if err := openPage(tester, locales.RemoteManagement()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteStopText(t, tester, "11111111-1111-4111-8111-111111111111")

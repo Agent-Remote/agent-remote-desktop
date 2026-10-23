@@ -8,7 +8,7 @@ import (
 
 func TestCapabilitiesRoutesDoctorToReviewedWorkflow(t *testing.T) {
 	_, tt, _ := capabilityTester(t, "en")
-	if err := tt.Click(locales.CapabilitiesTitle()); err != nil {
+	if err := openPage(tt, locales.CapabilitiesTitle()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.CapabilitiesState("unverified"))

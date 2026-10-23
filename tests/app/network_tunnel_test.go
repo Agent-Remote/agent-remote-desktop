@@ -65,7 +65,7 @@ func TestTunnelPreviewIsExplicitAndPreservesSelectedScope(t *testing.T) {
 				if !tt.HasText(locales.WireGuardTunnelPreviewOnly()) {
 					t.Fatal("preview concealed execution prerequisite")
 				}
-				if err := tt.Click(locales.Settings()); err != nil {
+				if err := openPage(tt, locales.Settings()); err != nil {
 					t.Fatal(err)
 				}
 				openNetworkSearch(t, tt)
@@ -181,7 +181,7 @@ func TestTunnelApplyCancellationIsUnknownAndInvalidatesReviewedPlan(t *testing.T
 	if tt.HasText(locales.WireGuardTunnelApply()) {
 		t.Fatal("cancelled tunnel mutation left the reviewed apply action available")
 	}
-	if err := tt.Click(locales.OperationsSidebar()); err != nil {
+	if err := openPage(tt, locales.OperationsSidebar()); err != nil {
 		t.Fatal(err)
 	}
 	waitRemoteText(t, tt, locales.OperationTunnel())

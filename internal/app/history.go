@@ -134,13 +134,15 @@ func (a *App) recoveryDialog(c *ui.Context) {
 }
 
 func (a *App) savedPane(c *ui.Context, saved workspace.Session) {
-	ui.Column(c.Key(saved.ID)).Fill().MinWidth(0).MinHeight(0).Padding(20).Gap(14).Background(c.Theme().Surface).Radius(10).Children(func() {
+	// The pane itself takes the keyboard, so chords work while it is focused.
+	ui.Column(c.Key(saved.ID)).Fill().MinWidth(0).MinHeight(0).Padding(20).Gap(14).Background(c.Theme().Surface).Radius(16).Border(1, c.Theme().Border).
+		FocusBind(&a.focusValue, saved.ID).HandleInput(a.rootKey).Children(func() {
 		ui.Row(c).Gap(8).Children(func() {
 			label := locales.LocalTool(saved.Tool)
 			if session.Tool(saved.Tool).IsRemote() {
 				label = locales.RemoteTool(saved.Tool)
 			}
-			ui.Button(c, label).OnClick(func() { a.focusPane(saved.ID, true) }).FocusBind(&a.focusValue, saved.ID)
+			ui.Button(c, label).OnClick(func() { a.focusPane(saved.ID, true) })
 			ui.Spacer(c)
 			ui.Button(c, locales.Hide()).OnClick(func() { a.hideSession(saved.ID) })
 		})

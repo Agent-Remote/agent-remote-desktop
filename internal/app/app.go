@@ -6,6 +6,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/Agent-Remote/agent-remote-desktop/internal/chord"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/chrome"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/cliadapter"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/platform"
@@ -66,6 +67,7 @@ type App struct {
 	tools               []toolLocation
 	focusValue          string
 	shownTheme          string // stored theme ID on screen this frame (theme.Resolve)
+	layers              layerState
 	layoutSaveAt        time.Time
 	recoverID           string
 	recoverReference    string
@@ -197,8 +199,11 @@ func NewWithOptions(home string, options Options) (*App, error) {
 	a.network.forwardRunners = make(map[string]*remote.ForwardRunner)
 	a.network.forwardContexts = make(map[string]cliadapter.ConfigContext)
 	a.sessions = session.New(func(cmd session.Command) (session.Process, error) {
-		return terminalhost.New(cmd)
+		// The terminal takes ⌥A/C/X/S before it encodes them, so the chord
+		// opens a layer and the program receives nothing (R0 evidence).
+		return terminalhost.NewWithOptions(cmd, terminalhost.Options{OnKey: a.chordPress})
 	})
+	a.layers.probes = workspace.NewProbeCache(30*time.Second, a.invalidate)
 	a.restoreFocus()
 	go a.saveWorker()
 	if recoveredOperation || recoveredDedicated {
@@ -266,6 +271,12 @@ func (a *App) openWindow() {
 			a.win.Hide()
 		}
 	})
+	// Losing the window never commits a held chord: the peek stays open.
+	a.win.OnBlur(func() {
+		if a.layers.rec.FocusLost() != chord.None {
+			a.invalidate()
+		}
+	})
 	a.win.OnFocus(func() {
 		if a.page == "remote" {
 			a.refreshRemote()
@@ -285,6 +296,14 @@ func (a *App) project() *workspace.Project {
 func (a *App) selectProject(id string) {
 	if id != a.state.Preferences.SelectedProject {
 		a.invalidateSyncContext()
+	}
+	for i := range a.state.Projects {
+		if a.state.Projects[i].ID == id {
+			// Opening a project keeps it on the ⌥X wheel: it takes a free slot,
+			// or the least recently opened project's (stable positions).
+			a.state.Projects[i].LastOpened = time.Now().UTC()
+			workspace.AssignSlot(a.state.Projects, i)
+		}
 	}
 	a.state.Preferences.SelectedProject = id
 	a.page = ""

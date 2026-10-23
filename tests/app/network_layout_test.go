@@ -98,16 +98,19 @@ func scrollNetworkTo(t *testing.T, tt *ui.Tester, label string) {
 	t.Helper()
 	for attempt := 0; attempt < 30; attempt++ {
 		if rect, ok := tt.Find(label); ok {
+			// The page's fixed header ends below its title; the toolbar that
+			// used to sit above it is gone (R2).
+			top := float32(140)
 			bottom := float32(500)
 			if footer, found := tt.Find(locales.ReturnDiagnostics()); found {
 				bottom = footer.Y - 24
 			}
-			if rect.W > 0 && rect.H > 0 && rect.Y >= 190 && rect.Y+rect.H <= bottom {
+			if rect.W > 0 && rect.H > 0 && rect.Y >= top && rect.Y+rect.H <= bottom {
 				return
 			}
 			delta := rect.Y + rect.H - bottom
-			if rect.Y < 190 {
-				delta = rect.Y - 190
+			if rect.Y < top {
+				delta = rect.Y - top
 			}
 			if rect.H == 0 && delta == 0 {
 				delta = 60

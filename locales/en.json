@@ -44,7 +44,7 @@
   "themeMidnight": "Dark",
   "themeDaybreak": "Light",
   "themeSakura": "Kawaii",
-  "focusMode": "Focus mode: hide the sidebar and decorations",
+  "focusMode": "Focus mode: hide decorations and the status line",
   "reduceMotion": "Reduce motion",
   "reduceMotionHelp": "Movement becomes short cross-fades and decorations stop. The system's reduce-motion setting always applies too.",
   "appearanceTheme": "Theme",
@@ -2402,5 +2402,213 @@
   "remoteSessionStatusFilter": "Status",
   "remoteSessionFilterAll": "All",
   "remoteSessionApplyFilter": "Apply filters",
-  "remoteSessionClearFilter": "Clear filters"
+  "remoteSessionClearFilter": "Clear filters",
+  "controlCenter": "Control Center",
+  "openControlCenter": "Open Control Center",
+  "closeControlCenter": "Close Control Center",
+  "controlCenterProject": "Current project",
+  "controlCenterRemote": "Remote",
+  "controlCenterConnections": "Connections & devices",
+  "controlCenterSystem": "System",
+  "controlCenterActive": "In progress",
+  "newAgent": "New Agent",
+  "dockTitle": "{project} — {count, plural, =0 {no agents} one {# agent} other {# agents}}",
+  "@dockTitle": {
+    "description": "dockTitle",
+    "placeholders": {
+      "project": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "dockPeekHint": "Hold {mod} and press A to cycle · release to switch",
+  "@dockPeekHint": {
+    "description": "dockPeekHint",
+    "placeholders": {
+      "mod": {
+        "type": "String"
+      }
+    }
+  },
+  "dockStickyHint": "←/→ choose · Enter switch · Esc back",
+  "statusOutput": "New output",
+  "statusIdle": "Idle",
+  "statusConnected": "Connected",
+  "paneOfSplit": "Split {index}/{count}",
+  "@paneOfSplit": {
+    "description": "paneOfSplit",
+    "placeholders": {
+      "index": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "activeJustNow": "Just now",
+  "activeMinutesAgo": "{minutes, plural, one {# min ago} other {# min ago}}",
+  "@activeMinutesAgo": {
+    "description": "activeMinutesAgo",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "activeHoursAgo": "{hours, plural, one {# h ago} other {# h ago}}",
+  "@activeHoursAgo": {
+    "description": "activeHoursAgo",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "noOutputYet": "No output yet",
+  "createWheelPeekHint": "Move to a sector, release {mod} to create",
+  "@createWheelPeekHint": {
+    "description": "createWheelPeekHint",
+    "placeholders": {
+      "mod": {
+        "type": "String"
+      }
+    }
+  },
+  "wheelStickyHint": "Click a sector, or use the arrows and Enter",
+  "wheelProject": "Project · {name}",
+  "@wheelProject": {
+    "description": "wheelProject",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "createAdvanced": "Advanced…",
+  "createAdvancedSub": "Name, arguments, history",
+  "createLocalSub": "Local · this project",
+  "createRemoteSub": "Remote · review first",
+  "createSplitHint": "Hold {shift} when releasing to split beside the focused pane",
+  "@createSplitHint": {
+    "description": "createSplitHint",
+    "placeholders": {
+      "shift": {
+        "type": "String"
+      }
+    }
+  },
+  "toolReady": "Ready",
+  "toolNotInstalled": "Not installed · opens setup help",
+  "tagLocalAgent": "Local Agent",
+  "tagRemoteAgent": "Remote Agent",
+  "tagAdvanced": "Advanced",
+  "chooseProjectFirst": "Choose a project first",
+  "switchProject": "Switch project",
+  "projectWheelPeekHint": "Move to a sector, release {mod} to switch",
+  "@projectWheelPeekHint": {
+    "description": "projectWheelPeekHint",
+    "placeholders": {
+      "mod": {
+        "type": "String"
+      }
+    }
+  },
+  "projectMore": "··· More",
+  "projectMoreBadge": "Search / open",
+  "projectSearchTitle": "Search or open a project",
+  "projectSearchPlaceholder": "Project name or path…",
+  "projectOpenFolder": "Open folder…",
+  "projectSearchNoMatch": "No match · Enter opens the path",
+  "projectEmptySlot": "Empty",
+  "projectLastAgent": "Last agent: {agent}",
+  "@projectLastAgent": {
+    "description": "projectLastAgent",
+    "placeholders": {
+      "agent": {
+        "type": "String"
+      }
+    }
+  },
+  "projectLastAgentNone": "No agent yet",
+  "projectCurrent": "Current · {name}",
+  "@projectCurrent": {
+    "description": "projectCurrent",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "projectAgents": "{count, plural, =0 {No agents} one {# agent} other {# agents}}",
+  "@projectAgents": {
+    "description": "projectAgents",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "projectDetached": "Detached at {commit}",
+  "@projectDetached": {
+    "description": "projectDetached",
+    "placeholders": {
+      "commit": {
+        "type": "String"
+      }
+    }
+  },
+  "projectNotRepository": "Not a Git repository",
+  "projectLanguageTag": "{language} project",
+  "@projectLanguageTag": {
+    "description": "projectLanguageTag",
+    "placeholders": {
+      "language": {
+        "type": "String"
+      }
+    }
+  },
+  "languageOther": "Project",
+  "barProject": "Project {name}",
+  "@barProject": {
+    "description": "barProject",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "barAgent": "Agent {name}",
+  "@barAgent": {
+    "description": "barAgent",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "barNoProject": "No project open",
+  "barNoAgent": "No agent",
+  "barOperations": "{count, plural, one {# operation running} other {# operations running}}",
+  "@barOperations": {
+    "description": "barOperations",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "languageGo": "Go",
+  "languageRust": "Rust",
+  "languageTypeScript": "TypeScript",
+  "languageJavaScript": "JavaScript",
+  "languagePython": "Python",
+  "languageSwift": "Swift",
+  "languageCpp": "C/C++",
+  "toolNameClaude": "Claude",
+  "toolNameCodex": "Codex",
+  "toolNameFclaude": "fclaude"
 }
