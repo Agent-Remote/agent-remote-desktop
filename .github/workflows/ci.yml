@@ -20,6 +20,25 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+      # Keep a diagnosable artifact even when the package checks fail before
+      # the native acceptance step can create its evidence directory. The
+      # acceptance scripts replace this marker with their real records.
+      - name: Prepare native evidence directory (Unix)
+        if: runner.os != 'Windows'
+        shell: bash
+        env:
+          DESKTOP_NATIVE_EVIDENCE_DIR: ${{ runner.temp }}/agent-remote-desktop-native
+        run: |
+          mkdir -p "$DESKTOP_NATIVE_EVIDENCE_DIR"
+          printf 'native acceptance step has not started\n' > "$DESKTOP_NATIVE_EVIDENCE_DIR/preflight.txt"
+      - name: Prepare native evidence directory (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          DESKTOP_NATIVE_EVIDENCE_DIR: ${{ runner.temp }}/agent-remote-desktop-native
+        run: |
+          New-Item -ItemType Directory -Force -Path $env:DESKTOP_NATIVE_EVIDENCE_DIR | Out-Null
+          Set-Content -Encoding utf8 -Path (Join-Path $env:DESKTOP_NATIVE_EVIDENCE_DIR 'preflight.txt') -Value 'native acceptance step has not started'
       - name: Linux native UI dependencies
         if: runner.os == 'Linux'
         run: >-
