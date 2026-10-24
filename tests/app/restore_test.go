@@ -46,6 +46,9 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 	tt.Release(to.X+to.W/2, to.Y+to.H/2)
 	deadline := time.Now().Add(3 * time.Second)
 	for {
+		// Persist is queued from the drag callback; advance the headless main
+		// loop while waiting so the save worker's completion frame can publish.
+		tt.Frame()
 		stored := testutil.LoadWorkspace(t, home)
 		if stored.Board.Tabs[0].Title == "Remote" {
 			if stored.Board.Current("one").ID != state.Board.Current("one").ID || stored.Board.Current("one").FocusedSession != "b" {

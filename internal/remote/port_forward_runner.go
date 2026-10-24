@@ -364,6 +364,13 @@ func safeProcessError(err error) error {
 	}
 	var exit *exec.ExitError
 	if errors.As(err, &exit) {
+		// A normal Stop may race the shell's trap and be reported by the OS as
+		// signal termination even though the requested cleanup completed. The
+		// process has already exited in this case, so do not surface a spurious
+		// failure to the caller.
+		if exit.ExitCode() < 0 {
+			return nil
+		}
 		return fmt.Errorf("exit status %d", exit.ExitCode())
 	}
 	return errors.New("process wait failed")
