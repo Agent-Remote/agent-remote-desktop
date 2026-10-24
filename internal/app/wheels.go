@@ -144,11 +144,11 @@ func (a *App) createHUD(c *ui.Context, env chrome.Env, accents []ui.Color) {
 	env.HUD(c, 214, func() {
 		sel := l.sel
 		if sel < 0 {
-			env.HUDTag(c, "✦ "+chordLabel("C")+" ✦")
+			env.HUDTag(c, "✦ "+a.chordLabel("C")+" ✦")
 			env.HUDTitle(c, locales.NewAgent(), nil)
 			hint := locales.WheelStickyHint()
 			if l.rec.Held() {
-				hint = locales.CreateWheelPeekHint(modifierLabel())
+				hint = locales.CreateWheelPeekHint(a.modifierLabel())
 			}
 			env.Text(c, hint, theme.Caption, env.P.TextSecondary).TextAlign(ui.Center).MaxWidth(170)
 			if p := a.project(); p != nil {
@@ -266,7 +266,7 @@ func (a *App) projectsHUD(c *ui.Context, env chrome.Env) {
 	env.HUD(c, 240, func() {
 		switch {
 		case l.search || l.sel == 0:
-			env.HUDTag(c, "✦ "+chordLabel("X")+" ✦")
+			env.HUDTag(c, "✦ "+a.chordLabel("X")+" ✦")
 			env.HUDTitle(c, locales.ProjectSearchTitle(), nil).FontSize(15 * c.Theme().FontSize / 14)
 			if l.search {
 				in := ui.TextInput(c.Key("project-search"), &l.query).Label(locales.ProjectSearchPlaceholder()).
@@ -278,7 +278,7 @@ func (a *App) projectsHUD(c *ui.Context, env chrome.Env) {
 				in.OnShortcut(0, ui.KeyDown, func() { l.searchHot++ })
 				in.OnShortcut(0, ui.KeyUp, func() { l.searchHot = max(0, l.searchHot-1) })
 				for key := range chordKeys {
-					in.OnShortcut(chordMods(), key, func() { a.chordPress(chordMods(), key) })
+					in.OnShortcut(a.chordMods(), key, func() { a.chordPress(a.chordMods(), key) })
 				}
 			}
 			if env.Button(c, locales.ProjectOpenFolder(), chrome.Secondary).Clicked() {
@@ -308,11 +308,11 @@ func (a *App) projectsHUD(c *ui.Context, env chrome.Env) {
 				env.Text(c, locales.ProjectLastAgentNone(), theme.Caption, env.P.TextTer)
 			}
 		default:
-			env.HUDTag(c, "✦ "+chordLabel("X")+" ✦")
+			env.HUDTag(c, "✦ "+a.chordLabel("X")+" ✦")
 			env.HUDTitle(c, locales.SwitchProject(), nil)
 			hint := locales.WheelStickyHint()
 			if l.rec.Held() {
-				hint = locales.ProjectWheelPeekHint(modifierLabel())
+				hint = locales.ProjectWheelPeekHint(a.modifierLabel())
 			}
 			env.Text(c, hint, theme.Caption, env.P.TextSecondary).TextAlign(ui.Center).MaxWidth(180)
 			if p := a.project(); p != nil {

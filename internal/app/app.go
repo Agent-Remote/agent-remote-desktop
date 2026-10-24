@@ -67,6 +67,7 @@ type App struct {
 	tools               []toolLocation
 	focusValue          string
 	shownTheme          string // stored theme ID on screen this frame (theme.Resolve)
+	chordCtrlAlt        bool   // this app's layer modifier preference
 	layers              layerState
 	layoutSaveAt        time.Time
 	recoverID           string

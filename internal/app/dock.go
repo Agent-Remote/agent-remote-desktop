@@ -166,20 +166,20 @@ func (a *App) previewOf(it dockItem) string {
 }
 
 // chordLabel is the platform's spelling of the chord modifier and a key.
-func chordLabel(key string) string {
+func (a *App) chordLabel(key string) string {
 	if runtime.GOOS == "darwin" {
-		return modifierLabel() + key
+		return a.modifierLabel() + key
 	}
-	return modifierLabel() + "+" + key
+	return a.modifierLabel() + "+" + key
 }
 
-func modifierLabel() string {
+func (a *App) modifierLabel() string {
 	switch {
-	case runtime.GOOS == "darwin" && chordCtrlAlt:
+	case runtime.GOOS == "darwin" && a.chordCtrlAlt:
 		return "⌃⌥"
 	case runtime.GOOS == "darwin":
 		return "⌥"
-	case chordCtrlAlt:
+	case a.chordCtrlAlt:
 		return "Ctrl+Alt"
 	}
 	return "Alt"
@@ -263,7 +263,7 @@ func (a *App) dockLayer(c *ui.Context, env chrome.Env, open bool) {
 	}
 	dock.Children(func() {
 		ui.Row(c).FillWidth().Gap(12).Children(func() {
-			env.Text(c, "✦ "+chordLabel("A"), theme.Caption, env.P.TextSecondary).FontWeight(600)
+			env.Text(c, "✦ "+a.chordLabel("A"), theme.Caption, env.P.TextSecondary).FontWeight(600)
 			project := ""
 			if p := a.project(); p != nil {
 				project = p.Name
@@ -271,7 +271,7 @@ func (a *App) dockLayer(c *ui.Context, env chrome.Env, open bool) {
 			env.Text(c, locales.DockTitle(project, len(items)), theme.Caption, env.P.TextPrimary).FontWeight(600).Grow(1)
 			hint := locales.DockStickyHint()
 			if l.rec.Held() {
-				hint = locales.DockPeekHint(modifierLabel())
+				hint = locales.DockPeekHint(a.modifierLabel())
 			}
 			env.Text(c, hint, theme.Caption, env.P.TextSecondary)
 		})
@@ -361,7 +361,7 @@ func (a *App) dockGhost(c *ui.Context, env chrome.Env, i int) {
 		ui.Column(c).Gap(6).Center().Children(func() {
 			env.Text(c, "＋", theme.HUDTitle, env.P.TextSecondary)
 			env.Text(c, locales.NewAgent(), theme.BodyStrong, env.P.TextSecondary)
-			env.Text(c, chordLabel("C"), theme.Caption, env.P.TextTer)
+			env.Text(c, a.chordLabel("C"), theme.Caption, env.P.TextTer)
 		})
 	})
 }

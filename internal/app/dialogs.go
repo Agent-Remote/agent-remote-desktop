@@ -208,7 +208,7 @@ func (a *App) settingsView(c *ui.Context) {
 			}
 			if env.Segmented(c, &choice, locales.ChordModifierTitle(), option, both) {
 				a.state.Preferences.ChordModifier = map[int]string{0: "", 1: chordModifierCtrlAlt}[choice]
-				chordCtrlAlt = choice == 1
+				a.chordCtrlAlt = choice == 1
 				a.persist()
 			}
 			env.Text(c, locales.ChordModifierHelp(), theme.Caption, env.P.TextSecondary)

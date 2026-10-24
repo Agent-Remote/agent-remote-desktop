@@ -35,16 +35,11 @@ func isSessionFocus(v string) bool { return v != "" && v != focusZen && v != foc
 
 var chordKeys = map[ui.Key]string{ui.KeyA: layerAgents, ui.KeyC: layerCreate, ui.KeyX: layerProjects, ui.KeyS: layerControl}
 
-// chordCtrlAlt is the stored choice to hold ⌃⌥/Ctrl+Alt for the layers
-// instead of ⌥/Alt (redesign §7.3), for layouts and input methods whose
-// ⌥ + letter types text. One window, one value: labels read it too.
-var chordCtrlAlt bool
-
 const chordModifierCtrlAlt = "ctrl-alt"
 
 // chordMods is what a layer chord holds besides the letter.
-func chordMods() ui.Modifiers {
-	if chordCtrlAlt {
+func (a *App) chordMods() ui.Modifiers {
+	if a.chordCtrlAlt {
 		return ui.Ctrl | ui.Alt
 	}
 	return ui.Alt
@@ -52,7 +47,7 @@ func chordMods() ui.Modifiers {
 
 // chordHeld reports whether mods still hold the chord modifier: letting
 // go of any of its keys releases the chord.
-func chordHeld(mods ui.Modifiers) bool { return mods&chordMods() == chordMods() }
+func (a *App) chordHeld(mods ui.Modifiers) bool { return mods&a.chordMods() == a.chordMods() }
 
 // createTools are the ⌥C sectors 0–2 at 12, 3 and 6 o'clock; sector 3 is
 // "Advanced…", which opens the full new-session dialog.
@@ -124,7 +119,7 @@ func (a *App) invalidate() {
 // taken chord sends nothing to the program (R0).
 func (a *App) chordPress(mods ui.Modifiers, key ui.Key) bool {
 	layer, ok := chordKeys[key]
-	if !ok || mods&^ui.Shift != chordMods() || a.dialogOpen() || a.closing {
+	if !ok || mods&^ui.Shift != a.chordMods() || a.dialogOpen() || a.closing {
 		return false
 	}
 	if layer == layerControl {
@@ -221,7 +216,7 @@ func (a *App) closeLayer() {
 func (a *App) watchChordRelease(c *ui.Context) {
 	l := &a.layers
 	mods := c.Modifiers()
-	if !l.rec.Held() || chordHeld(mods) {
+	if !l.rec.Held() || a.chordHeld(mods) {
 		return
 	}
 	layer := l.rec.Layer
@@ -239,7 +234,7 @@ func (a *App) watchChordRelease(c *ui.Context) {
 
 // noteKeyUp times a release of ⌥ that came with a key-up.
 func (a *App) noteKeyUp(ev ui.InputEvent) {
-	if ev.Kind == ui.InputKeyUp && !chordHeld(ev.Mods) && a.layers.rec.Held() && a.layers.released.IsZero() {
+	if ev.Kind == ui.InputKeyUp && !a.chordHeld(ev.Mods) && a.layers.rec.Held() && a.layers.released.IsZero() {
 		a.layers.released = time.Now()
 	}
 }

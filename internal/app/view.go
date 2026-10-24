@@ -52,7 +52,7 @@ func (a *App) View(c *ui.Context) {
 	if a.savePending.Load() > 0 {
 		c.After(50 * time.Millisecond)
 	}
-	chordCtrlAlt = a.state.Preferences.ChordModifier == chordModifierCtrlAlt
+	a.chordCtrlAlt = a.state.Preferences.ChordModifier == chordModifierCtrlAlt
 	a.resolveTheme(c.Theme().Dark)
 	t := theme.UI(a.shownTheme)
 	c.SetTheme(&t)
@@ -112,7 +112,7 @@ func (a *App) chordFallback(c *ui.Context) {
 	}
 	for key := range chordKeys {
 		key := key
-		c.OnShortcut(chordMods(), key, func() { a.chordPress(chordMods(), key) })
+		c.OnShortcut(a.chordMods(), key, func() { a.chordPress(a.chordMods(), key) })
 	}
 }
 
@@ -334,7 +334,7 @@ func (a *App) barContent(c *ui.Context, env chrome.Env) {
 			env.Text(c, "·", theme.Caption, p.TextTer)
 			for _, k := range []string{"A", "C", "X", "S"} {
 				ui.Row(c.Key("kbd"+k)).Padding(1, 6).Radius(6).Background(p.PillBG).Border(1, p.Hairline).Shrink(0).Children(func() {
-					env.Text(c, chordLabel(k), theme.Caption, p.TextSecondary).FontWeight(600).FontSize(10.5 * c.Theme().FontSize / 14).SingleLine().Shrink(0)
+					env.Text(c, a.chordLabel(k), theme.Caption, p.TextSecondary).FontWeight(600).FontSize(10.5 * c.Theme().FontSize / 14).SingleLine().Shrink(0)
 				})
 			}
 		})
@@ -397,7 +397,7 @@ func (a *App) projectEmpty(c *ui.Context, env chrome.Env, project workspace.Proj
 		if env.Button(c, locales.NewProjectSession(), chrome.Primary).Padding(9, 20).Clicked() {
 			a.showLayer(layerCreate)
 		}
-		env.Text(c, locales.HiddenSessionsHelp(chordLabel("A")), theme.Caption, p.TextTer)
+		env.Text(c, locales.HiddenSessionsHelp(a.chordLabel("A")), theme.Caption, p.TextTer)
 	})
 }
 
