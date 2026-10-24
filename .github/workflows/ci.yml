@@ -3,6 +3,30 @@ on:
   push:
   pull_request:
 jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - name: Format and lint checks
+        shell: bash
+        run: |
+          unformatted="$(gofmt -l main.go internal cmd locales tests)"
+          if [[ -n "$unformatted" ]]; then
+            printf 'The following Go files need gofmt:\n%s\n' "$unformatted" >&2
+            exit 1
+          fi
+          go vet ./...
+      - name: Syntax check scripts
+        shell: bash
+        run: bash -n scripts/*.sh tests/*.sh
+      - name: Git diff checks
+        shell: bash
+        run: git diff --check
+
   test:
     strategy:
       fail-fast: false
@@ -15,11 +39,14 @@ jobs:
           - os: windows-latest
             goos: windows
     runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    needs: static-checks
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+          cache-dependency-path: go.sum
       # Keep a diagnosable artifact even when the package checks fail before
       # the native acceptance step can create its evidence directory. The
       # acceptance scripts replace this marker with their real records.
@@ -42,7 +69,7 @@ jobs:
       - name: Linux native UI dependencies
         if: runner.os == 'Linux'
         run: >-
-          sudo apt-get update && sudo apt-get install -y
+          sudo apt-get update -qq && sudo apt-get install -y -qq
           libgtk-3-0 libgl1 libegl1 libwebkit2gtk-4.1-0
           libayatana-appindicator3-1 dbus-x11 xvfb
       - name: Catalog, layout, unit and PTY checks
@@ -89,11 +116,14 @@ jobs:
           - goos: linux
             goarch: amd64
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: static-checks
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
+          cache-dependency-path: go.sum
       - name: Build desktop and installer for target
         shell: bash
         env:
