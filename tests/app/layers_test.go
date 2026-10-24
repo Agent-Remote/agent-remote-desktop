@@ -23,7 +23,7 @@ func layersTester(t *testing.T) (*app.App, *ui.Tester, string) {
 	home := t.TempDir()
 	testutil.StoreWorkspace(t, home, testutil.SavedWorkspace(t))
 	providers := &providerFixture{available: map[string]bool{"codex": true, "claude": true, "fclaude": true}, directory: t.TempDir()}
-	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve})
+	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 2 * time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -96,7 +96,7 @@ func TestHeldChordReleasedOnNothingCancels(t *testing.T) {
 	tt.HoldModifiers(ui.Alt)
 	tt.Key(ui.Alt, ui.KeyC)
 	settle(tt)
-	time.Sleep(300 * time.Millisecond) // a hold, not a tap
+	time.Sleep(2100 * time.Millisecond) // a hold, not a tap
 	tt.HoldModifiers(0)
 	settle(tt)
 	if tt.HasText(locales.NewAgent()) || tt.HasText(locales.NewAgentSession()) {
@@ -204,7 +204,7 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 			return provider, nil
 		}
 		return "", fault.ExecutableMissing
-	}})
+	}, ChordTapWindow: 2 * time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -249,7 +249,7 @@ func TestCtrlAltChordModifier(t *testing.T) {
 	state.Preferences.ChordModifier = "ctrl-alt"
 	testutil.StoreWorkspace(t, home, state)
 	providers := &providerFixture{available: map[string]bool{"codex": true, "claude": true, "fclaude": true}, directory: t.TempDir()}
-	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve})
+	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 2 * time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}

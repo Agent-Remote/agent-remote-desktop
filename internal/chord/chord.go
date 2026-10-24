@@ -39,6 +39,19 @@ type Recognizer struct {
 	held  bool
 	start time.Time
 	moved bool
+	// tapWindow is configurable for deterministic headless UI tests. A zero
+	// value uses TapWindow so the production gesture keeps its normal timing.
+	tapWindow time.Duration
+}
+
+// SetTapWindow changes the quick-tap threshold while preserving it across
+// gesture resets. It is intended for deterministic UI harnesses whose frame
+// construction can take longer than a real input event; production callers
+// should leave the zero value in place.
+func (r *Recognizer) SetTapWindow(window time.Duration) {
+	if window > 0 {
+		r.tapWindow = window
+	}
 }
 
 // Press reports a chord key-down for layer at now. Auto-repeat must be
@@ -77,7 +90,11 @@ func (r *Recognizer) ModifierReleased(now time.Time) Outcome {
 	if r.Phase != Peek {
 		return None
 	}
-	if now.Sub(r.start) < TapWindow && !r.moved {
+	window := r.tapWindow
+	if window <= 0 {
+		window = TapWindow
+	}
+	if now.Sub(r.start) < window && !r.moved {
 		r.Phase = Sticky
 		return MadeSticky
 	}
@@ -117,4 +134,7 @@ func (r *Recognizer) Cancel() Outcome {
 // Held reports whether the chord modifier is still held for this gesture.
 func (r *Recognizer) Held() bool { return r.held }
 
-func (r *Recognizer) reset() { *r = Recognizer{} }
+func (r *Recognizer) reset() {
+	window := r.tapWindow
+	*r = Recognizer{tapWindow: window}
+}

@@ -26,6 +26,9 @@ import (
 // standard executable discovery, including common GUI installation locations.
 type Options struct {
 	FindExecutable func(string) (string, error)
+	// ChordTapWindow is reserved for deterministic headless UI tests. A zero
+	// value keeps the production threshold from internal/chord.
+	ChordTapWindow time.Duration
 }
 
 type App struct {
@@ -125,6 +128,7 @@ func NewWithOptions(home string, options Options) (*App, error) {
 		return nil, err
 	}
 	a := &App{home: home, findExecutable: options.FindExecutable, store: s, state: state, newTool: session.Codex, saveQueue: make(chan storage.State, 1), saveDone: make(chan struct{}), launchResults: make(chan launchResult, 2), exitResults: make(chan exitResult, 32), operationJournal: make(map[string]storage.OperationRecord, len(state.Operations))}
+	a.layers.rec.SetTapWindow(options.ChordTapWindow)
 	if recovery := state.RemoteStopRecovery; recovery != nil {
 		// Restore only the reviewed public scope and caller key. The exact
 		// receipt remains in the CLI journal and is queried only on explicit
