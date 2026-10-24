@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"os"
+	"runtime"
 	"testing"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/fault"
@@ -31,12 +32,16 @@ func TestWireGuardBridgeStatusRejectsMisleadingOrUnknownFacts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	foreignPlatform := "windows"
+	if runtime.GOOS == "windows" {
+		foreignPlatform = "linux"
+	}
 	for _, tc := range []struct {
 		name string
 		set  map[string]any
 	}{
 		{"state", map[string]any{"state": "ready"}},
-		{"platform", map[string]any{"platform": "windows"}},
+		{"platform", map[string]any{"platform": foreignPlatform}},
 		{"execution", map[string]any{"execution": "ready"}},
 		{"unknown-field", map[string]any{"secret": "no"}},
 	} {
