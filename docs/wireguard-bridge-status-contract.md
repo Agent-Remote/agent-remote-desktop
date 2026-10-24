@@ -45,7 +45,7 @@ CLI 会在跨平台实现边界把原生传输和进程状态投影到上述固�
 进程身份的独立 status 握手前，哪怕固定 pipe 存在也继续报告 `unsupported/not_installed`。
 UI 不消费这些平台私有字符串，也不会把发现 endpoint 当作安装或授权证据。
 
-desktop 另外把上述独立事实投影为一个本地生命周期门槛，供界面和未来写操作复用；该字段
+desktop 另外把上述独立事实投影为一个本地生命周期门槛，供界面和当前写操作复用；该字段
 不是 CLI 返回值，也不授予权限。`WireGuardBridgeStatus.Lifecycle()` 按固定顺序返回第一个
 未满足的条件：`unavailable`、`unsupported`、`installation_required`、
 `approval_pending`、`approval_required`、`protocol_unavailable`、

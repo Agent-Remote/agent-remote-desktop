@@ -78,8 +78,9 @@ Server 的 exact attachment 对运行态同时接受 `running` 与 `active`；De
 `mutagen=not_run`，不会把 Cargo 的零测试成功状态当作通过。
 Live 测试必须使用可删除的测试 session，不能用于生产会话。
 
-当前环境未提供真实 Server/Node/SSH 凭据时，验收应保留
-`remote_execution.status=not_run`，并在发布记录中列为待验收项。即使 `--live`
-通过，`restart_recovery` 仍保持 `not_run`，因为该入口不会重启 Server、Node 或
-broker；需要目标主机的独立重启/重连记录。任何 host-only 或 contract 通过结果都
-不能单独宣称远程闭环已完成。
+2026-10-24 的一次性 Docker sync-chain 已通过真实 Server、Node、SSH、Mutagen
+和 worker/daemon restart recovery；该记录只覆盖同步链路，不能替代 `--live` 所需的
+准确 session/device、exact attachment、停止/删除和 cleanup receipt。未提供这些真实
+身份时，`--live` 仍应保留 `remote_execution.status=not_run`，并在发布记录中列为待验收项。
+即使 `--live` 通过，仍需目标主机独立记录 broker 或其他服务的重启/重连；任何
+host-only 或 contract 通过结果都不能单独宣称完整远程闭环已完成。

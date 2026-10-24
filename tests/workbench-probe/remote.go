@@ -37,10 +37,15 @@ func runRemoteProbe(root string) (result error) {
 		}
 	}()
 	open := func() error {
-		if err := d.click(locales.RemoteManagement()); err != nil {
+		// Use the stable command shortcut so duplicate tile title/subtitle labels
+		// cannot make a headless click target the non-clickable subtitle.
+		if err := d.key(ui.Cmd|ui.Shift, ui.KeyR); err != nil {
 			return err
 		}
-		return d.wait(func() bool {
+		if err := d.settle(); err != nil {
+			return err
+		}
+		err := d.wait(func() bool {
 			ready := false
 			_ = d.action(func(t *ui.Tester) error {
 				t.Frame()
@@ -49,16 +54,22 @@ func runRemoteProbe(root string) (result error) {
 			})
 			return ready
 		})
+		if err != nil {
+			var texts []string
+			_ = d.action(func(t *ui.Tester) error { t.Frame(); texts = t.Texts(); return nil })
+			return fmt.Errorf("remote list did not become ready: %w; texts: %q", err, texts)
+		}
+		return nil
 	}
 	if err = open(); err != nil {
-		return err
+		return fmt.Errorf("remote open: %w", err)
 	}
 	if err = d.click(locales.ConnectRemoteSession()); err != nil {
 		return err
 	}
 	if err = d.action(func(t *ui.Tester) error {
 		if !t.HasText(locales.RemoteAttachConfirmation()) {
-			return fmt.Errorf("remote attachment skipped consent")
+			return fmt.Errorf("remote attachment skipped consent; texts: %q", t.Texts())
 		}
 		return nil
 	}); err != nil {
@@ -71,11 +82,21 @@ func runRemoteProbe(root string) (result error) {
 		return fmt.Errorf("confirmed remote launch: %w", err)
 	}
 	if err = d.waitReady(); err != nil {
+		return fmt.Errorf("confirmed remote terminal ready: %w", err)
+	}
+	// The attach confirmation closes asynchronously; explicitly focus the new
+	// pane chip before typing so headless/native backends agree on ownership.
+	if err = d.click("fclaude " + id); err != nil {
+		return fmt.Errorf("focus remote pane: %w", err)
+	}
+	if err = d.settle(); err != nil {
 		return err
 	}
 	args := []string{"attach", id, "--expected-server", "https://test.invalid", "--expected-device", testutil.RemoteAttachDeviceID}
 	if err = d.input("remote-input", args); err != nil {
-		return err
+		var texts []string
+		_ = d.action(func(t *ui.Tester) error { t.Frame(); texts = t.Texts(); return nil })
+		return fmt.Errorf("remote input: %w; texts: %q", err, texts)
 	}
 	for _, e := range events(root) {
 		if e.Kind == "started" && reflect.DeepEqual(e.Args, args) {

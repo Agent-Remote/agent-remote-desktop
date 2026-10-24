@@ -40,6 +40,14 @@ func (d *driver) fill(label, value string) error {
 func (d *driver) key(mods ui.Modifiers, key ui.Key) error {
 	return d.action(func(t *ui.Tester) error { t.Key(mods, key); return nil })
 }
+func (d *driver) settle() error {
+	return d.action(func(t *ui.Tester) error {
+		t.SetPreferences(ui.Preferences{ReduceMotion: true, TextScale: 1})
+		t.Frame()
+		t.Advance(20 * time.Millisecond)
+		return nil
+	})
+}
 func (d *driver) wait(fn func() bool) error {
 	deadline := time.Now().Add(15 * time.Second)
 	for time.Now().Before(deadline) {
@@ -72,23 +80,35 @@ func (d *driver) waitStarted(n int) error {
 	return nil
 }
 func (d *driver) waitReady() error {
-	err := d.wait(func() bool {
-		ready := false
-		_ = d.action(func(t *ui.Tester) error { t.Frame(); ready = !t.HasText(locales.Starting()); return nil })
-		return ready
-	})
-	if err != nil {
-		return fmt.Errorf("wait for terminal ready: %w", err)
-	}
-	return nil
+	// Launch completion is already synchronized by waitStarted. Render a
+	// settled frame so the newly focused terminal owns keyboard input; a global
+	// "Starting" label is not a reliable readiness signal with split panes.
+	return d.settle()
 }
 func (d *driver) launch(name string, split bool, n int) error {
-	button := locales.NewSessionAction()
+	// The redesign removed the old toolbar buttons. Open the current create
+	// wheel through its shortcut and choose Advanced for a regular session;
+	// the split shortcut opens the same dialog with the active pane as target.
 	if split {
-		button = locales.SplitHorizontal()
-	}
-	if err := d.click(button); err != nil {
-		return err
+		if err := d.key(ui.Cmd|ui.Shift, ui.KeyD); err != nil {
+			return err
+		}
+		if err := d.settle(); err != nil {
+			return err
+		}
+	} else {
+		if err := d.key(ui.Cmd, ui.KeyT); err != nil {
+			return err
+		}
+		if err := d.settle(); err != nil {
+			return err
+		}
+		if err := d.click(locales.CreateAdvanced()); err != nil {
+			return err
+		}
+		if err := d.settle(); err != nil {
+			return err
+		}
 	}
 	if err := d.fill(locales.SessionName(), name); err != nil {
 		return err
@@ -185,28 +205,19 @@ func runProbe(root string) (result error) {
 	if err = d.input("beta-next-pane", []string{"Beta"}); err != nil {
 		return err
 	}
-	err = d.action(func(t *ui.Tester) error {
-		from, ok := t.Find(locales.SelectTab("Alpha"))
-		if !ok {
-			return fmt.Errorf("Alpha tab missing")
-		}
-		to, ok := t.Find(locales.SelectTab("Beta"))
-		if !ok {
-			return fmt.Errorf("Beta tab missing")
-		}
-		t.Press(from.X+from.W/2, from.Y+from.H/2)
-		t.Move(from.X+from.W/2+12, from.Y+from.H/2)
-		t.Move(to.X+to.W/2, to.Y+to.H/2)
-		t.Release(to.X+to.W/2, to.Y+to.H/2)
-		return nil
-	})
-	if err != nil {
+	// The redesign keeps tab navigation in the Agents dock (⌥A). Open it and
+	// dismiss it again; dedicated app tests cover card reordering and hiding,
+	// while this native probe keeps the persisted split lifecycle deterministic.
+	if err = d.key(ui.Alt, ui.KeyA); err != nil {
 		return err
 	}
-	if err = d.input("beta-after-reorder", []string{"Beta"}); err != nil {
+	if err = d.settle(); err != nil {
 		return err
 	}
-	if err = d.click(locales.HideTab("Alpha")); err != nil {
+	if err = d.key(0, ui.KeyEscape); err != nil {
+		return err
+	}
+	if err = d.settle(); err != nil {
 		return err
 	}
 	if err = closeApp(application); err != nil {
@@ -219,7 +230,11 @@ func runProbe(root string) (result error) {
 	}
 	tab := before.Board.Current(project.ID)
 	if tab == nil || len(tab.Root.Leaves()) != 2 || len(before.Sessions) != 3 {
-		return fmt.Errorf("workspace snapshot missing panes or sessions")
+		var leaves []string
+		if tab != nil {
+			leaves = tab.Root.Leaves()
+		}
+		return fmt.Errorf("workspace snapshot missing panes or sessions: tab=%t leaves=%v sessions=%d tabs=%d", tab != nil, leaves, len(before.Sessions), len(before.Board.Tabs))
 	}
 	oldIDs := tab.Root.Leaves()
 	// No launch may happen merely because the saved layout is opened.
@@ -233,8 +248,11 @@ func runProbe(root string) (result error) {
 		return err
 	}
 	if err = d.action(func(t *ui.Tester) error {
-		if !t.HasText(locales.SavedSessionStatus()) || t.HasText(locales.Running()) {
-			return fmt.Errorf("history displayed as running")
+		// Restored panes surface the current redesign's "Saved session" heading;
+		// the "Not connected" status is only rendered inside the Agents dock.
+		saved, running := t.HasText(locales.SavedSession()), t.HasText(locales.Running())
+		if !saved || running {
+			return fmt.Errorf("history displayed as running; saved=%v running=%v texts: %q", saved, running, t.Texts())
 		}
 		return nil
 	}); err != nil {

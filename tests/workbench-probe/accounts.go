@@ -63,8 +63,13 @@ func runAccountBindingProbe(root string) (result error) {
 		})
 	}
 	open := func() error {
-		if err := d.click(locales.RemoteManagement()); err != nil {
-			return fmt.Errorf("click remote management: %w", err)
+		// The command shortcut avoids duplicate Control Center tile labels in the
+		// headless tester and follows the same user-visible route.
+		if err := d.key(ui.Cmd|ui.Shift, ui.KeyR); err != nil {
+			return fmt.Errorf("open remote management: %w", err)
+		}
+		if err := d.settle(); err != nil {
+			return fmt.Errorf("settle remote management: %w", err)
 		}
 		if err := d.wait(func() bool {
 			ready := false
@@ -132,6 +137,12 @@ func runAccountBindingProbe(root string) (result error) {
 	}
 	if err = d.waitReady(); err != nil {
 		return fmt.Errorf("confirmed binding terminal ready: %w", err)
+	}
+	if err = d.click(locales.AccountBindingConnect()); err != nil {
+		return fmt.Errorf("focus binding terminal: %w", err)
+	}
+	if err = d.settle(); err != nil {
+		return err
 	}
 	args := []string{"account", "attach", accountID, "--binding-session", bindingID, "--expected-server", "https://test.invalid", "--expected-device", "device-1"}
 	if err = d.input("binding-login-input", args); err != nil {
@@ -213,10 +224,26 @@ func runAccountBindingProbe(root string) (result error) {
 	}); err != nil {
 		return err
 	}
+	// Drain one settled frame after the asynchronous status refresh. The saved
+	// history route can otherwise deliver its completion on the same frame as
+	// the review click and clear the newly opened review state.
+	if err = d.settle(); err != nil {
+		return err
+	}
+	// Keep the scroll and click in one frame. Re-rendering between them can
+	// reset the nested account-details scroll offset in the headless backend,
+	// leaving the button's label present but its hit target outside the viewport.
 	if err = d.action(func(t *ui.Tester) error {
 		t.Scroll(900, 400, 0, 10000)
 		t.Frame()
-		return t.Click(locales.AccountBindingConnectDetailsLabel())
+		if err := t.Click(locales.AccountBindingConnectDetailsLabel()); err != nil {
+			return err
+		}
+		t.Frame()
+		if !t.HasText(locales.AccountBindingConnectHelp()) {
+			return fmt.Errorf("binding review did not render after click; texts: %q", t.Texts())
+		}
+		return nil
 	}); err != nil {
 		return err
 	}
@@ -229,7 +256,9 @@ func runAccountBindingProbe(root string) (result error) {
 		})
 		return ready
 	}); err != nil {
-		return fmt.Errorf("binding history skipped fresh confirmation: %w", err)
+		var texts []string
+		_ = d.action(func(t *ui.Tester) error { t.Frame(); texts = t.Texts(); return nil })
+		return fmt.Errorf("binding history skipped fresh confirmation: %w; texts: %q", err, texts)
 	}
 	if err = d.action(func(t *ui.Tester) error {
 		t.Frame()

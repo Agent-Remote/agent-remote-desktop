@@ -104,6 +104,14 @@ func runRemoteScopeProbe(root string) (result error) {
 		if err := d.waitReady(); err != nil {
 			return err
 		}
+		if err := d.click("Saved remote"); err != nil {
+			if err := d.click("fclaude " + id); err != nil {
+				return fmt.Errorf("focus exact remote pane: %w", err)
+			}
+		}
+		if err := d.settle(); err != nil {
+			return err
+		}
 		return d.input(input, args())
 	}
 	// First restore a legacy history through an explicit refreshed selection;
@@ -135,6 +143,31 @@ func runRemoteScopeProbe(root string) (result error) {
 				}
 				return nil
 			}); err != nil {
+				return err
+			}
+			if err := d.action(func(t *ui.Tester) error {
+				r, ok := t.Find(locales.ConnectRemoteSession())
+				if !ok {
+					return fmt.Errorf("legacy connect control missing; texts: %q", t.Texts())
+				}
+				t.Move(r.X+r.W/2, r.Y+r.H/2)
+				return nil
+			}); err != nil {
+				return fmt.Errorf("point legacy connect control: %w", err)
+			}
+			if err := d.settle(); err != nil {
+				return err
+			}
+			// The refreshed session cards live in the scrollable remote list;
+			// bring the first running card into the viewport before clicking.
+			if err := d.action(func(t *ui.Tester) error {
+				t.Scroll(900, 400, 0, 10000)
+				t.Frame()
+				return nil
+			}); err != nil {
+				return fmt.Errorf("scroll legacy session list: %w", err)
+			}
+			if err := d.settle(); err != nil {
 				return err
 			}
 			if err := d.click(locales.ConnectRemoteSession()); err != nil {
@@ -172,10 +205,26 @@ func runRemoteScopeProbe(root string) (result error) {
 		return fmt.Errorf("open scope app: %w", err)
 	}
 	openList := func() error {
-		if err := d.click(locales.RemoteManagement()); err != nil {
+		if err := d.key(ui.Cmd|ui.Shift, ui.KeyR); err != nil {
+			return err
+		}
+		if err := d.settle(); err != nil {
 			return err
 		}
 		if err := waitText(locales.ConnectRemoteSession()); err != nil {
+			return err
+		}
+		if err := d.action(func(t *ui.Tester) error {
+			r, ok := t.Find(locales.ConnectRemoteSession())
+			if !ok {
+				return fmt.Errorf("scope connect control missing; texts: %q", t.Texts())
+			}
+			t.Move(r.X+r.W/2, r.Y+r.H/2)
+			return nil
+		}); err != nil {
+			return err
+		}
+		if err := d.settle(); err != nil {
 			return err
 		}
 		return d.click(locales.ConnectRemoteSession())
@@ -189,7 +238,16 @@ func runRemoteScopeProbe(root string) (result error) {
 			device = "66666666-6666-4666-8666-666666666666"
 			os.Setenv("DESKTOP_TEST_REMOTE_DEVICE", device)
 		case 3:
+			if err := d.key(ui.Cmd, ui.KeyO); err != nil {
+				return err
+			}
+			if err := d.settle(); err != nil {
+				return err
+			}
 			if err := d.click("Scope second"); err != nil {
+				return err
+			}
+			if err := d.settle(); err != nil {
 				return err
 			}
 		}

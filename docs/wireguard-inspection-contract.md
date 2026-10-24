@@ -1,6 +1,6 @@
 # WireGuard 检查与状态协议
 
-状态：共享 Rust 服务、桌面协议和 Go 网络页已实现；完整验证结果见[实施状态](implementation-status.md)。本契约定义 P2 网络页的只读操作；隧道计划、启停和平台授权桥继续按[后续设计](wireguard-tunnel-plan.md)实施，不计为已完成。
+状态：共享 Rust 服务、桌面协议和 Go 网络页已实现；完整验证结果见[实施状态](implementation-status.md)。本契约定义当前只读操作；隧道计划、启停和平台授权桥的现行合同见[隧道计划](wireguard-tunnel-plan.md)，真实三平台安装与授权仍是独立发布门禁。
 
 两个方法均通过 capabilities 声明 `effect: read`、`credential: none`，不要求服务器配置、登录或设备登记。输入 home 必须与当前 CLI 的绝对 home 一致；不得创建 home、锁、数据库或凭据。读取配置或运行工具均由用户显式点击发起，页面进入不自动执行。
 

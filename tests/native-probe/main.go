@@ -35,7 +35,11 @@ func main() {
 	mygo.App.WhenReady(func() {
 		cmd := []string{"/bin/sh", "-c", "printf 'native-ready\\n'; read answer; printf 'native-result:%s\\n' \"$answer\""}
 		if runtime.GOOS == "windows" {
-			cmd = []string{"cmd.exe", "/Q", "/C", "echo native-ready & set /p answer= & call echo native-result:%%answer%%"}
+			// Delayed expansion is required because cmd parses the whole /C
+			// command before `set /p` receives the ConPTY input.  Percent
+			// expansion therefore sees the old value and reports a literal
+			// `%answer%`; /V:ON expands the value at execution time.
+			cmd = []string{"cmd.exe", "/Q", "/V:ON", "/C", "echo native-ready & set /p answer= & echo native-result:!answer!"}
 		}
 		dir, err := os.MkdirTemp("", "agent-remote-native-probe-")
 		if err != nil {
@@ -135,14 +139,17 @@ func main() {
 			case <-time.After(10 * time.Second):
 				failure = fmt.Errorf("hidden PTY timed out")
 			}
-			deadline = time.Now().Add(time.Second)
+			// ConPTY can deliver the final read after the process has exited and
+			// after the window is shown again.  Keep the assertion bounded, but
+			// allow the Windows console callback to flush on slower VMs.
+			deadline = time.Now().Add(5 * time.Second)
 			for !strings.Contains(term.Text(), "native-result:hidden-window-alive") && time.Now().Before(deadline) {
 				time.Sleep(20 * time.Millisecond)
 			}
 			win.Show()
 			win.Focus()
 			if !strings.Contains(term.Text(), "native-result:hidden-window-alive") {
-				failure = fmt.Errorf("terminal output lost across hide/show")
+				failure = fmt.Errorf("terminal output lost across hide/show (text=%q)", term.Text())
 			}
 			if host.ExitCode() != 0 {
 				failure = fmt.Errorf("PTY exit code: %d", host.ExitCode())

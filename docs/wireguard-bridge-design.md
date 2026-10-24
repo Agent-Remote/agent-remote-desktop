@@ -1,8 +1,8 @@
-# WireGuard 权限桥实施提案
+# WireGuard 权限桥实施设计
 
-状态：**只读 `wireguard.bridge.status` 已接入；Rust 已实现 macOS/Linux/Windows broker client 与对应受保护 service 实现、caller identity、配置字节/摘要绑定和一次性 execution-permit 合同。** 仓库已提供 macOS LaunchDaemon、Linux systemd/D-Bus/Polkit、Windows SCM LocalSystem 的安装材料；未安装真实 service 时所有执行仍 fail-closed。三平台 broker 现在在固定受保护目录持久化 one-shot request journal，启动时恢复并对损坏、重复或不安全状态 fail-closed。三平台主机安装、授权、执行和运行验收仍待完成，不把交叉编译或替身测试当作平台验收。`wireguard.tunnel.plan` 保持只读；`wireguard.tunnel.apply` 严格重查冻结计划，普通用户侧读取配置后经平台 broker client 请求执行，并仅在 broker receipt 与第二次目标观察确认后返回回执。Rust [执行基础](../../agent-remote-cli/docs/desktop-wireguard-execution.md)记录受保护配置传递、caller-auth 合同和操作存储的后续增强设计。
+状态：**只读 `wireguard.bridge.status` 已接入；Rust 已实现 macOS/Linux/Windows broker client 与对应受保护 service 实现、caller identity、配置字节/摘要绑定和一次性 execution-permit 合同。** 仓库已提供 macOS LaunchDaemon、Linux systemd/D-Bus/Polkit、Windows SCM LocalSystem 的安装材料；未安装真实 service 时所有执行仍 fail-closed。三平台 broker 现在在固定受保护目录持久化 one-shot request journal，启动时恢复并对损坏、重复或不安全状态 fail-closed。三平台主机安装、授权、执行和运行验收仍是发布门禁，不把交叉编译或替身测试当作平台验收。`wireguard.tunnel.plan` 保持只读；`wireguard.tunnel.apply` 严格重查冻结计划，普通用户侧读取配置后经平台 broker client 请求执行，并仅在 broker receipt 与第二次目标观察确认后返回回执。Rust [执行基础](../../agent-remote-cli/docs/desktop-wireguard-execution.md)记录受保护配置传递、caller-auth 合同和操作存储的后续增强设计。
 
-本提案用于接续 P2。desktop UI 与业务保持 Go/mygo，权限操作复用 Rust CLI，
+本文记录当前权限桥合同与实现边界。desktop UI 与业务保持 Go/mygo，权限操作复用 Rust CLI，
 仅通过薄原生绑定使用系统授权 API。目标为 Windows、macOS、Linux；FreeBSD 不在计划中。
 既有后端约束见[隧道设计](wireguard-tunnel-plan.md)，进度以[实施状态](implementation-status.md)为准。
 只读状态字段和 fail-closed 规则见[权限桥状态合同](wireguard-bridge-status-contract.md)。
@@ -77,7 +77,7 @@ WireGuard service。现有 helper 的 `runas` 退出码和无限等待不具备�
 ## 请求与确认绑定
 
 以下是权限桥和回执的边界。`wireguard.tunnel.apply` 的基础请求字段已发布为严格的
-fail-closed 合同并加入当前 capability 清单；其余长期桥接方法尚未发布：
+fail-closed 合同并加入当前 capability 清单；除已发布的 `wireguard.bridge.status` 与 `wireguard.tunnel.apply` 外，以下内部边界只供受保护 broker 使用：
 
 | 拟议入口 | 输入/输出范围 | 边界 |
 | --- | --- | --- |
@@ -85,7 +85,7 @@ fail-closed 合同并加入当前 capability 清单；其余长期桥接方法�
 | 内部 `target.inspect` | 合法逻辑名；返回 broker 原生 scope、目标观察、观察者身份 | 已认证通道，只读；与现有用户态观察区分来源 |
 | `wireguard.operation.status` | 原 request ID；返回允许该主体读取的原操作记录 | 不重放，不泄露其他调用者记录；不宣称 observed 就是成功 |
 | 内部 prepare/submit | challenge、request ID、完整确认计划和私有配置字节；返回绑定回执 | 只有认证、授权、可信工具、持久化和目标检查全部具备后才能接入 |
-| `wireguard.tunnel.apply` | `confirmed`、精确选择与完整计划；Rust 先重新生成并比较只读计划，用户权限侧读取配置并发送字节/摘要 | 仅调用固定平台 broker client；broker 必须认证 caller、校验 permit 并返回 operation receipt，执行后再重查目标并返回 observed/失败/未知回执。没有 sudo、runas 或 helper fallback；受保护 service 安装、授权和平台运行验收仍待完成 |
+| `wireguard.tunnel.apply` | `confirmed`、精确选择与完整计划；Rust 先重新生成并比较只读计划，用户权限侧读取配置并发送字节/摘要 | 仅调用固定平台 broker client；broker 必须认证 caller、校验 permit 并返回 operation receipt，执行后再重查目标并返回 observed/失败/未知回执。没有 sudo、runas 或 helper fallback；受保护 service 安装、授权和平台运行验收仍是发布门禁 |
 
 broker 先产生随机 challenge，并返回协议版本和安装身份。CLI 通过同一认证连接提交
 完整已确认计划及独立长度分帧的私有配置字节；每段和整次请求均有大小、时间和输出上限。
@@ -141,18 +141,15 @@ Linux 即使目标不存在也必须返回独立 scope；当前 absent observati
 Windows 目录 flush 仍明确为 `Unsupported`，所以 Windows 原生 durable submission、安装持久化、
 损坏恢复与三平台运行验收仍需在目标系统完成。不能为了推进 UI 将现有 `Unsupported` 降级为可接受成功。
 
-## 实施与验收顺序
+## 实施状态与验收门禁
 
-1. 完成三平台安装/注册状态和认证 `bridge.status`，由 desktop 页面实际消费；
-   当前只完成无提权的被动查询和 fail-closed 状态投影，仍需区分未安装、待批准、身份错误、协议不兼容与 ready。
-2. 接入认证目标观察和按主体授权的原记录查询；呈现实际 scope、来源与未知状态，
-   不改变现有只读 plan 的执行限制。
-3. 在同一通道接入配置传递、完整确认验证和 journal；隔离测试覆盖伪造身份、进程退出/复用、
-   owner 变化、超时、超限、取消、连接中断、同 ID 冲突及每阶段禁止重放。
-4. 完成可信工具、Windows durable submission、执行前目标复验和长期进程归属，
-   再固定并发布 apply 契约及 Go 确认/恢复界面。
-5. 三平台分别验收实际安装、原生授权、启停、取消、回执丢失、应用/主机重启和服务存活。
-   交叉编译、隔离工具测试、进程崩溃测试都不能替代这些运行验证或证明掉电安全。
+当前代码已完成并通过定向合同测试：
+
+1. 三平台 broker client/service、`wireguard.bridge.status`、caller-auth、目标 scope 观察、配置字节传递、完整确认验证和 append-only journal 已接入；缺少安装或授权时保持 fail-closed。
+2. `wireguard.tunnel.apply` 已在用户权限侧重新生成并比较冻结 plan，经固定 broker 执行，再进行目标观察并返回 observed/失败/未知回执；不使用 sudo、runas 或普通 helper fallback。
+3. 受保护工具检查、Windows durable submission 约束、执行前目标复验、长期服务与临时 worker 生命周期边界已写入实现和合同；Windows 目录同步为 `Unsupported` 时不会授予执行许可。
+
+剩余发布门禁是目标主机证据：三平台真实安装/注册、系统授权、可信工具来源、up/down、取消、回执丢失、应用或主机重启后的恢复、服务存活和 Go 确认界面验收。交叉编译、隔离工具、进程崩溃和协议测试不能替代这些运行验证，也不能证明掉电安全。
 
 默认测试不提权、不安装系统组件、不创建真实隧道。desktop 所有测试、辅助程序和夹具继续
 放在仓库根 `tests/`；新增 UI 文案同步官方 mygo 英文和简体中文 catalog。

@@ -63,6 +63,28 @@ func TestRemoteInteropScriptsExecuteRustFixtureContracts(t *testing.T) {
 	}
 }
 
+func TestRemoteInteropHostPreflightCleansTemporaryHome(t *testing.T) {
+	root, err := os.Getwd()
+	if err != nil {
+		t.Fatal(err)
+	}
+	script, err := os.ReadFile(filepath.Join(root, "..", "..", "scripts", "remote-interop-acceptance.sh"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	source := string(script)
+	for _, required := range []string{
+		"HOST_HOME=\"\"",
+		"trap cleanup_host_home EXIT",
+		"rm -rf -- \"$HOST_HOME\"",
+		"AGENT_REMOTE_HOME=\"$HOST_HOME\"",
+	} {
+		if !strings.Contains(source, required) {
+			t.Fatalf("host preflight does not clean its temporary home: %q", required)
+		}
+	}
+}
+
 func TestRemoteInteropExposesRealSyncChainWrapper(t *testing.T) {
 	root, err := os.Getwd()
 	if err != nil {

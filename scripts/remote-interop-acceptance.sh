@@ -15,6 +15,14 @@ EVIDENCE_DIR="${AGENT_REMOTE_INTEROP_EVIDENCE_DIR:-${TMPDIR:-/tmp}/agent-remote-
 CLI_BINARY="${AGENT_REMOTE_INTEROP_CLI_BINARY:-$CLI_ROOT/target/debug/agent-remote}"
 FCLAUDE_BINARY="${AGENT_REMOTE_INTEROP_FCLAUDE_BINARY:-$CLI_ROOT/target/debug/fclaude}"
 MUTAGEN_BINARY="${AGENT_REMOTE_TEST_MUTAGEN:-}"
+HOST_HOME=""
+
+cleanup_host_home() {
+  if [[ -n "$HOST_HOME" && "$HOST_HOME" == "${TMPDIR:-/tmp}/agent-remote-interop-home."* ]]; then
+    rm -rf -- "$HOST_HOME"
+  fi
+  HOST_HOME=""
+}
 
 usage() {
   cat <<'EOF'
@@ -104,12 +112,13 @@ write_host_evidence() {
     mutagen_version="not_provided"
   fi
 
-  local home request response capabilities_file
-  home="$(mktemp -d "${TMPDIR:-/tmp}/agent-remote-interop-home.XXXXXX")"
+  local request response capabilities_file
+  HOST_HOME="$(mktemp -d "${TMPDIR:-/tmp}/agent-remote-interop-home.XXXXXX")"
+  trap cleanup_host_home EXIT
   request='{"protocol_version":1,"request_id":"remote-interop-capabilities","method":"capabilities","params":{}}'
   capabilities_file="$EVIDENCE_DIR/capabilities.json"
   set +e
-  response="$(printf '%s' "$request" | env -u GOOS -u GOARCH AGENT_REMOTE_HOME="$home" "$CLI_BINARY" --desktop-control 2>"$EVIDENCE_DIR/capabilities.stderr")"
+  response="$(printf '%s' "$request" | env -u GOOS -u GOARCH AGENT_REMOTE_HOME="$HOST_HOME" "$CLI_BINARY" --desktop-control 2>"$EVIDENCE_DIR/capabilities.stderr")"
   local status=$?
   set -e
   [[ "$status" -eq 0 ]] || die "agent-remote capabilities request failed (see $EVIDENCE_DIR/capabilities.stderr)"
