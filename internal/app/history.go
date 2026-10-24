@@ -135,8 +135,13 @@ func (a *App) recoveryDialog(c *ui.Context) {
 
 func (a *App) savedPane(c *ui.Context, saved workspace.Session) {
 	// The pane itself takes the keyboard, so chords work while it is focused.
-	ui.Column(c.Key(saved.ID)).Fill().MinWidth(0).MinHeight(0).Padding(20).Gap(14).Background(c.Theme().Surface).Radius(16).Border(1, c.Theme().Border).
-		FocusBind(&a.focusValue, saved.ID).HandleInput(a.rootKey).Children(func() {
+	pane := ui.Column(c.Key(saved.ID)).Fill().MinWidth(0).MinHeight(0).Padding(20).Gap(14).Background(c.Theme().Surface).Radius(16).Border(1, c.Theme().Border).
+		FocusBind(&a.focusValue, saved.ID).HandleInput(a.rootKey)
+	for key := range chordKeys {
+		key := key
+		pane = pane.OnShortcut(a.chordMods(), key, func() { a.chordPress(a.chordMods(), key) })
+	}
+	pane.Children(func() {
 		ui.Row(c).Gap(8).Children(func() {
 			label := locales.LocalTool(saved.Tool)
 			if session.Tool(saved.Tool).IsRemote() {

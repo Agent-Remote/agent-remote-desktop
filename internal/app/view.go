@@ -97,14 +97,20 @@ func (a *App) View(c *ui.Context) {
 // must never cover a terminal or the root, which take chords themselves
 // (R0); a text field keeps ⌥ + letter as the text it types.
 func (a *App) chordFallback(c *ui.Context) {
-	if a.dialogOpen() || a.layers.search {
+	if a.dialogOpen() || a.layers.search || a.openLayer() != "" {
 		return
 	}
-	// The focused workbench and terminal elements get first refusal during
-	// input routing. Registering the window fallback unconditionally here then
-	// covers saved panes and focused page controls, whose handlers do not own
-	// the layer chords. Text fields are excluded above, while a live terminal's
-	// OnKey hook still consumes its own chord before the window is considered.
+	// A live terminal gets first refusal during input routing. A restored pane
+	// installs its own element-scoped shortcut, while the window fallback here
+	// covers the focusless workbench root.
+	if focused := ui.FocusedValue(c, &a.focusValue); focused != "" && focused != focusZen && focused != focusLayer {
+		for _, record := range a.sessions.Records() {
+			if record.ID == focused {
+				return
+			}
+		}
+		return
+	}
 	for key := range chordKeys {
 		key := key
 		c.OnShortcut(a.chordMods(), key, func() { a.chordPress(a.chordMods(), key) })
