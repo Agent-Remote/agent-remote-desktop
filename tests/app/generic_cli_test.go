@@ -4,6 +4,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -64,6 +65,9 @@ func TestStructuredStatusRunsWithoutWorkspace(t *testing.T) {
 // in the managed terminal, but selecting a workspace must not be a prerequisite
 // for reviewing or starting them from the command catalog.
 func TestDeviceTerminalWorkflowRunsWithoutWorkspace(t *testing.T) {
+	if runtime.GOOS != "darwin" {
+		t.Skip("the Device app terminal workflow is macOS-only")
+	}
 	t.Setenv("DESKTOP_TERMINAL_TESTS", "1")
 	binary := testutil.InstallControlHelper(t)
 	i18n.SetLocaleFunc(func() string { return "en" })

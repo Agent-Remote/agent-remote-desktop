@@ -5,6 +5,7 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -63,7 +64,11 @@ func TestCapabilitiesPageIsPassiveAndFiltersCommandPlatformDeclarations(t *testi
 	if !tt.HasText("agent-remote device install") || tt.HasText("agent-remote device revoke") {
 		t.Fatal("command filter lost exact path")
 	}
-	if !tt.HasText(locales.CapabilitiesState("unverified")) {
+	state := "unverified"
+	if runtime.GOOS != "darwin" {
+		state = "platform_unsupported"
+	}
+	if !tt.HasText(locales.CapabilitiesState(state)) {
 		t.Fatal("command coverage did not expose the current permission state")
 	}
 	data, err := os.ReadFile(log)

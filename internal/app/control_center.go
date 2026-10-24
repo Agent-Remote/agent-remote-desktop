@@ -148,16 +148,6 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 		}
 	}
 	sheet := ui.Column(c.Key("control-sheet")).Absolute().Bottom(0).Left((width - w) / 2).Width(w)
-	// Page controls can take focus without owning the layer chords. Keep the
-	// sheet as their shortcut scope; text inputs still consume Alt+letter as
-	// text before ancestor shortcuts are considered.
-	for key := range chordKeys {
-		key := key
-		for _, mods := range a.chordShortcutMods() {
-			mods := mods
-			sheet = sheet.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
-		}
-	}
 	h := sheet.AnimateTo("height", target, env.Move(theme.Page))
 	rising := l.controlRise
 	if rising {

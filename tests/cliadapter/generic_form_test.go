@@ -3,6 +3,7 @@ package cliadapter_test
 import (
 	"errors"
 	"reflect"
+	"runtime"
 	"testing"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/cliadapter"
@@ -152,7 +153,7 @@ func TestGenericCommandGatesPlatformAndKnownCapability(t *testing.T) {
 	if got := cliadapter.PlatformState(cliadapter.Command{Path: []string{"status"}}, "linux"); got != "undeclared" {
 		t.Fatalf("undeclared state = %q", got)
 	}
-	capabilities := cliadapter.Capabilities{Version: 1, CLIVersion: "x", Platform: "darwin", Operations: []cliadapter.Capability{{Method: "wireguard.status", Effect: "read"}}}
+	capabilities := cliadapter.Capabilities{Version: 1, CLIVersion: "x", Platform: cliadapter.PlatformName(runtime.GOOS), Operations: []cliadapter.Capability{{Method: "wireguard.status", Effect: "read"}}}
 	if got := cliadapter.CapabilityState("agent-remote", []string{"wireguard", "status"}, capabilities, nil); got != "available" {
 		t.Fatalf("capability state = %q", got)
 	}

@@ -277,12 +277,6 @@ func (a *App) projectsHUD(c *ui.Context, env chrome.Env) {
 				in.OnShortcut(0, ui.KeyEscape, a.closeLayer)
 				in.OnShortcut(0, ui.KeyDown, func() { l.searchHot++ })
 				in.OnShortcut(0, ui.KeyUp, func() { l.searchHot = max(0, l.searchHot-1) })
-				for key := range chordKeys {
-					for _, mods := range a.chordShortcutMods() {
-						mods := mods
-						in.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
-					}
-				}
 			}
 			if env.Button(c, locales.ProjectOpenFolder(), chrome.Secondary).Clicked() {
 				a.closeLayer()

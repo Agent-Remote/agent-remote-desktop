@@ -145,7 +145,10 @@ func (a *App) capabilitiesCommands(c *ui.Context) {
 					// disabling the catalog button here would hide the structured
 					// explanation and strand users on a generic command card.
 					platformBlocked := platformState == "unsupported" && pageTarget == ""
-					ui.Button(c, openLabel).Disabled((sensitive && pageTarget == "") || platformBlocked || genericCLIStateBlocked(gate)).OnClick(func() {
+					// A dedicated page remains useful for inspecting a workflow and
+					// showing its platform gate. Only generic argv forms need to be
+					// blocked by a terminal capability state.
+					ui.Button(c, openLabel).Disabled((sensitive && pageTarget == "") || platformBlocked || (pageTarget == "" && genericCLIStateBlocked(gate))).OnClick(func() {
 						if pageTarget != "" {
 							a.openCommandPageTarget(pageTarget)
 							return

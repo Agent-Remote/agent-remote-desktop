@@ -516,8 +516,11 @@ func TestDedicatedWorkflowHonorsPlatformAndCapabilityGates(t *testing.T) {
 	if got := cliadapter.DedicatedCapabilityState(foreign, terminalCaps(workflow.Method), nil); got != "platform_unsupported" {
 		t.Fatalf("foreign platform state = %q", got)
 	}
-	if got := cliadapter.DedicatedCapabilityState(workflow, terminalCaps(), nil); got != "cli_unsupported" {
-		t.Fatalf("missing terminal declaration state = %q", got)
+	if runtime.GOOS == "darwin" {
+		missing := terminalCaps()
+		if got := cliadapter.DedicatedCapabilityState(workflow, missing, nil); got != "cli_unsupported" {
+			t.Fatalf("missing terminal declaration state = %q", got)
+		}
 	}
 	if got := cliadapter.DedicatedCapabilityState(workflow, terminalCaps(workflow.Method), errors.New("discovery")); got != "unavailable" {
 		t.Fatalf("protocol failure state = %q", got)
