@@ -1,7 +1,6 @@
 package app
 
 import (
-	"runtime"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -53,15 +52,14 @@ func (a *App) chordMods() ui.Modifiers {
 func (a *App) chordShortcutMods() []ui.Modifiers {
 	want := a.chordMods()
 	mods := []ui.Modifiers{want}
-	if runtime.GOOS == "darwin" {
-		// Some hosted macOS input paths retain one or more system modifier
-		// bits while delivering Option. Register every superset so the action
-		// router reaches chordPress before the focused control consumes it.
-		all := ui.Shift | ui.Ctrl | ui.Alt | ui.Super
-		for extra := ui.Modifiers(1); extra <= all; extra++ {
-			if extra&want == want {
-				mods = append(mods, extra)
-			}
+	// Native and virtualized input paths on every hosted OS may retain one or
+	// more system modifier bits while delivering the configured chord. Register
+	// every superset so the action router reaches chordPress before a focused
+	// control consumes it.
+	all := ui.Shift | ui.Ctrl | ui.Alt | ui.Super
+	for extra := ui.Modifiers(1); extra <= all; extra++ {
+		if extra&want == want {
+			mods = append(mods, extra)
 		}
 	}
 	return mods
