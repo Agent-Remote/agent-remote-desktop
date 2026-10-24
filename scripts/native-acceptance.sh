@@ -141,6 +141,7 @@ run_step() {
 # explicit virtual display and is kept in metadata so reviewers do not mistake
 # it for a window-manager or physical-session run.
 UI_RUNNER=()
+VIRTUAL_DISPLAY=0
 if [[ "$goos" == linux && -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
   command -v xvfb-run >/dev/null 2>&1 || {
     printf 'native-acceptance: Linux has no display; install xvfb-run or set DISPLAY\n' >&2
@@ -151,6 +152,7 @@ if [[ "$goos" == linux && -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; the
   # cannot be mistaken for a Wayland run and formal review can require both
   # Linux display protocols when needed.
   printf 'display_protocol=x11\n' >> "$EVIDENCE_DIR/metadata.txt"
+  VIRTUAL_DISPLAY=1
   UI_RUNNER=(xvfb-run -a)
 else
   printf 'ui_display=host\n' >> "$EVIDENCE_DIR/metadata.txt"
@@ -181,7 +183,7 @@ fi
 
 run_step platform env DESKTOP_NATIVE_ACCEPTANCE=1 "${UI_RUNNER[@]}" go run ./tests/platform-probe
 run_step installer env DESKTOP_NATIVE_ACCEPTANCE=1 go run ./tests/installer-probe
-run_step native-window env DESKTOP_TERMINAL_TESTS=1 "${UI_RUNNER[@]}" go run ./tests/native-probe
+run_step native-window env DESKTOP_TERMINAL_TESTS=1 DESKTOP_NATIVE_VIRTUAL_DISPLAY="$VIRTUAL_DISPLAY" "${UI_RUNNER[@]}" go run ./tests/native-probe
 run_step tray env DESKTOP_NATIVE_ACCEPTANCE=1 "${UI_RUNNER[@]}" go run ./tests/tray-probe
 if [[ "${DESKTOP_NATIVE_SKIP_WORKBENCH:-0}" == 1 ]]; then
   printf 'workbench=skipped (DESKTOP_NATIVE_SKIP_WORKBENCH=1)\n' | tee "$EVIDENCE_DIR/workbench.log"
