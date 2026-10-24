@@ -139,7 +139,13 @@ func (a *App) capabilitiesCommands(c *ui.Context) {
 					case "network-forwards":
 						openLabel = locales.CliFormOpenPortForward()
 					}
-					ui.Button(c, openLabel).Disabled((sensitive && pageTarget == "") || platformState == "unsupported" || genericCLIStateBlocked(gate)).OnClick(func() {
+					// Dedicated pages remain inspectable on hosts where the CLI
+					// declares another platform. They show the platform gate and
+					// keep execution disabled at the reviewed workflow boundary;
+					// disabling the catalog button here would hide the structured
+					// explanation and strand users on a generic command card.
+					platformBlocked := platformState == "unsupported" && pageTarget == ""
+					ui.Button(c, openLabel).Disabled((sensitive && pageTarget == "") || platformBlocked || genericCLIStateBlocked(gate)).OnClick(func() {
 						if pageTarget != "" {
 							a.openCommandPageTarget(pageTarget)
 							return

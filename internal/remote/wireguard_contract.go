@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"net/url"
+	pathpkg "path"
 	"path/filepath"
 	"strings"
 	"unicode"
@@ -56,7 +57,19 @@ func validWireGuardPlan(plan WireGuardConfigPlan) bool {
 }
 
 func validWireGuardPath(path string) bool {
-	return path != "" && len(path) <= 32768 && filepath.IsAbs(path) && filepath.Clean(path) == path && strings.IndexFunc(path, unicode.IsControl) < 0
+	if path == "" || len(path) > 32768 || strings.IndexFunc(path, unicode.IsControl) >= 0 {
+		return false
+	}
+	// The control protocol carries paths from the selected CLI host.  Test
+	// fixtures and portable protocol records may use POSIX absolute paths even
+	// when the desktop process is running on Windows; filepath.IsAbs alone
+	// would reject those records before the platform specific CLI can inspect
+	// them.  Preserve native cleaning rules while accepting a canonical POSIX
+	// absolute spelling on every host.
+	if strings.HasPrefix(path, "/") {
+		return pathpkg.IsAbs(path) && pathpkg.Clean(path) == path
+	}
+	return filepath.IsAbs(path) && filepath.Clean(path) == path
 }
 
 func validWireGuardContext(context WireGuardContext) bool {
