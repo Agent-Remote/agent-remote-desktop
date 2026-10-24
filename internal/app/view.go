@@ -120,7 +120,10 @@ func (a *App) chordFallback(c *ui.Context) {
 	}
 	for key := range chordKeys {
 		key := key
-		c.OnShortcut(a.chordMods(), key, func() { a.chordPress(a.chordMods(), key) })
+		for _, mods := range a.chordShortcutMods() {
+			mods := mods
+			c.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+		}
 	}
 }
 

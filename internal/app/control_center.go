@@ -153,7 +153,10 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 	// text before ancestor shortcuts are considered.
 	for key := range chordKeys {
 		key := key
-		sheet = sheet.OnShortcut(a.chordMods(), key, func() { a.chordPress(a.chordMods(), key) })
+		for _, mods := range a.chordShortcutMods() {
+			mods := mods
+			sheet = sheet.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+		}
 	}
 	h := sheet.AnimateTo("height", target, env.Move(theme.Page))
 	rising := l.controlRise

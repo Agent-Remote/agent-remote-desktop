@@ -17,7 +17,7 @@ func TestTerminalKeepsReadingWithoutVisibleView(t *testing.T) {
 	}
 	cmd := []string{"/bin/sh", "-c", "printf 'ready\\n'; read answer; printf 'reply:%s\\n' \"$answer\""}
 	if runtime.GOOS == "windows" {
-		cmd = []string{"cmd.exe", "/Q", "/C", "echo ready & set /p answer= & call echo reply:%%answer%%"}
+		cmd = []string{"cmd.exe", "/Q", "/V:ON", "/C", "echo ready & set /p answer= & echo reply:!answer!"}
 	}
 	term, err := terminal.New(terminal.Options{Command: cmd, Dir: t.TempDir(), Scrollback: 1024 * 1024})
 	if err != nil {

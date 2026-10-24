@@ -1,6 +1,7 @@
 package app
 
 import (
+	"runtime"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -43,6 +44,19 @@ func (a *App) chordMods() ui.Modifiers {
 		return ui.Ctrl | ui.Alt
 	}
 	return ui.Alt
+}
+
+// chordShortcutMods lists the exact modifier sets that the UI action router
+// may report for a layer chord. Native macOS hosts can preserve Command while
+// delivering an Option chord; chordPress deliberately tolerates that extra
+// system bit, so element and window shortcuts must register the same variant.
+func (a *App) chordShortcutMods() []ui.Modifiers {
+	want := a.chordMods()
+	mods := []ui.Modifiers{want}
+	if runtime.GOOS == "darwin" {
+		mods = append(mods, want|ui.Super)
+	}
+	return mods
 }
 
 // chordHeld reports whether mods still hold the chord modifier: letting

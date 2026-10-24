@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 )
@@ -31,6 +32,10 @@ func schemaHelper() bool {
 		fmt.Fprintln(f, "schema:"+name)
 		f.Close()
 	}
+	platform := runtime.GOOS
+	if platform == "darwin" {
+		platform = "macos"
+	}
 	commands := []any{
 		map[string]any{"path": []string{}, "has_subcommands": true, "arguments": []any{}},
 		map[string]any{"path": []string{"init"}, "arguments": []any{}},
@@ -42,15 +47,15 @@ func schemaHelper() bool {
 		map[string]any{"path": []string{"doctor"}, "arguments": []any{
 			map[string]any{"id": "fix", "long": "fix", "action": "SetTrue", "min_values": 0, "max_values": 0},
 		}},
-		map[string]any{"path": []string{"device", "install"}, "platforms": []string{"macos"}, "arguments": []any{
+		map[string]any{"path": []string{"device", "install"}, "platforms": []string{platform}, "arguments": []any{
 			map[string]any{"id": "source", "long": "source", "required": true, "action": "Set", "min_values": 1, "max_values": 1, "value_names": []string{"APP_OR_ZIP"}},
 		}},
-		map[string]any{"path": []string{"device", "uninstall"}, "platforms": []string{"macos"}, "arguments": []any{
+		map[string]any{"path": []string{"device", "uninstall"}, "platforms": []string{platform}, "arguments": []any{
 			map[string]any{"id": "yes", "long": "yes", "short": "y", "action": "SetTrue", "min_values": 0, "max_values": 0},
 		}},
-		map[string]any{"path": []string{"device", "status"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"device", "launch"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"device", "diagnose"}, "platforms": []string{"macos"}, "arguments": []any{}},
+		map[string]any{"path": []string{"device", "status"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"device", "launch"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"device", "diagnose"}, "platforms": []string{platform}, "arguments": []any{}},
 		map[string]any{"path": []string{"device", "revoke"}, "arguments": []any{}},
 		map[string]any{"path": []string{"credentials", "create"}, "arguments": []any{
 			map[string]any{"id": "name", "long": "name", "required": true, "action": "Set", "min_values": 1, "max_values": 1, "value_names": []string{"NAME"}},
@@ -123,30 +128,30 @@ func schemaHelper() bool {
 			map[string]any{"id": "totp_code", "long": "totp-code", "action": "Set", "min_values": 0, "max_values": 1, "value_names": []string{"CODE"}},
 		}},
 		map[string]any{"path": []string{"logout"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "status"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "list"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "requests"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "cancel-request"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "delete-device"}, "platforms": []string{"macos"}, "arguments": []any{
+		map[string]any{"path": []string{"ego-browser", "status"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "list"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "requests"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "cancel-request"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "delete-device"}, "platforms": []string{platform}, "arguments": []any{
 			map[string]any{"id": "id", "positional_index": 1, "required": true, "action": "Set", "min_values": 1, "max_values": 1, "value_names": []string{"ID"}},
 			map[string]any{"id": "yes", "long": "yes", "short": "y", "action": "SetTrue", "min_values": 0, "max_values": 0},
 		}},
-		map[string]any{"path": []string{"ego-browser", "delete-binding"}, "platforms": []string{"macos"}, "arguments": []any{
+		map[string]any{"path": []string{"ego-browser", "delete-binding"}, "platforms": []string{platform}, "arguments": []any{
 			map[string]any{"id": "id", "positional_index": 1, "required": true, "action": "Set", "min_values": 1, "max_values": 1, "value_names": []string{"ID"}},
 			map[string]any{"id": "yes", "long": "yes", "short": "y", "action": "SetTrue", "min_values": 0, "max_values": 0},
 		}},
-		map[string]any{"path": []string{"ego-browser", "connect"}, "platforms": []string{"macos"}, "arguments": []any{
+		map[string]any{"path": []string{"ego-browser", "connect"}, "platforms": []string{platform}, "arguments": []any{
 			map[string]any{"id": "tool_session", "positional_index": 1, "action": "Set", "min_values": 0, "max_values": 1, "value_names": []string{"TOOL_SESSION"}},
 			map[string]any{"id": "yes", "long": "yes", "short": "y", "action": "SetTrue", "min_values": 0, "max_values": 0},
 		}},
 		// These aliases are backed by the structured ego-browser binding and
 		// claim contracts. Keep them in the fixture so capability-page route
 		// tests exercise the same command set as the released schema.
-		map[string]any{"path": []string{"ego-browser", "claim"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "pause"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "resume"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "stop"}, "platforms": []string{"macos"}, "arguments": []any{}},
-		map[string]any{"path": []string{"ego-browser", "revoke"}, "platforms": []string{"macos"}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "claim"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "pause"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "resume"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "stop"}, "platforms": []string{platform}, "arguments": []any{}},
+		map[string]any{"path": []string{"ego-browser", "revoke"}, "platforms": []string{platform}, "arguments": []any{}},
 		map[string]any{"path": []string{"wireguard", "up"}, "platforms": []string{"linux", "macos", "windows"}, "arguments": []any{}},
 		// `forward` has optional list/stop subcommands but also performs the
 		// create operation directly. Keep it in the fixture so capability-page

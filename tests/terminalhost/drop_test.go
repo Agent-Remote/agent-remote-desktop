@@ -2,6 +2,7 @@ package terminalhost_test
 
 import (
 	"errors"
+	"runtime"
 	"testing"
 	"time"
 
@@ -62,19 +63,28 @@ func TestFormatDroppedPathsWindowsEscapesCommandOperators(t *testing.T) {
 
 func TestHostInsertDroppedPathsKeepsInputAsOneShellArgument(t *testing.T) {
 	integration(t)
-	h, err := terminalhost.New(session.Command{
-		Argv:      []string{"/bin/sh", "-c", "read answer; printf 'reply:%s\\n' \"$answer\""},
-		Directory: t.TempDir(),
-	})
+	command := []string{"/bin/sh", "-c", "read answer; printf 'reply:%s\\n' \"$answer\""}
+	if runtime.GOOS == "windows" {
+		// The native Windows probe covers command-prompt quoting. This keeps
+		// the host-level test focused on the same round-trip on ConPTY.
+		command = []string{"cmd.exe", "/Q", "/V:ON", "/C", "set /p answer= & echo reply:!answer!"}
+	}
+	h, err := terminalhost.New(session.Command{Argv: command, Directory: t.TempDir()})
 	if err != nil {
 		t.Fatal(err)
 	}
 	t.Cleanup(func() { _ = h.Stop(true); _ = h.Close() })
-	if err := h.InsertDroppedPaths([]string{"/tmp/has space/it's-safe"}); err != nil {
+	path := "/tmp/has space/it's-safe"
+	want := "'/tmp/has space/it'\\''s-safe'"
+	if runtime.GOOS == "windows" {
+		path = `C:\Users\A B\file.txt`
+		want = `"C:\Users\A B\file.txt"`
+	}
+	if err := h.InsertDroppedPaths([]string{path}); err != nil {
 		t.Fatal(err)
 	}
 	h.Terminal.Send([]byte("\r"))
-	waitText(t, h, "'/tmp/has space/it'\\''s-safe'")
+	waitText(t, h, want)
 	select {
 	case <-h.Done():
 	case <-time.After(10 * time.Second):

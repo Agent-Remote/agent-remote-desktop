@@ -25,7 +25,7 @@ func TestHostInputOutputAndExitStatus(t *testing.T) {
 	integration(t)
 	cmd := []string{"/bin/sh", "-c", "printf 'ready\\n'; read answer; printf 'reply:%s\\n' \"$answer\"; exit 7"}
 	if runtime.GOOS == "windows" {
-		cmd = []string{"cmd.exe", "/Q", "/C", "echo ready & set /p answer= & call echo reply:%%answer%% & exit /b 7"}
+		cmd = []string{"cmd.exe", "/Q", "/V:ON", "/C", "echo ready & set /p answer= & echo reply:!answer! & exit /b 7"}
 	}
 	h, err := terminalhost.New(session.Command{Argv: cmd, Directory: t.TempDir()})
 	if err != nil {

@@ -139,7 +139,10 @@ func (a *App) savedPane(c *ui.Context, saved workspace.Session) {
 		FocusBind(&a.focusValue, saved.ID).HandleInput(a.rootKey)
 	for key := range chordKeys {
 		key := key
-		pane = pane.OnShortcut(a.chordMods(), key, func() { a.chordPress(a.chordMods(), key) })
+		for _, mods := range a.chordShortcutMods() {
+			mods := mods
+			pane = pane.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+		}
 	}
 	pane.Children(func() {
 		ui.Row(c).Gap(8).Children(func() {
