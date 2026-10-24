@@ -119,7 +119,12 @@ func (a *App) invalidate() {
 // taken chord sends nothing to the program (R0).
 func (a *App) chordPress(mods ui.Modifiers, key ui.Key) bool {
 	layer, ok := chordKeys[key]
-	if !ok || mods&^ui.Shift != a.chordMods() || a.dialogOpen() || a.closing {
+	// Shift is tolerated for alternate keyboard layouts; compare only the
+	// modifier bits that select the chord. Native macOS backends can report an
+	// additional system modifier while Option is held, which must not make a
+	// saved pane lose its layer shortcut.
+	want := a.chordMods()
+	if !ok || mods&(ui.Ctrl|ui.Alt) != want || a.dialogOpen() || a.closing {
 		return false
 	}
 	if layer == layerControl {
