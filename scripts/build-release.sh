@@ -97,9 +97,11 @@ for raw in "${raw_targets[@]}"; do
   target="$(trim "$raw")"
   [[ "$target" =~ ^(darwin|windows|linux)/(amd64|arm64)$ ]] ||
     die "unsupported target '$target'; supported targets are darwin/windows/linux amd64/arm64"
-  for seen in "${SEEN_TARGETS[@]}"; do
-    [[ "$seen" != "$target" ]] || die "duplicate target '$target'"
-  done
+  if ((${#SEEN_TARGETS[@]} > 0)); then
+    for seen in "${SEEN_TARGETS[@]}"; do
+      [[ "$seen" != "$target" ]] || die "duplicate target '$target'"
+    done
+  fi
   SEEN_TARGETS+=("$target")
   TARGET_ARGS+=("$target")
   if [[ "$target" == darwin/* ]]; then

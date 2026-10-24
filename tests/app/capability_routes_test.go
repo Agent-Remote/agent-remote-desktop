@@ -90,6 +90,9 @@ func TestCapabilitiesRoutesCommandFamiliesToDedicatedPages(t *testing.T) {
 				t.Fatal(err)
 			}
 			tt.Type(tc.filter)
+			// Text input is delivered before the next render on slower CI workers.
+			// Advance once before inspecting the filtered command card.
+			tt.Frame()
 			display := tc.display
 			if display == "" {
 				display = "agent-remote " + tc.filter

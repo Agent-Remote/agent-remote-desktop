@@ -97,10 +97,21 @@ func (a *App) View(c *ui.Context) {
 // must never cover a terminal or the root, which take chords themselves
 // (R0); a text field keeps ⌥ + letter as the text it types.
 func (a *App) chordFallback(c *ui.Context) {
-	if a.dialogOpen() || ui.FocusedValue(c, &a.focusValue) != "" || a.layers.search {
+	if a.dialogOpen() || a.layers.search {
 		return
 	}
+	// A restored session has a focus value but no live terminal to receive its
+	// OnKey hook. Keep the window fallback available for that saved pane while
+	// still leaving live terminal input fully in charge of the chord.
+	if focused := ui.FocusedValue(c, &a.focusValue); focused != "" && focused != focusZen && focused != focusLayer {
+		for _, record := range a.sessions.Records() {
+			if record.ID == focused {
+				return
+			}
+		}
+	}
 	for key := range chordKeys {
+		key := key
 		c.OnShortcut(chordMods(), key, func() { a.chordPress(chordMods(), key) })
 	}
 }

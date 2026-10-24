@@ -58,6 +58,8 @@ func TestCapabilitiesPageIsPassiveAndFiltersCommandPlatformDeclarations(t *testi
 		t.Fatal(err)
 	}
 	tt.Type("device install")
+	// Text input is delivered before the next render on slower CI workers.
+	tt.Frame()
 	if !tt.HasText("agent-remote device install") || tt.HasText("agent-remote device revoke") {
 		t.Fatal("command filter lost exact path")
 	}
