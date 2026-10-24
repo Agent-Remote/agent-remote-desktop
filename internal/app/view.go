@@ -97,7 +97,14 @@ func (a *App) View(c *ui.Context) {
 // must never cover a terminal or the root, which take chords themselves
 // (R0); a text field keeps ⌥ + letter as the text it types.
 func (a *App) chordFallback(c *ui.Context) {
-	if a.dialogOpen() || a.layers.search || a.openLayer() != "" {
+	if a.dialogOpen() || a.layers.search {
+		return
+	}
+	// The layer's own focus handler owns chords for the wheels and the
+	// Control Center home. A pushed Control Center page has ordinary buttons
+	// that need the window fallback; its search field is covered by the
+	// layers.search guard above.
+	if layer := a.openLayer(); layer != "" && (layer != layerControl || a.page == "") {
 		return
 	}
 	// A live terminal gets first refusal during input routing. A restored pane
