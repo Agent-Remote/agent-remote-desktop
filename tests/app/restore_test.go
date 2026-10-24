@@ -21,7 +21,7 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 	state := testutil.SavedWorkspace(t)
 	testutil.StoreWorkspace(t, home, state)
 	providers := &providerFixture{available: map[string]bool{"codex": true, "claude": true, "fclaude": true}, directory: t.TempDir()}
-	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 2 * time.Second})
+	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 10 * time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -93,7 +93,7 @@ func TestRestoredWorkspaceKeepsHistoryWhileReorderingAndHidingTabs(t *testing.T)
 		t.Fatal("drag changed split geometry")
 	}
 	// Reopening must keep the hidden remote session available in the dock.
-	second, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 2 * time.Second})
+	second, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 10 * time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}

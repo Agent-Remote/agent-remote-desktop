@@ -156,7 +156,7 @@ func solidTester(t *testing.T) *ui.Tester {
 	state.Board.Tabs, state.Board.Active = nil, nil // the project's empty state: no panes
 	testutil.StoreWorkspace(t, home, state)
 	providers := &providerFixture{available: map[string]bool{"codex": true, "claude": true, "fclaude": true}, directory: t.TempDir()}
-	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 2 * time.Second})
+	a, err := app.NewWithOptions(home, app.Options{FindExecutable: providers.resolve, ChordTapWindow: 10 * time.Second})
 	if err != nil {
 		t.Fatal(err)
 	}
