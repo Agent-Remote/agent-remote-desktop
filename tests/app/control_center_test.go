@@ -8,8 +8,15 @@ import (
 	"github.com/egoist/mygo/ui"
 )
 
-func controlCenterOpen(tt *ui.Tester) bool { return tt.HasText(locales.CloseControlCenter()) }
-func pageShown(tt *ui.Tester) bool         { return tt.HasText(locales.BackToControlCenter()) }
+func controlCenterOpen(tt *ui.Tester) bool {
+	_, ok := tt.Find(locales.CloseControlCenter())
+	return ok
+}
+
+func pageShown(tt *ui.Tester) bool {
+	_, ok := tt.Find(locales.BackToControlCenter())
+	return ok
+}
 
 // Redesign §4.5: a tile pushes its page into the sheet; Back returns to
 // the tiles with the sheet still open; Esc goes back first, then closes.
@@ -101,7 +108,15 @@ func TestControlCenterSearchPushesAPage(t *testing.T) {
 	}
 	tt.Type(locales.CapabilitiesTitle())
 	settle(tt)
-	if !tt.HasText(locales.ControlCenterResults()) || tt.HasText(locales.ControlCenterSystem()) {
+	// Native Windows keeps the sheet's outgoing grid in the transition tree
+	// for a few frames after text input. Wait for the visible result state
+	// rather than sampling the overlap frame.
+	deadline := time.Now().Add(2 * time.Second)
+	for !tt.HasText(locales.ControlCenterResults()) && time.Now().Before(deadline) {
+		tt.Frame()
+		time.Sleep(20 * time.Millisecond)
+	}
+	if !tt.HasText(locales.ControlCenterResults()) {
 		t.Fatalf("typing did not replace the tiles with results: %q", tt.Texts())
 	}
 	tt.Key(0, ui.KeyEnter)

@@ -39,7 +39,9 @@ jobs:
           - os: windows-latest
             goos: windows
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    # Hosted runners can take about 18 minutes for the full headless UI
+    # package before the installer and native acceptance probes run.
+    timeout-minutes: 35
     needs: static-checks
     steps:
       - uses: actions/checkout@v4

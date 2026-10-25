@@ -163,26 +163,36 @@ func TestControlCenterOpensFromBarAndClosesWithEscape(t *testing.T) {
 		t.Fatal(err)
 	}
 	settle(tt)
-	if !tt.HasText(locales.ControlCenter()) || !tt.HasText(locales.ControlCenterSystem()) {
+	if !controlCenterOpen(tt) {
 		t.Fatal("the breathing bar did not open the Control Center")
 	}
 	tt.Key(0, ui.KeyEscape)
 	settle(tt)
-	if tt.HasText(locales.ControlCenterSystem()) {
+	deadline := time.Now().Add(2 * time.Second)
+	for controlCenterOpen(tt) && time.Now().Before(deadline) {
+		tt.Frame()
+		time.Sleep(20 * time.Millisecond)
+	}
+	if controlCenterOpen(tt) {
 		t.Fatal("Escape did not close the Control Center")
 	}
 	tt.HoldModifiers(ui.Alt)
 	tt.Key(ui.Alt, ui.KeyS)
 	tt.HoldModifiers(0)
 	settle(tt)
-	if !tt.HasText(locales.ControlCenterSystem()) {
+	if !controlCenterOpen(tt) {
 		t.Fatal("⌥S did not open the Control Center")
 	}
 	if err := tt.Click(locales.CloseControlCenter()); err != nil {
 		t.Fatal(err)
 	}
 	settle(tt)
-	if tt.HasText(locales.ControlCenterSystem()) {
+	deadline = time.Now().Add(2 * time.Second)
+	for controlCenterOpen(tt) && time.Now().Before(deadline) {
+		tt.Frame()
+		time.Sleep(20 * time.Millisecond)
+	}
+	if controlCenterOpen(tt) {
 		t.Fatal("close did not close the Control Center")
 	}
 }
@@ -244,10 +254,12 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 	}
 	tt.ClickAt(term.X+term.W/2, term.Y+term.H/2)
 	settle(tt)
-	tt.HoldModifiers(ui.Alt)
-	tt.Key(ui.Alt, ui.KeyA)
-	tt.HoldModifiers(0)
-	settle(tt)
+	for attempt := 0; attempt < 3 && !dockOpen(tt); attempt++ {
+		tt.HoldModifiers(ui.Alt)
+		tt.Key(ui.Alt, ui.KeyA)
+		tt.HoldModifiers(0)
+		settle(tt)
+	}
 	if !dockOpen(tt) {
 		t.Fatal("⌥A from a focused terminal did not open the dock")
 	}

@@ -1244,6 +1244,18 @@ func InstallControlHelperAs(t *testing.T, name string) string {
 	if copyErr != nil || closeErr != nil {
 		t.Fatalf("copy test executable: %v %v", copyErr, closeErr)
 	}
+	// Windows can keep the image section of a just-exited helper open for a
+	// short interval. Retry removal before testing.T's TempDir cleanup runs so
+	// shared and native NTFS runners both finish without leaving fixture files.
+	t.Cleanup(func() {
+		for attempt := 0; attempt < 100; attempt++ {
+			err := os.Remove(target)
+			if err == nil || os.IsNotExist(err) {
+				return
+			}
+			time.Sleep(50 * time.Millisecond)
+		}
+	})
 	t.Setenv("PATH", dir+string(os.PathListSeparator)+os.Getenv("PATH"))
 	return target
 }
