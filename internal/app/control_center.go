@@ -142,6 +142,16 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 	if open {
 		fade := ui.ElementTransition{Animation: ptr(env.Fade(theme.Smooth)), Enter: &ui.Motion{}, Exit: &ui.Motion{}}
 		scrim := env.Scrim(c).Key("control-scrim").Transition(fade).FocusBind(&a.focusValue, focusLayer).HandleInput(a.layerKey)
+		// Keep layer chords available while a page control owns focus. The
+		// scrim is an overlay, so this also covers controls whose focus chain
+		// does not include the page container on native hosts.
+		for key := range chordKeys {
+			key := key
+			for _, mods := range a.chordShortcutMods() {
+				mods := mods
+				scrim = scrim.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+			}
+		}
 		if scrim.Clicked() {
 			a.closeLayer()
 			return
@@ -197,7 +207,7 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 		ui.Box(c.Key("control-stage")).Grow(1).MinHeight(0).FillWidth().Clip().Children(func() {
 			if paged {
 				if p, ok := a.pages()[l.hosted]; ok {
-					page := ui.Column(c.Key("control-page")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Transition(a.push(env, w*0.3))
+					page := ui.Column(c.Key("control-page")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Transition(a.push(env, w*0.3)).HandleInput(a.layerKey)
 					// A page's buttons and checkboxes can own focus. Register the
 					// layer chords on the page subtree so they remain available
 					// before a focused control handles ordinary key input.
