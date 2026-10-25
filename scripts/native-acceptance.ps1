@@ -147,6 +147,7 @@ try {
     }
     $status = "passed"
     $exitCode = 0
+    $currentStep = "complete"
 } catch {
     if ($script:exitCode -le 0) { $script:exitCode = 1 }
     $exitCode = $script:exitCode
