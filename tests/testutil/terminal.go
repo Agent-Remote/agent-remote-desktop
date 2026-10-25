@@ -1,10 +1,12 @@
 package testutil
 
 import (
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 	"time"
 )
@@ -29,6 +31,7 @@ func InstallTerminalFixture(t *testing.T) string {
 		t.Fatalf("build Windows terminal fixture: %v (%s)", err, output)
 	}
 	t.Cleanup(func() {
+		StopTerminalFixture(path)
 		for attempt := 0; attempt < 100; attempt++ {
 			err := os.Remove(path)
 			if err == nil || os.IsNotExist(err) {
@@ -38,6 +41,22 @@ func InstallTerminalFixture(t *testing.T) string {
 		}
 	})
 	return path
+}
+
+// StopTerminalFixture terminates a fixture that outlived its owning ConPTY.
+// Hosted Windows runners can keep a ConPTY child alive after the graceful
+// ETX path has timed out; stop the exact executable before TempDir cleanup.
+func StopTerminalFixture(path string) {
+	if runtime.GOOS != "windows" || path == "" {
+		return
+	}
+	escaped := strings.ReplaceAll(path, "'", "''")
+	script := fmt.Sprintf("Get-CimInstance Win32_Process | Where-Object { $_.ExecutablePath -eq '%s' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }", escaped)
+	if err := exec.Command("powershell.exe", "-NoProfile", "-NonInteractive", "-Command", script).Run(); err != nil {
+		// The hosted image may deny process-path inspection; all desktop tests
+		// run serially, so the fixture image name remains an exact fallback.
+		_ = exec.Command("taskkill.exe", "/F", "/IM", filepath.Base(path)).Run()
+	}
 }
 
 func repoRoot() (string, error) {
