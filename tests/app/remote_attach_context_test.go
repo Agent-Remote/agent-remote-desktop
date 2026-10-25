@@ -24,6 +24,7 @@ const attachSessionID = "11111111-1111-4111-8111-111111111111"
 func attachHistoryTester(t *testing.T, language, mode string, edit func(*storage.State, string)) (*app.App, *ui.Tester, string, string, storage.State) {
 	t.Helper()
 	binary := testutil.InstallControlHelper(t)
+	fclaudeBinary := testutil.InstallControlHelperAs(t, "fclaude")
 	t.Setenv("DESKTOP_TEST_REMOTE_DEVICE", testutil.RemoteAttachDeviceID)
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", mode)
 	i18n.SetLocaleFunc(func() string { return language })
@@ -43,7 +44,7 @@ func attachHistoryTester(t *testing.T, language, mode string, edit func(*storage
 			return binary, nil
 		}
 		if name == "fclaude" {
-			return filepath.Join(home, "fclaude"), nil
+			return fclaudeBinary, nil
 		}
 		return "", fault.ExecutableMissing
 	}})
