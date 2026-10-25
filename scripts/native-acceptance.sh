@@ -140,7 +140,10 @@ run_step() {
 # The native UI backends need a display. On headless Linux, Xvfb is an
 # explicit virtual display and is kept in metadata so reviewers do not mistake
 # it for a window-manager or physical-session run.
-UI_RUNNER=()
+# Bash 3.2 (the system shell on macOS) treats an empty array expansion as an
+# unset variable under `set -u`. Use `env` as the no-wrapper runner; Linux
+# headless hosts replace it with xvfb-run below.
+UI_RUNNER=(env)
 VIRTUAL_DISPLAY=0
 if [[ "$goos" == linux && -z "${DISPLAY:-}" && -z "${WAYLAND_DISPLAY:-}" ]]; then
   command -v xvfb-run >/dev/null 2>&1 || {
