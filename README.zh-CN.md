@@ -59,7 +59,7 @@ go run ./tests/performance-probe -frames 120
 
 终端相关改动需要设置 `DESKTOP_TERMINAL_TESTS=1`。原生验收脚本必须在目标主机运行；交叉编译不属于运行证据。远程合同夹具和主机预检不能证明真实 Server/Node 会话。
 
-CI 设置 `DESKTOP_TEST_APP_SHARDS=4`，把耗时较长的 headless app 包拆成四个并行测试进程。你也可以在本机使用相同的可选配置：`DESKTOP_TEST_APP_SHARDS=4 bash scripts/check.sh`。
+耗时较长的 headless `tests/app` 包会在每个目标操作系统上拆成四个独立 CI runner 上的串行 shard。原生运行 job 负责其余 Go 包和主机验收检查。本机执行 `go test ./...` 仍会在一个进程中运行完整测试包。
 
 ## 发布
 

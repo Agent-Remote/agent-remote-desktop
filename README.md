@@ -61,7 +61,7 @@ go run ./tests/performance-probe -frames 120
 
 For terminal changes, set `DESKTOP_TERMINAL_TESTS=1`. Native acceptance scripts must run on the target host; cross-compilation is not runtime evidence. Remote contract fixtures and host-only preflight do not prove a live Server/Node session.
 
-CI sets `DESKTOP_TEST_APP_SHARDS=4` to run the long headless app package in four parallel test processes. You can use the same opt-in locally with `DESKTOP_TEST_APP_SHARDS=4 bash scripts/check.sh`.
+The long headless `tests/app` package runs as four serial shards on isolated CI runners for each target OS. Native runtime jobs run the remaining Go packages and host acceptance checks. A local `go test ./...` still runs the complete package in one process.
 
 ## Release
 

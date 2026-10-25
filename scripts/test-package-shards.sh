@@ -1,18 +1,24 @@
 #!/usr/bin/env bash
-# Run every top-level Go test in one package exactly once across parallel
-# processes. The package is compiled once, then each shard executes the same
-# test binary with a disjoint -test.run expression.
+# Run one deterministic shard of a Go test package. The package is compiled
+# once on the runner, then the selected shard executes the test binary with a
+# disjoint -test.run expression. CI places different shards on separate hosts
+# so native UI resources remain serial within each runner.
 set -euo pipefail
 
-if (($# != 2)); then
-  printf 'usage: %s <package> <shard-count>\n' "$0" >&2
+if (($# != 3)); then
+  printf 'usage: %s <package> <shard-count> <shard-index>\n' "$0" >&2
   exit 2
 fi
 
 package="$1"
 shards="$2"
+shard_index="$3"
 if [[ ! "$shards" =~ ^[1-9][0-9]*$ ]]; then
   printf 'test-package-shards: shard count must be a positive integer: %s\n' "$shards" >&2
+  exit 2
+fi
+if [[ ! "$shard_index" =~ ^[0-9]+$ ]] || ((shard_index >= shards)); then
+  printf 'test-package-shards: shard index must be between 0 and %s: %s\n' "$((shards - 1))" "$shard_index" >&2
   exit 2
 fi
 
@@ -46,41 +52,14 @@ while IFS= read -r test_name; do
   index=$((index + 1))
 done < "$work_dir/tests.txt"
 
-printf 'test-package-shards: %s tests across %s shards (%s)\n' "$test_count" "$shards" "$package"
-pids=()
-active_shards=()
-for ((shard = 0; shard < shards; shard++)); do
-  pattern=''
-  while IFS= read -r test_name; do
-    if [[ -n "$pattern" ]]; then
-      pattern+='|'
-    fi
-    pattern+="$test_name"
-  done < "$work_dir/tests.$shard"
-  if [[ -z "$pattern" ]]; then
-    continue
+shard_test_count="$(wc -l < "$work_dir/tests.$shard_index" | tr -d '[:space:]')"
+pattern=''
+while IFS= read -r test_name; do
+  if [[ -n "$pattern" ]]; then
+    pattern+='|'
   fi
-  active_shards+=("$shard")
-  (
-    cd "$package_dir"
-    "$binary" -test.timeout 35m -test.run "^(${pattern})$"
-  ) > "$work_dir/output.$shard" 2>&1 &
-  pids+=("$!")
-done
-
-status=0
-for index in "${!pids[@]}"; do
-  if ! wait "${pids[$index]}"; then
-    status=1
-  fi
-done
-
-for shard in "${active_shards[@]}"; do
-  if [[ -s "$work_dir/output.$shard" ]]; then
-    cat "$work_dir/output.$shard"
-  fi
-done
-if ((status != 0)); then
-  printf 'test-package-shards: one or more shards failed\n' >&2
-  exit "$status"
-fi
+  pattern+="$test_name"
+done < "$work_dir/tests.$shard_index"
+printf 'test-package-shards: shard %s/%s, %s of %s tests (%s)\n' "$((shard_index + 1))" "$shards" "$shard_test_count" "$test_count" "$package"
+cd "$package_dir"
+"$binary" -test.timeout 35m -test.run "^(${pattern})$"
