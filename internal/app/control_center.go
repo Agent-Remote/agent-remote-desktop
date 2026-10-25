@@ -143,13 +143,15 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 		fade := ui.ElementTransition{Animation: ptr(env.Fade(theme.Smooth)), Enter: &ui.Motion{}, Exit: &ui.Motion{}}
 		scrim := env.Scrim(c).Key("control-scrim").Transition(fade).FocusBind(&a.focusValue, focusLayer).HandleInput(a.layerKey)
 		// Keep layer chords available while a page control owns focus. The
-		// scrim is an overlay, so this also covers controls whose focus chain
-		// does not include the page container on native hosts.
+		// scrim is an overlay, so it receives chords that focused controls leave
+		// even when their native focus chain omits the page container.
 		for key := range chordKeys {
 			key := key
 			for _, mods := range a.chordShortcutMods() {
 				mods := mods
-				scrim = scrim.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+				if scrim.OverlayShortcut(mods, key) {
+					a.chordPress(mods, key)
+				}
 			}
 		}
 		if scrim.Clicked() {
