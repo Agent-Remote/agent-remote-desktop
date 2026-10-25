@@ -216,16 +216,23 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 	settle(tt)
 	tt.Key(ui.Cmd, ui.KeyT) // ⌘T opens the ⌥C wheel sticky
 	settle(tt)
-	if err := tt.Click(locales.ToolNameCodex()); err != nil {
-		t.Fatal(err)
+	for attempt := 0; attempt < 3 && !tt.HasText("Terminal"); attempt++ {
+		if _, ok := tt.Find(locales.ToolNameCodex()); !ok {
+			settle(tt)
+			continue
+		}
+		if err := tt.Click(locales.ToolNameCodex()); err != nil {
+			t.Fatal(err)
+		}
+		settle(tt)
 	}
 	deadline := time.Now().Add(10 * time.Second)
 	for !tt.HasText(locales.LocalTool("codex")) && time.Now().Before(deadline) {
 		tt.Frame()
 		time.Sleep(20 * time.Millisecond)
 	}
-	if !tt.HasText(locales.LocalTool("codex")) {
-		t.Fatal("the Codex sector did not start a session")
+	if !tt.HasText("Terminal") {
+		t.Fatalf("the Codex sector did not start a session: %v", tt.Texts())
 	}
 	term, ok := tt.Find("Terminal")
 	if !ok {

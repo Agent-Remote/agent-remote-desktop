@@ -70,17 +70,20 @@ func TestWorkbenchProjectFlowAndTheme(t *testing.T) {
 	if err = tt.Click("打开项目目录"); err != nil {
 		t.Fatal(err)
 	}
+	settle(tt)
 	if err = tt.Click("项目目录"); err != nil {
 		t.Fatal(err)
 	}
+	settle(tt)
 	dir := t.TempDir()
 	tt.Type(dir)
 	// Windows headless input dispatch can publish the final path on the next
 	// frame; render once before the button click so validation sees it.
-	tt.Frame()
+	settle(tt)
 	if err = tt.Click("打开"); err != nil {
 		t.Fatal(err)
 	}
+	settle(tt)
 	if !tt.HasText(dir) {
 		t.Fatal("project not added")
 	}
@@ -192,15 +195,18 @@ func TestChangingLanguagePreservesProjectInputAndErrors(t *testing.T) {
 	if err := tt.Click("Open project directory"); err != nil {
 		t.Fatal(err)
 	}
+	settle(tt)
 	if err := tt.Click("Project directory"); err != nil {
 		t.Fatal(err)
 	}
+	settle(tt)
 	dir := filepath.Join(t.TempDir(), "missing")
 	tt.Type(dir)
-	tt.Frame()
+	settle(tt)
 	if err := tt.Click("Open"); err != nil {
 		t.Fatal(err)
 	}
+	settle(tt)
 	if !tt.HasText("file or directory no longer exists") {
 		t.Fatal("localized error missing")
 	}

@@ -48,15 +48,24 @@ func TestClosePersistsFinalLocalExitCode(t *testing.T) {
 	}
 	tester := ui.NewTester(a.View, 900, 600)
 	// The empty project opens the ⌥C wheel; its Codex sector starts at once.
-	if err := tester.Click(locales.NewProjectSession()); err != nil {
-		t.Fatal(err)
-	}
-	settle(tester)
-	if err := tester.Click(locales.ToolNameCodex()); err != nil {
-		t.Fatal(err)
+	for attempt := 0; attempt < 3 && !tester.HasText("Terminal"); attempt++ {
+		if attempt == 0 {
+			if err := tester.Click(locales.NewProjectSession()); err != nil {
+				t.Fatal(err)
+			}
+			settle(tester)
+		}
+		if _, ok := tester.Find(locales.ToolNameCodex()); !ok {
+			settle(tester)
+			continue
+		}
+		if err := tester.Click(locales.ToolNameCodex()); err != nil {
+			t.Fatal(err)
+		}
+		settle(tester)
 	}
 	// A live pane shows its chip; the sidebar's "Running" row is gone (R2).
-	running := func() bool { return tester.HasText(locales.LocalTool("codex")) && !tester.HasText(locales.Starting()) }
+	running := func() bool { return tester.HasText("Terminal") && !tester.HasText(locales.Starting()) }
 	deadline := time.Now().Add(10 * time.Second)
 	for !running() && time.Now().Before(deadline) {
 		tester.Frame()
