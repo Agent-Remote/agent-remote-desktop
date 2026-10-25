@@ -1,8 +1,6 @@
 package app
 
 import (
-	"runtime"
-
 	"github.com/Agent-Remote/agent-remote-desktop/internal/chrome"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/remote"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
@@ -214,30 +212,18 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 			if paged {
 				if p, ok := a.pages()[l.hosted]; ok {
 					page := ui.Column(c.Key("control-page")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Transition(a.push(env, w*0.3)).HandleInput(a.layerKey)
-					// Native macOS Option events can bypass the focused page
-					// button's shortcut scope. Let the page ancestor receive the
-					// chord directly; the search field opts out in rootKey so
-					// Option+letter remains text there.
-					if runtime.GOOS == "darwin" {
-						page = page.HandleInput(func(ev ui.InputEvent) bool {
-							if a.rootKey(ev) {
-								return true
-							}
-							return a.layerKey(ev)
-						})
-					}
-					// A page's buttons and checkboxes can own focus. Register the
-					// layer chords on the page subtree so they remain available
-					// before a focused control handles ordinary key input.
-					if runtime.GOOS != "darwin" {
-						for key := range chordKeys {
-							key := key
-							for _, mods := range a.chordShortcutMods() {
-								mods := mods
-								page = page.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
-							}
+					// The page ancestor owns layer input before a focused button or
+					// checkbox can consume the key. rootKey handles the configured
+					// chord and returns false for ordinary input, then layerKey keeps
+					// the rest of the layer keyboard contract. Use this same path on
+					// native and headless backends so hosted Linux and Windows do not
+					// depend on window shortcut bubbling.
+					page = page.HandleInput(func(ev ui.InputEvent) bool {
+						if a.rootKey(ev) {
+							return true
 						}
-					}
+						return a.layerKey(ev)
+					})
 					page.Children(func() { a.pageHost(c, env, l.hosted, p) })
 				}
 				return

@@ -146,12 +146,26 @@ func openDockCard(tt *ui.Tester, label string) error {
 // openProject switches project on the ⌥X wheel, which replaces the removed
 // sidebar's project list: the project's sector commits on click.
 func openProject(tt *ui.Tester, name string) error {
-	settle(tt)
-	tt.Key(ui.Alt, ui.KeyX)
-	settle(tt)
-	if err := tt.Click(name); err != nil {
-		return err
+	// Hosted headless renderers can deliver the wheel's pointer action one
+	// frame after the sector is painted. Retry the user-visible action until
+	// the breathing bar confirms the selected project, keeping this helper
+	// deterministic across Xvfb and native backends.
+	for attempt := 0; attempt < 3; attempt++ {
+		settle(tt)
+		if tt.HasText(locales.BarProject(name)) {
+			return nil
+		}
+		tt.Key(ui.Alt, ui.KeyX)
+		settle(tt)
+		r, ok := tt.Find(name)
+		if !ok {
+			return tt.Click(name)
+		}
+		tt.ClickAt(r.X+r.W/2, r.Y+r.H/2)
+		settle(tt)
 	}
-	settle(tt)
-	return nil
+	if tt.HasText(locales.BarProject(name)) {
+		return nil
+	}
+	return tt.Click(name)
 }
