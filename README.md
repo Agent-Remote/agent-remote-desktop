@@ -61,6 +61,8 @@ go run ./tests/performance-probe -frames 120
 
 For terminal changes, set `DESKTOP_TERMINAL_TESTS=1`. Native acceptance scripts must run on the target host; cross-compilation is not runtime evidence. Remote contract fixtures and host-only preflight do not prove a live Server/Node session.
 
+CI sets `DESKTOP_TEST_APP_SHARDS=4` to run the long headless app package in four parallel test processes. You can use the same opt-in locally with `DESKTOP_TEST_APP_SHARDS=4 bash scripts/check.sh`.
+
 ## Release
 
 Formal targets are `darwin/arm64`, `windows/amd64` and `linux/amd64`. macOS uses the project's community self-signing identity. Windows/Linux do not require publisher code signing, and Apple Developer ID/notarization are not prerequisites. FreeBSD is not planned.

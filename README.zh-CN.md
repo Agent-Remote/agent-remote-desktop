@@ -59,6 +59,8 @@ go run ./tests/performance-probe -frames 120
 
 终端相关改动需要设置 `DESKTOP_TERMINAL_TESTS=1`。原生验收脚本必须在目标主机运行；交叉编译不属于运行证据。远程合同夹具和主机预检不能证明真实 Server/Node 会话。
 
+CI 设置 `DESKTOP_TEST_APP_SHARDS=4`，把耗时较长的 headless app 包拆成四个并行测试进程。你也可以在本机使用相同的可选配置：`DESKTOP_TEST_APP_SHARDS=4 bash scripts/check.sh`。
+
 ## 发布
 
 正式目标为 `darwin/arm64`、`windows/amd64` 和 `linux/amd64`。macOS 沿用项目社区自签。Windows/Linux 不要求发行者代码签名，Apple Developer ID 和公证也不是前置条件。FreeBSD 不在计划中。

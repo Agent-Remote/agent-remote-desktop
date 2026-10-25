@@ -32,10 +32,38 @@ if [[ "$catalog_before" != "$(git hash-object locales/catalog_gen.go)" ]]; then
 fi
 go vet ./...
 # The headless UI package intentionally exercises every locale and lifecycle
-# path in one process. On hosted runners its renderer can exceed Go's default
-# ten-minute package timeout even while making progress. Windows hosted
-# runners can take over twenty minutes for the same headless UI package, so
-# keep the package timeout below the CI job budget while leaving room for the
-# installer and native acceptance probes that follow it.
-go test -timeout 35m ./...
+# path. It is safe to execute its top-level tests in independent processes,
+# because each test owns its temporary home and fixture state. CI sets this to
+# four to avoid making the three native jobs wait on one serial package. Keep
+# the default at one so the ordinary local command remains exactly `go test
+# ./...` unless the caller opts into parallel package shards.
+app_shards="${DESKTOP_TEST_APP_SHARDS:-1}"
+if [[ ! "$app_shards" =~ ^[1-9][0-9]*$ ]]; then
+  echo "DESKTOP_TEST_APP_SHARDS must be a positive integer" >&2
+  exit 2
+fi
+if ((app_shards == 1)); then
+  go test -timeout 35m ./...
+else
+  app_package="$(go list ./tests/app)"
+  other_packages="$(go list ./... | awk -v app="$app_package" '$0 != app')"
+  shard_log="$(mktemp "${TMPDIR:-/tmp}/agent-remote-test-shards.XXXXXX")"
+  cleanup_shard_log() {
+    rm -f "$shard_log"
+  }
+  trap cleanup_shard_log EXIT
+
+  bash scripts/test-package-shards.sh "$app_package" "$app_shards" > "$shard_log" 2>&1 &
+  app_status_pid=$!
+  other_status=0
+  if [[ -n "$other_packages" ]]; then
+    go test -timeout 35m $other_packages || other_status=$?
+  fi
+  app_status=0
+  wait "$app_status_pid" || app_status=$?
+  cat "$shard_log"
+  if ((other_status != 0 || app_status != 0)); then
+    exit 1
+  fi
+fi
 git diff --check

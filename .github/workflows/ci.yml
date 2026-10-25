@@ -78,6 +78,7 @@ jobs:
         shell: bash
         env:
           DESKTOP_TERMINAL_TESTS: "1"
+          DESKTOP_TEST_APP_SHARDS: "4"
         run: bash scripts/check.sh
       - name: Native installer upgrade and rollback probe
         shell: bash
