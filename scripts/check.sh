@@ -33,7 +33,9 @@ fi
 go vet ./...
 # The headless UI package intentionally exercises every locale and lifecycle
 # path in one process. On hosted runners its renderer can exceed Go's default
-# ten-minute package timeout even while making progress, so keep the timeout
-# explicit and bounded for the release gate.
-go test -timeout 20m ./...
+# ten-minute package timeout even while making progress. Windows hosted
+# runners can take over twenty minutes for the same headless UI package, so
+# keep the package timeout below the CI job budget while leaving room for the
+# installer and native acceptance probes that follow it.
+go test -timeout 35m ./...
 git diff --check
