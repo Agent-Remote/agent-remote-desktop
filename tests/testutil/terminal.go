@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"testing"
+	"time"
 )
 
 // InstallTerminalFixture returns a native long-running Agent stand-in for
@@ -27,6 +28,15 @@ func InstallTerminalFixture(t *testing.T) string {
 	if output, err := cmd.CombinedOutput(); err != nil {
 		t.Fatalf("build Windows terminal fixture: %v (%s)", err, output)
 	}
+	t.Cleanup(func() {
+		for attempt := 0; attempt < 100; attempt++ {
+			err := os.Remove(path)
+			if err == nil || os.IsNotExist(err) {
+				return
+			}
+			time.Sleep(50 * time.Millisecond)
+		}
+	})
 	return path
 }
 

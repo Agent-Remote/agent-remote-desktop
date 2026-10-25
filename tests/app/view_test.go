@@ -26,12 +26,34 @@ func hasProjectPath(tt *ui.Tester, path string) bool {
 	}
 	if runtime.GOOS == "windows" {
 		for _, text := range tt.Texts() {
-			if strings.EqualFold(text, path) {
+			if strings.EqualFold(text, path) || windowsPathsEqual(text, path) {
 				return true
+			}
+			// Windows runners may expose the short 8.3 home path in the test
+			// input while the UI resolves it to the long user path. Compare the
+			// stable Temp subtree before falling back to the directory name.
+			want := strings.ToLower(filepath.Clean(path))
+			got := strings.ToLower(filepath.Clean(text))
+			for _, marker := range []string{`\temp\`, `/temp/`} {
+				wantAt, gotAt := strings.Index(want, marker), strings.Index(got, marker)
+				if wantAt >= 0 && gotAt >= 0 && want[wantAt:] == got[gotAt:] {
+					return true
+				}
 			}
 		}
 	}
 	return false
+}
+
+func windowsPathsEqual(a, b string) bool {
+	left, leftErr := filepath.EvalSymlinks(filepath.Clean(a))
+	right, rightErr := filepath.EvalSymlinks(filepath.Clean(b))
+	if leftErr == nil && rightErr == nil && strings.EqualFold(left, right) {
+		return true
+	}
+	leftInfo, leftErr := os.Stat(a)
+	rightInfo, rightErr := os.Stat(b)
+	return leftErr == nil && rightErr == nil && os.SameFile(leftInfo, rightInfo)
 }
 
 func TestPreferencesSaveFailureIsVisibleAndReportedOnClose(t *testing.T) {

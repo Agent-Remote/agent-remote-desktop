@@ -6,9 +6,12 @@ import (
 	"errors"
 	"os/exec"
 	"syscall"
+	"time"
 
 	"github.com/charmbracelet/x/xpty"
 )
+
+func gracefulStopTimeout() time.Duration { return 3 * time.Second }
 
 type processGroup struct{}
 

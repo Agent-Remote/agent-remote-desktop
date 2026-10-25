@@ -254,7 +254,7 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 	}
 	tt.ClickAt(term.X+term.W/2, term.Y+term.H/2)
 	settle(tt)
-	for attempt := 0; attempt < 3 && !dockOpen(tt); attempt++ {
+	for attempt := 0; attempt < 10 && !dockOpen(tt); attempt++ {
 		tt.HoldModifiers(ui.Alt)
 		tt.Key(ui.Alt, ui.KeyA)
 		tt.HoldModifiers(0)

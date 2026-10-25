@@ -324,7 +324,7 @@ func (h *Host) Stop(force bool) error {
 			_ = h.group.signal(h.cmd, h.pty, true)
 		}
 		return nil
-	case <-time.After(3 * time.Second):
+	case <-time.After(gracefulStopTimeout()):
 		return ErrStopTimeout
 	}
 }

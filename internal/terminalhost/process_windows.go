@@ -6,11 +6,17 @@ import (
 	"errors"
 	"os/exec"
 	"strings"
+	"time"
 	"unsafe"
 
 	"github.com/charmbracelet/x/xpty"
 	"golang.org/x/sys/windows"
 )
+
+// ConPTY can take several seconds to deliver Ctrl+C and reap a foreground
+// process on hosted Windows runners. Keep the graceful contract bounded but
+// give the native console enough time before reporting stop_timeout.
+func gracefulStopTimeout() time.Duration { return 10 * time.Second }
 
 type processGroup struct{ job windows.Handle }
 
