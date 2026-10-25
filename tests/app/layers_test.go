@@ -216,27 +216,22 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 	settle(tt)
 	tt.Key(ui.Cmd, ui.KeyT) // ⌘T opens the ⌥C wheel sticky
 	settle(tt)
-	for attempt := 0; attempt < 3 && !tt.HasText("Terminal"); attempt++ {
-		if _, ok := tt.Find(locales.ToolNameCodex()); !ok {
-			settle(tt)
-			continue
-		}
+	if runtime.GOOS != "windows" {
 		if err := tt.Click(locales.ToolNameCodex()); err != nil {
 			t.Fatal(err)
 		}
+	} else {
+		// Select Codex through the wheel's keyboard path. This is the same
+		// committed sector action as a pointer click and remains deterministic
+		// when native Windows text hit testing lags one frame behind the wheel.
+		tt.Key(0, ui.KeyRight)
+		tt.Key(0, ui.KeyRight)
+		tt.Key(0, ui.KeyEnter)
 		settle(tt)
-	}
-	deadline := time.Now().Add(10 * time.Second)
-	for !tt.HasText(locales.LocalTool("codex")) && time.Now().Before(deadline) {
-		tt.Frame()
-		time.Sleep(20 * time.Millisecond)
-	}
-	if !tt.HasText("Terminal") {
-		t.Fatalf("the Codex sector did not start a session: %v", tt.Texts())
 	}
 	var term ui.Rect
 	ok := false
-	deadline = time.Now().Add(5 * time.Second)
+	deadline := time.Now().Add(10 * time.Second)
 	for !ok && time.Now().Before(deadline) {
 		term, ok = tt.Find("Terminal")
 		if !ok {
