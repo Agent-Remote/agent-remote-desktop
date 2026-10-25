@@ -197,8 +197,18 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 		ui.Box(c.Key("control-stage")).Grow(1).MinHeight(0).FillWidth().Clip().Children(func() {
 			if paged {
 				if p, ok := a.pages()[l.hosted]; ok {
-					ui.Column(c.Key("control-page")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Transition(a.push(env, w*0.3)).
-						Children(func() { a.pageHost(c, env, l.hosted, p) })
+					page := ui.Column(c.Key("control-page")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Transition(a.push(env, w*0.3))
+					// A page's buttons and checkboxes can own focus. Register the
+					// layer chords on the page subtree so they remain available
+					// before a focused control handles ordinary key input.
+					for key := range chordKeys {
+						key := key
+						for _, mods := range a.chordShortcutMods() {
+							mods := mods
+							page = page.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+						}
+					}
+					page.Children(func() { a.pageHost(c, env, l.hosted, p) })
 				}
 				return
 			}
