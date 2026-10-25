@@ -31,6 +31,21 @@ func InstallTerminalFixture(t *testing.T) string {
 }
 
 func repoRoot() (string, error) {
+	// Test binaries may be copied to a native fixture directory (for example
+	// when a macOS build is executed inside the Windows VM). Prefer the actual
+	// working tree over compile-time source paths embedded by runtime.Caller.
+	if dir, err := os.Getwd(); err == nil {
+		for {
+			if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+				return dir, nil
+			}
+			parent := filepath.Dir(dir)
+			if parent == dir {
+				break
+			}
+			dir = parent
+		}
+	}
 	_, file, _, ok := runtime.Caller(0)
 	if !ok {
 		return "", os.ErrNotExist

@@ -155,11 +155,13 @@ func openProject(tt *ui.Tester, name string) error {
 		if tt.HasText(locales.BarProject(name)) {
 			return nil
 		}
+		tt.HoldModifiers(ui.Alt)
 		tt.Key(ui.Alt, ui.KeyX)
+		tt.HoldModifiers(0)
 		settle(tt)
 		r, ok := tt.Find(name)
 		if !ok {
-			return tt.Click(name)
+			continue
 		}
 		tt.ClickAt(r.X+r.W/2, r.Y+r.H/2)
 		settle(tt)
