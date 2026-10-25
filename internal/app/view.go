@@ -65,7 +65,7 @@ func (a *App) View(c *ui.Context) {
 	}
 	a.syncPageHost()
 	a.watchChordRelease(c)
-	ui.Box(c).Fill().Background(t.Background).Children(func() {
+	ui.Box(c).Fill().Background(t.Background).HandleInput(a.rootKey).Children(func() {
 		a.backgroundDecoration(c, env)
 		a.workspace(c, env)
 		a.overlays(c, env)

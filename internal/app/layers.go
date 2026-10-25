@@ -378,6 +378,11 @@ func (a *App) layerKey(ev ui.InputEvent) bool {
 // rootKey is the workbench root's keyboard while it has the focus.
 func (a *App) rootKey(ev ui.InputEvent) bool {
 	a.noteKeyUp(ev)
+	// Option/Alt letters are text in the Control Center search field. Keep
+	// that editor's native text path ahead of the workbench fallback.
+	if a.openLayer() == layerControl && a.layers.ccSearchFocus {
+		return false
+	}
 	return ev.Kind == ui.InputKeyDown && a.chordPress(ev.Mods, ev.Key)
 }
 
