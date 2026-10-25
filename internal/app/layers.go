@@ -91,6 +91,7 @@ type layerState struct {
 	controlH       float32           // the sheet's height last built
 	hosted         string            // the page the sheet shows ("" its grid)
 	ccQuery        string            // the Control Center's search
+	ccSearchFocus  bool              // the search field owns focus; chords become text
 	dock           ui.Point          // the dock's drag offset: 0 open, −height pushed away
 	dockClosing    bool              // closed, still moving up: keep building until at rest
 	dockRise       bool              // opened from rest: place it closed, then spring down

@@ -145,12 +145,14 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 		// Keep layer chords available while a page control owns focus. The
 		// scrim is an overlay, so it receives chords that focused controls leave
 		// even when their native focus chain omits the page container.
-		for key := range chordKeys {
-			key := key
-			for _, mods := range a.chordShortcutMods() {
-				mods := mods
-				if scrim.OverlayShortcut(mods, key) {
-					a.chordPress(mods, key)
+		if !l.ccSearchFocus {
+			for key := range chordKeys {
+				key := key
+				for _, mods := range a.chordShortcutMods() {
+					mods := mods
+					if scrim.OverlayShortcut(mods, key) {
+						a.chordPress(mods, key)
+					}
 				}
 			}
 		}
@@ -245,6 +247,7 @@ func (a *App) push(env chrome.Env, dx float32) ui.ElementTransition {
 // appearance, close) over the tile groups, or over search results.
 func (a *App) controlGrid(c *ui.Context, env chrome.Env) {
 	l := &a.layers
+	l.ccSearchFocus = false
 	ui.Column(c).Fill().Children(func() {
 		// Two groups, which wrap onto two lines when long labels need it.
 		ui.Row(c).FillWidth().Padding(0, 28, 14).Gap(12).Wrap().Children(func() {
@@ -259,6 +262,7 @@ func (a *App) controlGrid(c *ui.Context, env chrome.Env) {
 						a.runSearchItem(items[0])
 					}
 				})
+				l.ccSearchFocus = in.Focused()
 				// ⌥ + letter types into a field (å, ß), so chords wait until
 				// the focus leaves it; Esc clears the query first.
 				in.OnShortcut(0, ui.KeyEscape, a.escapeLayer)
