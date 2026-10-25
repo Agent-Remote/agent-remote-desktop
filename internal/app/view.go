@@ -1,6 +1,7 @@
 package app
 
 import (
+	"runtime"
 	"time"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/chrome"
@@ -65,7 +66,15 @@ func (a *App) View(c *ui.Context) {
 	}
 	a.syncPageHost()
 	a.watchChordRelease(c)
-	ui.Box(c).Fill().Background(t.Background).HandleInput(a.rootKey).Children(func() {
+	root := ui.Box(c).Fill().Background(t.Background)
+	// macOS Option key delivery can bypass the page's normal focus chain;
+	// keep the workbench fallback there. Other hosts already route the layer
+	// window shortcut reliably, and a second handler would toggle the layer
+	// twice on the same key.
+	if runtime.GOOS == "darwin" {
+		root = root.HandleInput(a.rootKey)
+	}
+	root.Children(func() {
 		a.backgroundDecoration(c, env)
 		a.workspace(c, env)
 		a.overlays(c, env)
