@@ -123,6 +123,12 @@ func (a *App) chordFallback(c *ui.Context) {
 	// button owns focus. Page controls do not consume Alt/Option chords, while
 	// the grid search field is protected by the layers.search guard above.
 	pageFallback := a.openLayer() == layerControl && a.page != ""
+	if runtime.GOOS == "darwin" && pageFallback {
+		// The page ancestor handles Option chords directly on macOS. A
+		// window shortcut here would claim the key before that handler and
+		// prevent the native Option event from reaching it.
+		return
+	}
 	if !pageFallback {
 		if focused := ui.FocusedValue(c, &a.focusValue); focused != "" && focused != focusZen && focused != focusLayer {
 			for _, record := range a.sessions.Records() {

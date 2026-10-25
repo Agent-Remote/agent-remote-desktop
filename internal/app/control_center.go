@@ -1,6 +1,8 @@
 package app
 
 import (
+	"runtime"
+
 	"github.com/Agent-Remote/agent-remote-desktop/internal/chrome"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/remote"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/theme"
@@ -212,14 +214,28 @@ func (a *App) controlLayer(c *ui.Context, env chrome.Env, open bool) {
 			if paged {
 				if p, ok := a.pages()[l.hosted]; ok {
 					page := ui.Column(c.Key("control-page")).Absolute().Top(0).Right(0).Bottom(0).Left(0).Transition(a.push(env, w*0.3)).HandleInput(a.layerKey)
+					// Native macOS Option events can bypass the focused page
+					// button's shortcut scope. Let the page ancestor receive the
+					// chord directly; the search field opts out in rootKey so
+					// Option+letter remains text there.
+					if runtime.GOOS == "darwin" {
+						page = page.HandleInput(func(ev ui.InputEvent) bool {
+							if a.rootKey(ev) {
+								return true
+							}
+							return a.layerKey(ev)
+						})
+					}
 					// A page's buttons and checkboxes can own focus. Register the
 					// layer chords on the page subtree so they remain available
 					// before a focused control handles ordinary key input.
-					for key := range chordKeys {
-						key := key
-						for _, mods := range a.chordShortcutMods() {
-							mods := mods
-							page = page.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+					if runtime.GOOS != "darwin" {
+						for key := range chordKeys {
+							key := key
+							for _, mods := range a.chordShortcutMods() {
+								mods := mods
+								page = page.OnShortcut(mods, key, func() { a.chordPress(mods, key) })
+							}
 						}
 					}
 					page.Children(func() { a.pageHost(c, env, l.hosted, p) })
