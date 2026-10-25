@@ -74,6 +74,15 @@ scripts/verify-release.sh dist/release --require-targets darwin/arm64,windows/am
 
 只有原生证据、broker 证据、远程联调和性能门禁全部完成后，发布流程才可以发布。发布流程本身不能替代这些门禁。
 
+从 `main` 准备组件发布时，先更新仓库自有的版本和变更记录文件：
+
+```sh
+scripts/prepare-release.sh 0.1.0
+git diff -- mygo.json CHANGELOG.md
+```
+
+受保护的 workflow 会执行相同的准备和完整检查，然后提交发布源文件并推送匹配的 `v*` 标签。标签会启动发布 workflow；运行前必须检查 `docs/implementation-status.md` 中所有仍开放的门禁。
+
 ## 验收与发布脚本
 
 仓库把合同、主机和制品入口分开：
@@ -82,6 +91,9 @@ scripts/verify-release.sh dist/release --require-targets darwin/arm64,windows/am
 # 构建并验证候选制品目录。
 scripts/build-release.sh --out dist/release --clean
 scripts/verify-release.sh dist/release --require-targets darwin/arm64,windows/amd64,linux/amd64
+# 准备仓库自有的版本和变更记录文件。
+scripts/prepare-release.sh <version>
+scripts/update-changelog.sh <version>
 # 原生主机验收和打包 smoke。
 scripts/native-acceptance.sh
 scripts/release-native-smoke.sh dist/release

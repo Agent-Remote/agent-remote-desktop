@@ -1,6 +1,6 @@
 # Implementation status
 
-Updated 2026-10-24. This file describes the current source tree and release
+Updated 2026-10-25. This file describes the current source tree and release
 evidence. It is the status source for the desktop README; historical work logs
 are intentionally not kept here.
 
@@ -74,6 +74,12 @@ Server/Node/SSH/tmux/fclaude session gate.
 Cross-build checks for `darwin/arm64`, `windows/amd64` and `linux/amd64` pass.
 Cross-compilation is build evidence only and is never counted as native runtime
 evidence.
+
+The final hosted desktop CI run `40201235800` passed static checks, all three
+native runtime jobs, all twelve isolated `tests/app` shards, the three
+cross-builds and the native evidence verifier. This validates the repository
+workflow and hosted acceptance suite; it does not close the real-host release
+gates below.
 
 An additional disposable `linux/amd64` Docker+Xvfb attempt passed the platform
 and installer probes. Its native window, tray and workbench probes were not

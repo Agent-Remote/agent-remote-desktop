@@ -76,6 +76,15 @@ scripts/verify-release.sh dist/release --require-targets darwin/arm64,windows/am
 
 The release workflow may publish only after native evidence, broker evidence, remote integration and performance gates are complete. The workflow itself must not be treated as those gates.
 
+Prepare a component release from `main` with the repository-owned version and changelog files:
+
+```sh
+scripts/prepare-release.sh 0.1.0
+git diff -- mygo.json CHANGELOG.md
+```
+
+The protected workflow performs the same preparation and complete checks, then commits the release source and pushes the matching `v*` tag. The tag starts the release workflow; review every open gate in `docs/implementation-status.md` before running it.
+
 ## Acceptance and release scripts
 
 The repository keeps separate contract, host and artifact entry points:
@@ -84,6 +93,9 @@ The repository keeps separate contract, host and artifact entry points:
 # Build and verify a candidate artifact directory.
 scripts/build-release.sh --out dist/release --clean
 scripts/verify-release.sh dist/release --require-targets darwin/arm64,windows/amd64,linux/amd64
+# Prepare repository-owned version and changelog files.
+scripts/prepare-release.sh <version>
+scripts/update-changelog.sh <version>
 # Native host acceptance and packaged smoke.
 scripts/native-acceptance.sh
 scripts/release-native-smoke.sh dist/release

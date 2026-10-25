@@ -14,7 +14,7 @@ import (
 	"github.com/egoist/mygo"
 )
 
-const developmentVersion = "0.1.0-dev"
+const developmentVersion = "0.1.0"
 
 func applicationVersion() string {
 	if version := strings.TrimSpace(mygo.App.Version()); version != "" {

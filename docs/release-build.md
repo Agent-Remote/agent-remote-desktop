@@ -54,6 +54,25 @@ inherited runner variable cannot silently publish a partial release. Local
 smoke builds may still select a subset with `--platforms` and verify it without
 `--require-targets`.
 
+## Prepare a component release
+
+The repository follows the same two-step component release flow as the other
+agent-remote repositories. `scripts/prepare-release.sh` updates `mygo.json`,
+regenerates and checks the i18n catalog, and prepends the commit range to
+`CHANGELOG.md` through `scripts/update-changelog.sh`:
+
+```sh
+scripts/prepare-release.sh 0.1.0
+git diff -- mygo.json CHANGELOG.md
+```
+
+The protected `prepare-release` workflow accepts a semantic version without
+the leading `v`, rejects an existing tag, runs the complete desktop checks,
+commits `chore: release vX.Y.Z`, pushes `main`, and pushes `vX.Y.Z`. The tag
+then starts the tagged release workflow. Review the open host, broker, remote
+integration and performance gates in `implementation-status.md` before running
+the workflow; preparing source metadata does not close those gates.
+
 The reproducible packaging entry point is:
 
 ```sh
