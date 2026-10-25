@@ -13,8 +13,12 @@ import (
 // layer is where its layout says when a test clicks it.
 func settle(tt *ui.Tester) {
 	tt.SetPreferences(ui.Preferences{ReduceMotion: true, TextScale: 1})
+	// A click can move focus and rebuild the layer in separate headless
+	// frames.  Run one frame after the short clock advance so page-level
+	// shortcuts and focus bindings are registered before the next key event.
 	tt.Frame()
 	tt.Advance(20 * time.Millisecond)
+	tt.Frame()
 }
 
 // openPage reaches a management page the way the redesign does: the
