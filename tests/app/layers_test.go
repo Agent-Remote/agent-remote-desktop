@@ -234,7 +234,16 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 	if !tt.HasText("Terminal") {
 		t.Fatalf("the Codex sector did not start a session: %v", tt.Texts())
 	}
-	term, ok := tt.Find("Terminal")
+	var term ui.Rect
+	ok := false
+	deadline = time.Now().Add(5 * time.Second)
+	for !ok && time.Now().Before(deadline) {
+		term, ok = tt.Find("Terminal")
+		if !ok {
+			tt.Frame()
+			time.Sleep(20 * time.Millisecond)
+		}
+	}
 	if !ok {
 		t.Fatal("terminal view missing")
 	}

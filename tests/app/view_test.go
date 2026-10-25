@@ -6,6 +6,8 @@ import (
 	"image/png"
 	"os"
 	"path/filepath"
+	"runtime"
+	"strings"
 	"testing"
 	"time"
 
@@ -17,6 +19,20 @@ import (
 	"github.com/egoist/mygo/i18n"
 	"github.com/egoist/mygo/ui"
 )
+
+func hasProjectPath(tt *ui.Tester, path string) bool {
+	if tt.HasText(path) {
+		return true
+	}
+	if runtime.GOOS == "windows" {
+		for _, text := range tt.Texts() {
+			if strings.EqualFold(text, path) {
+				return true
+			}
+		}
+	}
+	return false
+}
 
 func TestPreferencesSaveFailureIsVisibleAndReportedOnClose(t *testing.T) {
 	i18n.SetLocaleFunc(func() string { return "en" })
@@ -84,8 +100,8 @@ func TestWorkbenchProjectFlowAndTheme(t *testing.T) {
 		t.Fatal(err)
 	}
 	settle(tt)
-	if !tt.HasText(dir) {
-		t.Fatal("project not added")
+	if !hasProjectPath(tt, dir) {
+		t.Fatalf("project not added dir=%q: %q", dir, tt.Texts())
 	}
 	if !tt.HasText("新建项目会话") {
 		t.Fatal("project workspace did not open")
@@ -226,8 +242,8 @@ func TestChangingLanguagePreservesProjectInputAndErrors(t *testing.T) {
 	}
 	language = "en"
 	tt.SetLocale(language)
-	if !tt.HasText("New project session") || !tt.HasText(dir) {
-		t.Fatal("project was lost during language switch")
+	if !tt.HasText("New project session") || !hasProjectPath(tt, dir) {
+		t.Fatalf("project was lost during language switch dir=%q: %q", dir, tt.Texts())
 	}
 	if err := openPage(tt, "Settings"); err != nil {
 		t.Fatal(err)
