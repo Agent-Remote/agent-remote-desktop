@@ -3,6 +3,7 @@ package app_test
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -25,7 +26,9 @@ func TestClosePersistsFinalLocalExitCode(t *testing.T) {
 	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
 	home, projectDir := t.TempDir(), t.TempDir()
 	provider := filepath.Join(t.TempDir(), "codex")
-	if err := os.WriteFile(provider, []byte("#!/bin/sh\ntrap 'exit 42' TERM\nwhile :; do sleep 1; done\n"), 0700); err != nil {
+	if runtime.GOOS == "windows" {
+		provider = testutil.InstallTerminalFixture(t)
+	} else if err := os.WriteFile(provider, []byte("#!/bin/sh\ntrap 'exit 42' TERM\nwhile :; do sleep 1; done\n"), 0700); err != nil {
 		t.Fatal(err)
 	}
 	state := storage.State{

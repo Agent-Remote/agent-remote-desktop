@@ -75,6 +75,9 @@ func TestWorkbenchProjectFlowAndTheme(t *testing.T) {
 	}
 	dir := t.TempDir()
 	tt.Type(dir)
+	// Windows headless input dispatch can publish the final path on the next
+	// frame; render once before the button click so validation sees it.
+	tt.Frame()
 	if err = tt.Click("打开"); err != nil {
 		t.Fatal(err)
 	}
@@ -194,6 +197,7 @@ func TestChangingLanguagePreservesProjectInputAndErrors(t *testing.T) {
 	}
 	dir := filepath.Join(t.TempDir(), "missing")
 	tt.Type(dir)
+	tt.Frame()
 	if err := tt.Click("Open"); err != nil {
 		t.Fatal(err)
 	}

@@ -1199,15 +1199,24 @@ func ControlHelper() bool {
 }
 
 func InstallControlHelper(t *testing.T) string {
+	return InstallControlHelperAs(t, "agent-remote")
+}
+
+// InstallControlHelperAs installs this test binary under a caller supplied
+// executable name. The schema fixture derives its advertised executable from
+// argv[0], so fclaude tests must execute a real fclaude-named image on
+// Windows; a symlink without .exe is not a runnable CreateProcess target.
+func InstallControlHelperAs(t *testing.T, name string) string {
 	t.Helper()
 	executable, err := os.Executable()
 	if err != nil {
 		t.Fatal(err)
 	}
 	dir := t.TempDir()
-	name := "agent-remote"
 	if runtime.GOOS == "windows" {
-		name += ".exe"
+		if filepath.Ext(name) == "" {
+			name += ".exe"
+		}
 	}
 	target := filepath.Join(dir, name)
 	// Reuse the executable already loaded by this test process. Fresh copies

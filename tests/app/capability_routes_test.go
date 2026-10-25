@@ -2,8 +2,6 @@ package app_test
 
 import (
 	"errors"
-	"os"
-	"path/filepath"
 	"testing"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/app"
@@ -116,10 +114,7 @@ func TestCapabilitiesRoutesCommandFamiliesToDedicatedPages(t *testing.T) {
 
 func TestCapabilitiesRoutesFclaudeAttachToRemoteSessionInventory(t *testing.T) {
 	agentBinary := testutil.InstallControlHelper(t)
-	fclaudeBinary := filepath.Join(t.TempDir(), "fclaude")
-	if err := os.Symlink(agentBinary, fclaudeBinary); err != nil {
-		t.Fatal(err)
-	}
+	fclaudeBinary := testutil.InstallControlHelperAs(t, "fclaude")
 	i18n.SetLocaleFunc(func() string { return "en" })
 	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
 	a, err := app.NewWithOptions(t.TempDir(), app.Options{FindExecutable: func(name string) (string, error) {
@@ -190,10 +185,7 @@ func TestCapabilitiesExposeForwardParentOperation(t *testing.T) {
 
 func TestCapabilitiesRoutesFClaudeDefaultInvocationToRemoteSessions(t *testing.T) {
 	agentBinary := testutil.InstallControlHelper(t)
-	fclaudeBinary := filepath.Join(t.TempDir(), "fclaude")
-	if err := os.Symlink(agentBinary, fclaudeBinary); err != nil {
-		t.Fatal(err)
-	}
+	fclaudeBinary := testutil.InstallControlHelperAs(t, "fclaude")
 	i18n.SetLocaleFunc(func() string { return "en" })
 	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
 	a, err := app.NewWithOptions(t.TempDir(), app.Options{FindExecutable: func(name string) (string, error) {
@@ -256,10 +248,7 @@ func TestCapabilitiesRoutesAllFClaudeLifecycleAndForwardLeaves(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			agentBinary := testutil.InstallControlHelper(t)
-			fclaudeBinary := filepath.Join(t.TempDir(), "fclaude")
-			if err := os.Symlink(agentBinary, fclaudeBinary); err != nil {
-				t.Fatal(err)
-			}
+			fclaudeBinary := testutil.InstallControlHelperAs(t, "fclaude")
 			i18n.SetLocaleFunc(func() string { return "en" })
 			t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
 			a, err := app.NewWithOptions(t.TempDir(), app.Options{FindExecutable: func(name string) (string, error) {
@@ -300,8 +289,11 @@ func TestCapabilitiesRoutesAllFClaudeLifecycleAndForwardLeaves(t *testing.T) {
 				if !tt.HasText(locales.RemoteSessions()) {
 					t.Fatalf("command %q did not open the remote session page", tc.filter)
 				}
-			} else if !tt.HasText(locales.PortForwardTitle()) {
-				t.Fatalf("command %q did not open the port forwarding page", tc.filter)
+			} else {
+				// The port-forward page waits for the same context snapshot as the
+				// remote page. Let the headless worker publish it before asserting
+				// the destination on slower hosted runners.
+				waitRemoteText(t, tt, locales.PortForwardTitle())
 			}
 			if tt.HasText(locales.CliFormTitle()) {
 				t.Fatalf("command %q fell through to generic argv form", tc.filter)

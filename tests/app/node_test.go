@@ -2,6 +2,7 @@ package app_test
 
 import (
 	"errors"
+	"runtime"
 	"testing"
 	"time"
 
@@ -14,10 +15,23 @@ import (
 
 func TestNodeInstallUsesStructuredNodePickerAndReview(t *testing.T) {
 	binary := testutil.InstallControlHelper(t)
+	terminalBinary := ""
+	if runtime.GOOS == "windows" {
+		terminalBinary = testutil.InstallTerminalFixture(t)
+	}
+	lookups := 0
 	i18n.SetLocaleFunc(func() string { return "en" })
 	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
 	a, err := app.NewWithOptions(t.TempDir(), app.Options{FindExecutable: func(name string) (string, error) {
 		if name == "agent-remote" {
+			lookups++
+			// Capability and node discovery use the JSON control fixture. The
+			// confirmed install is the first managed terminal launch; use a
+			// native ConPTY fixture there so Windows does not run this test
+			// executable as an Agent and retain its copied image during cleanup.
+			if terminalBinary != "" && lookups > 2 {
+				return terminalBinary, nil
+			}
 			return binary, nil
 		}
 		return "", errors.New("test Agent unavailable")

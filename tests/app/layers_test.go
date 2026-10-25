@@ -3,6 +3,7 @@ package app_test
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -196,7 +197,9 @@ func TestChordFromFocusedTerminalOpensLayer(t *testing.T) {
 	state.Sessions, state.Board.Tabs, state.Board.Active = nil, nil, nil
 	testutil.StoreWorkspace(t, home, state)
 	provider := filepath.Join(t.TempDir(), "codex")
-	if err := os.WriteFile(provider, []byte("#!/bin/sh\nwhile :; do sleep 1; done\n"), 0o700); err != nil {
+	if runtime.GOOS == "windows" {
+		provider = testutil.InstallTerminalFixture(t)
+	} else if err := os.WriteFile(provider, []byte("#!/bin/sh\nwhile :; do sleep 1; done\n"), 0o700); err != nil {
 		t.Fatal(err)
 	}
 	a, err := app.NewWithOptions(home, app.Options{FindExecutable: func(name string) (string, error) {

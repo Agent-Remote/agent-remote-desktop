@@ -2,8 +2,6 @@ package app_test
 
 import (
 	"errors"
-	"os"
-	"path/filepath"
 	"runtime"
 	"testing"
 	"time"
@@ -165,10 +163,7 @@ func TestSkillExportReviewRejectsParentTraversalOutput(t *testing.T) {
 func TestFClaudeRunAndNewUseRemoteSessionWorkflows(t *testing.T) {
 	t.Setenv("DESKTOP_TEST_CLI_SCENARIO", "remote-create")
 	agentBinary := testutil.InstallControlHelper(t)
-	fclaudeBinary := filepath.Join(t.TempDir(), "fclaude")
-	if err := os.Symlink(agentBinary, fclaudeBinary); err != nil {
-		t.Fatal(err)
-	}
+	fclaudeBinary := testutil.InstallControlHelperAs(t, "fclaude")
 	i18n.SetLocaleFunc(func() string { return "en" })
 	t.Cleanup(func() { i18n.SetLocaleFunc(nil) })
 
