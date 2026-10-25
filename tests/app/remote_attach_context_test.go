@@ -6,6 +6,7 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/app"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/fault"
@@ -37,7 +38,7 @@ func attachHistoryTester(t *testing.T, language, mode string, edit func(*storage
 		edit(&state, home)
 	}
 	testutil.StoreWorkspace(t, home, state)
-	a, err := app.NewWithOptions(home, app.Options{FindExecutable: func(name string) (string, error) {
+	a, err := app.NewWithOptions(home, app.Options{ChordTapWindow: 10 * time.Second, FindExecutable: func(name string) (string, error) {
 		if name == "agent-remote" {
 			return binary, nil
 		}

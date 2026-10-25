@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/Agent-Remote/agent-remote-desktop/internal/app"
 	"github.com/Agent-Remote/agent-remote-desktop/internal/fault"
@@ -45,7 +46,7 @@ func providerTester(t *testing.T, locale string, tool session.Tool, restored boo
 	}
 	testutil.StoreWorkspace(t, home, state)
 	resolver := &providerFixture{available: map[string]bool{}, directory: t.TempDir()}
-	a, err := app.NewWithOptions(home, app.Options{FindExecutable: resolver.resolve})
+	a, err := app.NewWithOptions(home, app.Options{ChordTapWindow: 10 * time.Second, FindExecutable: resolver.resolve})
 	if err != nil {
 		t.Fatal(err)
 	}

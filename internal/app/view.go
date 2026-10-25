@@ -110,13 +110,19 @@ func (a *App) chordFallback(c *ui.Context) {
 	// A live terminal gets first refusal during input routing. A restored pane
 	// installs its own element-scoped shortcut, while the window fallback here
 	// covers the focusless workbench root.
-	if focused := ui.FocusedValue(c, &a.focusValue); focused != "" && focused != focusZen && focused != focusLayer {
-		for _, record := range a.sessions.Records() {
-			if record.ID == focused {
-				return
+	// A pushed Control Center page still needs the global layer chord when a
+	// button owns focus. Page controls do not consume Alt/Option chords, while
+	// the grid search field is protected by the layers.search guard above.
+	pageFallback := a.openLayer() == layerControl && a.page != ""
+	if !pageFallback {
+		if focused := ui.FocusedValue(c, &a.focusValue); focused != "" && focused != focusZen && focused != focusLayer {
+			for _, record := range a.sessions.Records() {
+				if record.ID == focused {
+					return
+				}
 			}
+			return
 		}
-		return
 	}
 	for key := range chordKeys {
 		key := key
